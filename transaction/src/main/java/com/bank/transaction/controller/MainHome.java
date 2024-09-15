@@ -10,6 +10,5 @@ public class MainHome {
 	public String mainView() {
 		//return "index";
 		return "view/stckInfo/stckInfoView";
-		
 	}
 }
