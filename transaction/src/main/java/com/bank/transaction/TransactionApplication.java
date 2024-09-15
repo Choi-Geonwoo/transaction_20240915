@@ -7,7 +7,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 @SpringBootApplication
 public class TransactionApplication {
-	
 	public static void main(String[] args) {
 		SpringApplication.run(TransactionApplication.class, args);
 	}
