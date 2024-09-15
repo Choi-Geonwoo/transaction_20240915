@@ -1,0 +1,56 @@
+#spring.application.name=transaction
+server : 
+  port : 8083
+
+# MyBatis 설정
+# 파일 다운로드/업로드를 위한 폴더 경로 설정
+# 사용할 템플릿 엔진(jsp 등) 설정 등 여러가지를 설정해주는 파일
+# => 스프링부트 셋 세부 설정(서버 포트 번호 등)
+
+
+spring :
+  datasource :
+    url :   jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
+    #url :   jdbc:oracle:thin:@localhost:1521/XE
+    #url : jdbc:log4jdbc:oracle:thin:@localhost:1521/XE
+    username : 
+    password : 
+    driver-class-name : oracle.jdbc.OracleDriver
+    #driver-class-name : net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+  thymeleaf:
+    prefix: classpath:templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: false # default true, 개발 시에는 false로 두는 것이 좋음
+    
+
+#spring.datasource.driver-class-name=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+#spring.datasource.hikari.jdbc-url=jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+
+# Mapper Xml Location
+mybatis:  
+  configuration:    
+    multiple-result-sets-enabled: false    
+    map-underscore-to-camel-case: true    
+    call-setters-on-nulls: true        
+    jdbc-type-for-null: varchar    
+    default-fetch-size: 500  
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package : com.springboot.spring.mapper.*
+
+## 로그 조정
+logging:
+  level:
+    org:
+      springframework : INFO
+    com:
+      yourcompany : DEBUG
+    jdbc : 
+      resultset: OFF
