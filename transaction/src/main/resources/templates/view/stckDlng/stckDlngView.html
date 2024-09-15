@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
+    <title>주식거래정보</title>	
+	
+	<style>
+	    table {
+	        width: 100%;
+	        border-collapse: collapse;
+	    }
+	    th, td {
+	        border: 1px solid black;
+	        padding: 8px;
+	        text-align: center;
+	    }
+	    th {
+	        background-color: #f2f2f2;
+	    }
+	    .tab-menu {
+	        margin: 20px 0;
+	        display: flex;
+	    }
+	    .tab-menu button {
+	        padding: 10px 20px;
+	        margin-right: 5px;
+	        background-color: #ddd;
+	        border: 1px solid #aaa;
+	        cursor: pointer;
+	    }
+	    .tab-menu button.active {
+	        background-color: #4CAF50;
+	        color: white;
+	    }
+	    .button-container {
+	        margin: 20px 0;
+	    }
+	    button {
+	        padding: 10px 20px;
+	        margin-right: 10px;
+	        background-color: #4CAF50;
+	        color: white;
+	        border: none;
+	        cursor: pointer;
+	    }
+	    button:hover {
+	        background-color: #45a049;
+	    }
+	    #search-box {
+	        padding: 5px;
+	        margin-right: 10px;
+	    }
+	    .tab-content {
+	        display: none;
+	    }
+	    .tab-content.active {
+	        display: block;
+	    }
+	</style>	
+	<script type="text/javascript" th:src="@{/JS/stckDlng/stckDlng.js}"></script>
+	
+</head>
+<body>
+	<h4>주식거래정보</h4>
+	
+	<div class="tab-menu">
+	   <button class="tab-button active" onclick="showTab('pension')">연금저축</button>
+	   <button class="tab-button" onclick="showTab('retirement')">퇴직연금</button>
+	   <button class="tab-button" onclick="showTab('general')">일반계좌</button>
+	</div>
+	
+	<div class="button-container">
+	   <button onclick="register()">등록</button>
+	   <input type="text" id="search-box" placeholder="검색어 입력">
+	   <button onclick="search()">검색</button>
+	</div>
+	
+	<!-- 연금저축 탭 내용 -->
+	<div id="pension" class="tab-content active">
+	   <table>
+	       <thead>
+	           <tr>
+	               <th>매수여부</th>
+	               <th>거래일자</th>
+	               <th>주식명</th>
+	               <th>수량</th>
+	               <th>배당주기</th>
+	               <th>배당금</th>
+	           </tr>
+	       </thead>
+	       <tbody>
+	           <tr>
+	               <td>매수</td>
+	               <td>2024년09월11일</td>
+	               <td>PLUS 고배당주</td>
+	               <td>10</td>
+	               <td>월</td>
+	               <td>63</td>
+	           </tr>
+	       </tbody>
+	   </table>
+	</div>
+	
+	<!-- 퇴직연금 탭 내용 -->
+	<div id="retirement" class="tab-content">
+	   <table>
+	       <thead>
+	           <tr>
+	               <th>매수</th>
+	               <th>거래일자</th>
+	               <th>주식명</th>
+	               <th>수량</th>
+	               <th>배당주기</th>
+	               <th>배당금</th>
+	           </tr>
+	       </thead>
+	       <tbody>
+	           <tr>
+	               <td>매수</td>
+	               <td>2024년09월11일</td>
+	               <td>PLUS 고배당주</td>
+	               <td>20</td>
+	               <td>월</td>
+	               <td>120</td>
+	           </tr>
+	       </tbody>
+	   </table>
+	</div>
+	
+	<!-- 일반계좌 탭 내용 -->
+	<div id="general" class="tab-content">
+	   <table>
+	       <thead>
+	           <tr>
+	               <th>순번</th>
+	               <th>매수여부</th>
+	               <th>거래일자</th>
+	               <th>주식명</th>
+	               <th>수량</th>
+	               <th>배당주기</th>
+	               <th>배당금</th>
+	               <th>1년치 배당</th>
+	               <th>등록일자</th>
+	               <th>등록자</th>
+	               <th>수정일자</th>
+	           </tr>
+	       </thead>
+	       <tbody>
+	           <tr>
+	               <td>1</td>
+	               <td>매수</td>
+	               <td>2024년09월11일</td>
+	               <td>PLUS 고배당주</td>
+	               <td>10</td>
+	               <td>월</td>
+	               <td>63</td>
+	               <td>₩630</td>
+	               <td></td>
+	               <td>WOO</td>
+	               <td></td>
+	           </tr>
+	       </tbody>
+	   </table>
+	</div>
+	
+	<script>
+		function showTab(tabName) {
+		     // Hide all tab contents
+		    var tabs = document.getElementsByClassName('tab-content');
+		     for (var i = 0; i < tabs.length; i++) {
+		  tabs[i].classList.remove('active');
+		     }
+		
+		     // Remove active class from all tab buttons
+		     var buttons = document.getElementsByClassName('tab-button');
+		     for (var i = 0; i < buttons.length; i++) {
+		  buttons[i].classList.remove('active');
+		     }
+		
+		     // Show the clicked tab and highlight the active button
+		     document.getElementById(tabName).classList.add('active');
+		     event.currentTarget.classList.add('active');
+		 }
+		
+		 function register() {
+		     alert('등록 버튼이 클릭되었습니다.');
+		     // 등록 기능을 여기에 구현
+		 }
+		
+		 function search() {
+		     let keyword = document.getElementById('search-box').value;
+		     alert('검색어: ' + keyword);
+		     // 검색 기능을 여기에 구현
+		}
+	</script>
+</body>
+</html>
