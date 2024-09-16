@@ -4,8 +4,76 @@
 <!-- com.bank.transaction.mapper.stckInfo(주식정보) -->
 <mapper namespace="com.bank.transaction.mapper.stckInfo.StckInfoMapper">
 
-<!-- 주식 정보-->
+<!-- 주식 정보 조회-->
 <select id = "stckInfoSelect"  resultType="Map" parameterType="Map" >
-	SELECT 1 as turn, 'KO' as tiker FROM DUAL
+	SELECT /* SQL_ID : StckInfoMapper.stckInfoSelect(주식 정보 조회) */
+	             ROWNUM AS ROW_
+				,TURN		/*순번       */
+				,TIKER		/*주식_티커   */
+				,STCNM		/*주식명     */
+				,DVDNCYC	/*배당_주기   */
+				,DVDN		/*배당금     */
+				,USEYN		/*사용여부    */
+				,DELYN		/*삭제여부    */
+				,REGYMD		/*등록일자    */
+				,MDFCNYMD	/*수정일자    */
+	FROM STOCKINFORMATION
+	 WHERE 1=1
+	  <if test="TIKER!=null and !TIKER.equals('')">
+		AND TIKER LIKE #{TIKER} || '%' /*주식_티커   */
+	  </if>
+	  <if test="STCNM!=null and !STCNM.equals('')">
+		AND STCNM LIKE #{STCNM}  || '%'/*주식명     */
+	  </if>
+	  <if test="DVDNCYC!=null and !DVDNCYC.equals('')">
+		AND DVDNCYC LIKE #{DVDNCYC}  || '%'/*배당_주기   */
+	  </if>
+		ORDER BY STCNM
 </select>
+
+<!-- 주식 정보 등록-->
+<insert id = "stckInfoInsert" parameterType="Map" >
+		INSERT /* SQL_ID : StckInfoMapper.stckInfoInsert(주식 정보 등록)  */
+			INTO 
+				STOCKINFORMATION
+			(
+				 TURN		/*순번       */
+				,TIKER		/*주식_티커   */
+				,STCNM		/*주식명     */
+				,DVDNCYC	/*배당_주기   */
+				,DVDN		/*배당금     */
+				,USEYN		/*사용여부    */
+				,DELYN		/*삭제여부    */
+				,REGYMD		/*등록일자    */
+				,MDFCNYMD	/*수정일자    */
+				)
+		VALUES(
+				 (
+				 	SELECT 
+				 		(TO_CHAR(SYSDATE, 'YYMMDD')||LPAD(nvl(max(SUBSTR(TURN, 7))+1,0),4,0))
+				 	FROM STOCKINFORMATION WHERE TURN LIKE TO_CHAR(SYSDATE , 'YYMMDD') || '%'
+				 )		/*순번       */
+				,#{TIKER}		/*주식_티커   */
+				,#{STCNM}		/*주식명     */
+				,#{DVDNCYC}		/*배당_주기   */
+				,#{DVDN}		/*배당금     */
+				,#{USEYN}		/*사용여부    */
+				,#{DELYN}		/*삭제여부    */
+				,SYSDATE		/*등록일자    */
+				,SYSDATE		/*수정일자    */
+		)
+</insert>
+
+<update id="stckInfoUpdate" parameterType="Map" >
+    UPDATE STOCKINFORMATION
+        SET  STCNM    = #{STCNM}       /*주식명     */
+            ,DVDNCYC  = #{DVDNCYC}     /*배당_주기   */
+            ,DVDN     = #{DVDN}        /*배당금     */
+            ,USEYN    = #{USEYN}       /*사용여부    */
+            ,DELYN    = #{DELYN}       /*삭제여부    */
+            ,MDFCNYMD = SYSDATE
+    WHERE   TURN  = #{TURN}
+        AND TIKER = #{TIKER}
+</update>
+
 </mapper>

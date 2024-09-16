@@ -9,6 +9,7 @@ public class MainHome {
 	@GetMapping("/")
 	public String mainView() {
 		//return "index";
-		return "view/stckInfo/stckInfoView";
+		//return "view/stckInfo/stckInfoView";
+		return "redirect:/stckInfo/stckInfoView";
 	}
 }

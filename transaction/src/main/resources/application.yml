@@ -15,8 +15,8 @@ spring :
     #url : jdbc:log4jdbc:oracle:thin:@localhost:1521/XE
     username : 
     password : 
-    driver-class-name : oracle.jdbc.OracleDriver
-    #driver-class-name : net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    #driver-class-name : oracle.jdbc.OracleDriver
+    driver-class-name : net.sf.log4jdbc.sql.jdbcapi.DriverSpy
   thymeleaf:
     prefix: classpath:templates/
     check-template-location: true
@@ -43,14 +43,17 @@ mybatis:
     jdbc-type-for-null: varchar    
     default-fetch-size: 500  
   mapper-locations: classpath:/mapper/**/*.xml
-  type-aliases-package : com.springboot.spring.mapper.*
+  type-aliases-package : com.bank.transaction.mapper.*
 
 ## 로그 조정
 logging:
   level:
-    org:
-      springframework : INFO
-    com:
-      yourcompany : DEBUG
-    jdbc : 
-      resultset: OFF
+    jdbc:
+      sqlonly : off
+      sqltiming : info
+      resultsettable : info
+      audit : off
+      resultset : off
+      connection : off
+    org.example : INFO
+    org.example.LoggingAspect : DEBUG
