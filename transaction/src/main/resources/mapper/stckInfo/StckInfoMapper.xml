@@ -7,28 +7,32 @@
 <!-- 주식 정보 조회-->
 <select id = "stckInfoSelect"  resultType="Map" parameterType="Map" >
 	SELECT /* SQL_ID : StckInfoMapper.stckInfoSelect(주식 정보 조회) */
-	             ROWNUM AS ROW_
-				,TURN		/*순번       */
-				,TIKER		/*주식_티커   */
-				,STCNM		/*주식명     */
-				,DVDNCYC	/*배당_주기   */
-				,DVDN		/*배당금     */
-				,USEYN		/*사용여부    */
-				,DELYN		/*삭제여부    */
-				,REGYMD		/*등록일자    */
-				,MDFCNYMD	/*수정일자    */
-	FROM STOCKINFORMATION
-	 WHERE 1=1
-	  <if test="TIKER!=null and !TIKER.equals('')">
-		AND TIKER LIKE #{TIKER} || '%' /*주식_티커   */
-	  </if>
-	  <if test="STCNM!=null and !STCNM.equals('')">
-		AND STCNM LIKE #{STCNM}  || '%'/*주식명     */
-	  </if>
-	  <if test="DVDNCYC!=null and !DVDNCYC.equals('')">
-		AND DVDNCYC LIKE #{DVDNCYC}  || '%'/*배당_주기   */
-	  </if>
-		ORDER BY STCNM
+		ROWNUM AS ROW_,
+		TB.* 
+	FROM (
+		SELECT 
+					 TURN		/*순번       */
+					,TIKER		/*주식_티커   */
+					,STCNM		/*주식명     */
+					,DVDNCYC	/*배당_주기   */
+					,DVDN		/*배당금     */
+					,USEYN		/*사용여부    */
+					,DELYN		/*삭제여부    */
+					,REGYMD		/*등록일자    */
+					,MDFCNYMD	/*수정일자    */
+		FROM STOCKINFORMATION
+		 WHERE 1=1
+		  <if test="TIKER!=null and !TIKER.equals('')">
+			AND TIKER LIKE #{TIKER} || '%' /*주식_티커   */
+		  </if>
+		  <if test="STCNM!=null and !STCNM.equals('')">
+			AND STCNM LIKE #{STCNM}  || '%'/*주식명     */
+		  </if>
+		  <if test="DVDNCYC!=null and !DVDNCYC.equals('')">
+			AND DVDNCYC LIKE #{DVDNCYC}  || '%'/*배당_주기   */
+		  </if>
+			ORDER BY STCNM
+	) TB
 </select>
 
 <!-- 주식 정보 등록-->
@@ -65,7 +69,8 @@
 </insert>
 
 <update id="stckInfoUpdate" parameterType="Map" >
-    UPDATE STOCKINFORMATION
+    UPDATE /* SQL_ID : StckInfoMapper.stckInfoSelect(주식 정보 수정) */
+    	STOCKINFORMATION
         SET  STCNM    = #{STCNM}       /*주식명     */
             ,DVDNCYC  = #{DVDNCYC}     /*배당_주기   */
             ,DVDN     = #{DVDN}        /*배당금     */

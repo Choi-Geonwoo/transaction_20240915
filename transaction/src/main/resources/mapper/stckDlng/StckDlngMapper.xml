@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- com.bank.transaction.mapper.stckInfo(주식정보) -->
+<mapper namespace="com.bank.transaction.mapper.stckDlng.StckDlngMapper">
+
+<!-- 주식 거래 정보 조회-->
+<select id = "stckDlngSelect"  resultType="Map" parameterType="Map" >
+	SELECT /* SQL_ID : StckDlngMapper.stckDlngSelect(주식 거래 정보 조회) */
+		 ROWNUM AS ROW_
+		,TB.*
+	FROM (
+			SELECT 
+				, TURN 			/*순번*/
+				, BYNGYN 		/*매수여부*/
+				, CMPR 			/*구분*/
+				, DLNGYMD 		/*거래일자*/
+				, TIKER 		/*주식_티커*/
+				, STCKCNT 		/*주식수*/
+				, USEYN 		/*사용여부*/
+				, DELYN 		/*삭제여부*/
+				, REGYMD 		/*등록일자*/
+				, MDFCNYMD 		/*수정일자*/
+			FROM STCKDLNGINFO
+	) TB
+</select>
+
+<!-- 주식 거래 정보 등록-->
+<insert id = "stckDlngInsert" parameterType="Map" >
+
+</insert>
+
+<!-- 주식 거래 정보 수정-->
+<update id="stckDlngUpdate" parameterType="Map" >
+   
+</update>
+
+</mapper>
