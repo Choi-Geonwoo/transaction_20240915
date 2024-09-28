@@ -240,7 +240,6 @@ async function updateDividendCycle03(event) {
         }
       }
       //alert(JSON.stringify(rowData));
-      // Convert the row data to JSON and display it
       // document.querySelector('p').innerText = JSON.stringify(rowData, null, 2);
       //fetch API를 사용하여 POST 요청을 보냅니다
       //fetch002('/stckInfo/stckInfoUpdate.do', "post", rowData); //url, method, body
