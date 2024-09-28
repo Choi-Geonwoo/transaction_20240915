@@ -12,12 +12,25 @@ function register(formId) {
   
   // FormData를 JSON으로 변환합니다
   const data = {};
-  formData.forEach((value, key) => {
-      data[key] = value;
+  const araa = ['주식티커', '주식명', '배당주기', '배당금'];
+  var cnt = 0;
+  try {
+	  formData.forEach((value, key) => {
+		  if(isEmpty(value)){
+			cnt == 0;
+			throw new Error();
+		  }
+		  cnt++;
+	      data[key] = value;
   });
+ 	//fetch API를 사용하여 POST 요청을 보냅니다
+	 fetch002('/stckInfo/stckInfoInsert.do', "post", data); //url, method, body
+  } catch (error) {
+	  alert(araa[cnt] + " 입력 후 등록 버튼을 사용해주세요.");
+	  console.log('escaped!');
+  }
  //alert(JSON.stringify(data));
- //fetch API를 사용하여 POST 요청을 보냅니다
- fetch002('/stckInfo/stckInfoInsert.do', "post", data); //url, method, body
+
 }
 
 
@@ -58,3 +71,10 @@ function register(formId) {
       fetch002('/stckInfo/stckInfoUpdate.do', "post", rowData); //url, method, body
     }
     
+function fn_call(data){
+	alert(data.msg);
+	if(data.msg.indexOf('성공') != -1){
+		history.go(0);
+	}
+	
+}

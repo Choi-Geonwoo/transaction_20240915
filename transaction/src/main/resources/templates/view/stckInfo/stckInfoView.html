@@ -16,23 +16,48 @@
 	<p>등록영역</p>
 	<div class="button-container">	    
          <form id="stckInfoForm" ><!-- th:action="@{/stckInfo/stckInfoInsert.do}" method="post"-->
-    		<input type="text" placeholder="티커"	    id="TURN"   name="TIKER">		
-    		<input type="text" placeholder="주식명"	id="STCNM"   name="STCNM">		
-    		<input type="text" placeholder="주기"    id="	DVDNCYC" name="DVDNCYC">		
-    		<input type="text" placeholder="배당금"	id="DVDN" name="DVDN">            
-            <input type="hidden" value="Y" id="USEYN" name="USEYN"> <!--사용여부-->            
-            <input type="hidden" value="N"id="DELYN" name="DELYN"> <!--삭제여부-->
-    		<input type="button" onclick="register('stckInfoForm')" value="등록">
+			<table>
+				<thead>
+					<tr>
+						<th>주식티커</th>
+						<th>주식명</th>
+						<th>배당주기</th>
+						<th>배당금</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+			    			<input type="text" placeholder="티커"	    id="TURN"   name="TIKER">
+						</td>
+						<td>		
+		    				<input	type="text" placeholder="주식명"	id="STCNM"   name="STCNM">
+						</td>
+						<td>		
+		    				<input type="text" placeholder="주기"    id="	DVDNCYC" name="DVDNCYC">
+						</td>
+						<td>		
+		    				<input type="text" placeholder="배당금"	id="DVDN" name="DVDN">
+						</td>
+						<td>            
+		            		<input type="hidden" value="Y" id="USEYN" name="USEYN"> <!--사용여부--> 
+		            		<input type="hidden" value="N"id="DELYN" name="DELYN"> <!--삭제여부-->
+		    				<input	 type="button" onclick="register('stckInfoForm')" value="등록">
+						</td>
+					</tr>
+				</tbody>
+			</table>
         </form>
 	</div>	
 	<p>검색영역</p>
-	<div>    
-        <form   th:action="@{/stckInfo/stckInfoSelect.do}" method="get">        
-            <input type="text" placeholder="티커"     id="TURN"   name="TIKER">       
-            <input type="text" placeholder="주식명"    id="STCNM"   name="STCNM">      
-            <input type="text" placeholder="주기"    id=" DVDNCYC" name="DVDNCYC">        
-            <input type="text" placeholder="배당금"    id="DVDN" name="DVDN">
-    		<button onclick="search()">검색</button>        
+	<div	class="search-container">    
+        <form class="form01"  th:action="@{/stckInfo/stckInfoSelect.do}" method="get">        
+            <input class="search-input" type="text" placeholder="티커"     id="TURN"   name="TIKER">       
+            <input class="search-input" type="text" placeholder="주식명"    id="STCNM"   name="STCNM">      
+            <input class="search-input" type="text" placeholder="주기"    id=" DVDNCYC" name="DVDNCYC">        
+            <input class="search-input" type="text" placeholder="배당금"    id="DVDN" name="DVDN">
+    		<button	onclick="search()">검색</button>        
         </form>
 	</div>
 	<!--<p th:text="${stckInfoSelect}"></p>-->
@@ -49,7 +74,7 @@
               <th id="DVDN"             name="DVDN">배당금</th>
               <th id="USEYN"            name="USEYN">사용여부</th>
               <th id="DELYN"            name="DELYN">삭제여부</th>                        
-              <th style="display: none;" id="TURN"            name="TURN">삭제여부</th>              
+              <th style="display: none;" id="TURN"  name="TURN">순번</th>              
               <th id="btn"              name="btn">버튼</th>
               <th id="REGYMD"           name="REGYMD">등록일자</th>
               <th id="REGYMD"           name="REGYMD">수정일자</th>
@@ -58,16 +83,16 @@
       <tbody>
           <tr th:each="sSelect : ${stckInfoSelect}">                
               <td th:text="${sSelect.ROW_}"></td>
-              <td ><input type="text" th:value="${sSelect.TIKER}"></td>
+              <td ><input type="text" th:value="${sSelect.TIKER}" disabled></td>
               <td ><input type="text" th:value="${sSelect.STCNM}"></td>
               <td ><input type="text" th:value="${sSelect.DVDNCYC}"></td>
               <td ><input type="text" th:value="${sSelect.DVDN}"></td>
-              <td ><input type="checkbox" th:value="${sSelect.USEYN}"></td>
-              <td ><input type="checkbox" th:value="${sSelect.DELYN}"></td>                              
+              <td ><input type="checkbox" th:value="${sSelect.USEYN}" th:checked="${sSelect.USEYN == 'Y'}"></td>
+              <td ><input type="checkbox" th:value="${sSelect.DELYN}" th:checked="${sSelect.DELYN == 'Y'}"></td>                              
               <td style="display: none;"><input type="hidden" th:value="${sSelect.TURN}"></td><!--순번-->               
               <td  ><input type="button" value="수정" onclick="rowUpdateClicked('#stckInfoSelect', this)"></td>
               <td th:text="${sSelect.REGYMD}">               등록일자</td>               
-              <td th:text="${sSelect.REGYMD}">               수정일자</td>
+              <td th:text="${sSelect.MDFCNYMD}">               수정일자</td>
           </tr>
           <!-- Remaining rows omitted for brevity -->
       </tbody>

@@ -27,7 +27,8 @@ function fetch002(url, method, body) {
     })
     .then(result => {
         console.log('Success:', JSON.stringify(result));
-        alert(result.msg);
+        //alert(result.msg);
+        fn_call(result);
     })
     .catch(error => {
         console.log('Error:', error);

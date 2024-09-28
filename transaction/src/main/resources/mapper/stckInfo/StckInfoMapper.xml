@@ -20,6 +20,10 @@
 					,DELYN		/*삭제여부    */
 					,REGYMD		/*등록일자    */
 					,MDFCNYMD	/*수정일자    */
+					,CASE 
+					  WHEN REGEXP_LIKE(TIKER, '^[0-9]+$') THEN 2
+					        ELSE 1
+			    	  END AS DLNGAMT	
 		FROM STOCKINFORMATION
 		 WHERE 1=1
 		  <if test="TIKER!=null and !TIKER.equals('')">
@@ -31,8 +35,8 @@
 		  <if test="DVDNCYC!=null and !DVDNCYC.equals('')">
 			AND DVDNCYC LIKE #{DVDNCYC}  || '%'/*배당_주기   */
 		  </if>
-			ORDER BY STCNM
 	) TB
+			ORDER BY  DLNGAMT, STCNM
 </select>
 
 <!-- 주식 정보 등록-->

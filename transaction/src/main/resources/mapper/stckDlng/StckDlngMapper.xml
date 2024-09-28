@@ -6,12 +6,52 @@
 
 <!-- 주식 거래 정보 조회-->
 <select id = "stckDlngSelect"  resultType="Map" parameterType="Map" >
-	SELECT /* SQL_ID : StckDlngMapper.stckDlngSelect(주식 거래 정보 조회) */
-		 ROWNUM AS ROW_
-		,TB.*
+SELECT /* SQL_ID : StckDlngMapper.stckDlngSelect(주식 거래 정보 조회) */
+		  ROWNUM AS ROW_
+		, TB.TURN 			/*순번*/
+		, TB.BYNGYN 			/*매수여부*/
+		, TB.CMPR 			/*구분*/
+		, TB.DLNGYMD		/*거래일자*/
+		, TB.TIKER 							/*주식_티커*/
+		, TB.STCKCNT 						/*주식수*/
+		, TB.USEYN 							/*사용여부*/
+		, TB.DELYN 							/*삭제여부*/
+		, TB.REGYMD 							/*등록일자*/
+		, TB.MDFCNYMD 						/*수정일자*/
+		, TB.DVDN							/*배당금     */
+		, TB.DVDNCYC							/*배당_주기   */
+		, TB.STCNM							/*주식명*/
+		, CASE 
+		  WHEN REGEXP_LIKE(TB.DLNGAMT, '^[0-9]+$') THEN TO_CHAR(TB.DLNGAMT , 'L999,999,999')
+		        ELSE TO_CHAR(TB.DLNGAMT , 'L999,999,999.999')
+    	  END AS DLNGAMT	/* 거래금액*/
 	FROM (
 			SELECT 
-				, TURN 			/*순번*/
+				  A.TURN 			/*순번*/
+				, A.BYNGYN 			/*매수여부*/
+				, A.CMPR 			/*구분*/
+				, TO_DATE(A.DLNGYMD) AS DLNGYMD		/*거래일자*/
+				, A.TIKER 							/*주식_티커*/
+				, A.STCKCNT 						/*주식수*/
+				, A.USEYN 							/*사용여부*/
+				, A.DELYN 							/*삭제여부*/
+				, A.REGYMD 							/*등록일자*/
+				, A.MDFCNYMD 						/*수정일자*/
+				, B.DVDN							/*배당금     */
+				, B.DVDNCYC							/*배당_주기   */
+				, B.STCNM							/*주식명*/
+				, ((TO_NUMBER(A.STCKCNT) * TO_NUMBER(B.DVDN)) * DECODE(B.DVDNCYC, '월', 12, REGEXP_COUNT(B.DVDNCYC, ',')) )	AS DLNGAMT	/* 거래금액     */
+			FROM STCKDLNGINFO A, STOCKINFORMATION B
+				WHERE B.TIKER = A.TIKER
+	) TB
+</select>
+
+<!-- 주식 거래 정보 등록-->
+<insert id = "stckDlngInsert" parameterType="Map" >
+	INSERT /* SQL_ID : StckDlngMapper.stckDlngInsert(주식 거래 정보 등록) */
+		INTO STCKDLNGINFO
+			(
+				  TURN 			/*순번*/
 				, BYNGYN 		/*매수여부*/
 				, CMPR 			/*구분*/
 				, DLNGYMD 		/*거래일자*/
@@ -21,18 +61,84 @@
 				, DELYN 		/*삭제여부*/
 				, REGYMD 		/*등록일자*/
 				, MDFCNYMD 		/*수정일자*/
-			FROM STCKDLNGINFO
-	) TB
-</select>
-
-<!-- 주식 거래 정보 등록-->
-<insert id = "stckDlngInsert" parameterType="Map" >
-
+			)
+		VALUES (
+				  (
+				  SELECT 
+				 		(TO_CHAR(SYSDATE, 'YYMMDD')||LPAD(NVL(MAX(SUBSTR(TURN, 7))+1,0),4,0))
+				 	FROM STCKDLNGINFO WHERE TURN LIKE TO_CHAR(SYSDATE , 'YYMMDD') || '%'
+				  )  	/*순번*/
+				, #{BYNGYN} 	/*매수여부*/
+				, #{CMPR} 		/*구분*/
+				, REGEXP_REPLACE(#{DLNGYMD}, '[[:punct:]]') 	/*거래일자*/
+				, (
+					SELECT 
+						 TIKER		/*주식_티커   */
+					FROM
+						STOCKINFORMATION
+					WHERE 	1=1 
+						AND STCNM = #{STCNM_SELECT_BOX}
+						AND USEYN = 'Y'
+						AND DELYN = 'N'
+				) 		/*주식_티커*/
+				, #{STCKCNT} 	/*주식수*/
+				, #{USEYN} 		/*사용여부*/
+				, #{DELYN} 		/*삭제여부*/
+				, SYSDATE 		/*등록일자*/
+				, SYSDATE 		/*수정일자*/
+				)
 </insert>
 
 <!-- 주식 거래 정보 수정-->
 <update id="stckDlngUpdate" parameterType="Map" >
-   
+	UPDATE  /* SQL_ID : StckDlngMapper.stckDlngUpdate(주식 거래 정보 수정) */
+		SET  	  BYNGYN 	= #{BYNGYN}	    /*매수여부*/
+				, CMPR 		= #{CMPR}		/*구분*/
+				, DLNGYMD 	= #{DLNGYMD}	/*거래일자*/
+				, TIKER 	= #{TIKER}	    /*주식_티커*/
+				, STCKCNT 	= #{STCKCNT}	/*주식수*/
+				, DLNGAMT	= #{DLNGAMT}	/*거래금액*/
+				, USEYN 	= DECODE(#{DELYN}, 'Y', 'Y', #{USEYN})	    /*사용여부*/
+				, DELYN 	= #{DELYN}		/*삭제여부*/
+				, MDFCNYMD = SYSDATE		/*수정일자*/
+	WHERE TURN = #{TURN}
 </update>
+
+<!-- 주식 정보 조회-->
+<select id = "stckInfoInq"  resultType="Map">
+	SELECT /* SQL_ID : StckDlngMapper.stckInfoInq(주식 정보 조회) */
+					 TURN		/*순번       */
+					,TIKER		/*주식_티커   */
+					,STCNM		/*주식명     */
+					,DVDNCYC	/*배당_주기   */
+					,DVDN		/*배당금     */
+					,USEYN		/*사용여부    */
+					,DELYN		/*삭제여부    */
+					,REGYMD		/*등록일자    */
+					,MDFCNYMD	/*수정일자    */
+	FROM
+		STOCKINFORMATION
+	WHERE 
+		USEYN = 'Y'
+	AND DELYN = 'N'
+		ORDER BY STCNM
+</select>
+
+
+<!-- 주식 거래 정보 조회-->
+<select id = "getDividendCycleByStockName"  resultType="Map" parameterType="String" >
+	SELECT /* SQL_ID : StckDlngMapper.getDividendCycleByStockName(주식 정보 조회) */
+					 TURN		/*순번       */
+					,TIKER		/*주식_티커   */
+					,STCNM		/*주식명     */
+					,DVDNCYC	/*배당_주기   */
+					,DVDN		/*배당금     */
+	FROM
+		STOCKINFORMATION
+	WHERE 	1=1 
+		AND STCNM = #{STCNM}
+		AND USEYN = 'Y'
+		AND DELYN = 'N'
+</select>
 
 </mapper>

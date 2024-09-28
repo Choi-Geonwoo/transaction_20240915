@@ -3,197 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
-    <title>주식거래정보</title>	
-	<style>
-	    table {
-	        width: 100%;
-	        border-collapse: collapse;
-	    }
-	    th, td {
-	        border: 1px solid black;
-	        padding: 8px;
-	        text-align: center;
-	    }
-	    th {
-	        background-color: #f2f2f2;
-	    }
-	    .tab-menu {
-	        margin: 20px 0;
-	        display: flex;
-	    }
-	    .tab-menu button {
-	        padding: 10px 20px;
-	        margin-right: 5px;
-	        background-color: #ddd;
-	        border: 1px solid #aaa;
-	        cursor: pointer;
-	    }
-	    .tab-menu button.active {
-	        background-color: #4CAF50;
-	        color: white;
-	    }
-	    .button-container {
-	        margin: 20px 0;
-	    }
-	    button {
-	        padding: 10px 20px;
-	        margin-right: 10px;
-	        background-color: #4CAF50;
-	        color: white;
-	        border: none;
-	        cursor: pointer;
-	    }
-	    button:hover {
-	        background-color: #45a049;
-	    }
-	    #search-box {
-	        padding: 5px;
-	        margin-right: 10px;
-	    }
-	    .tab-content {
-	        display: none;
-	    }
-	    .tab-content.active {
-	        display: block;
-	    }
-	</style>	
+    <title>주식거래정보</title>		
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/stckDlng/stckDlng.css}">  	
+	<script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
 	<script type="text/javascript" th:src="@{/JS/stckDlng/stckDlng.js}"></script>
-	
 </head>
 <body>
 <h4>
    <ul class="nav flex-column" th:replace="view/layout/menuBar.html"></ul>
 </h4>
 	
-	<div class="tab-menu">
-	   <button class="tab-button active" onclick="showTab('pension')">연금저축</button>
-	   <button class="tab-button" onclick="showTab('retirement')">퇴직연금</button>
-	   <button class="tab-button" onclick="showTab('general')">일반계좌</button>
-	</div>
 	
-	<div class="button-container">
-	   <button onclick="register()">등록</button>
-	   <input type="text" id="search-box" placeholder="검색어 입력">
-	   <button onclick="search()">검색</button>
-	</div>
+	<p>등록영역</p>
+	<div class="button-container">	    
+	     <form id="stckInfoForm" th:action="@{/stckDlng/stckDlngInsert.do}" method="post"><!-- th:action="@{/stckInfo/stckInfoInsert.do}" method="post"-->
+			<table>			
+				<thead>
+					<tr>				
+						<th>구분		</th>
+						<th>매수여부	</th>
+						<th>거래일자	</th>							
+						<th>주식명	</th>			
+						<th>주식티커	</th>
+						<th>주식수	</th>
+						<th>배당주기	</th>					
+						<th>배당금	</th>
+						<th>		</th>
+					</tr>				
+				</thead>
+				<tbody>
+					<tr>				
+						<td>					<!--구분 -->
+							<select name="CMPR" id="CMPR">
+							  <option value="1">연금저축</option>							
+							  <option value="2">퇴직연금</option>						  
+							  <option value="3">일반계좌</option>
+							</select>
+						</td>
+						<td>					<!--매수여부 -->
+							<input type="checkbox"   id="BYNGYN"   name="BYNGYN" >
+						</td>
+						<td>					<!--거래일자 -->
+							<input type="date"       id="DLNGYMD"   name="DLNGYMD">	
+						</td>		
+						<td>					<!--주식명 -->
+							<!--<input type="text" placeholder="주식명"	    id="STCNM"   name="STCNM">	-->
+							<select id="STCNM_SELECT_BOX"  name="STCNM_SELECT_BOX" onchange="updateDividendCycle01()">
+								<option value="">선택</option>
+								<th:block th:if="${stckInfoInq.size() != 0}">
+									<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.STCNM}" th:text="${stckList.STCNM}">
+								</th:block>
+							</select>
+						</td>
+						<td>					<!--주식티커 -->
+							<!--<input type="text"       id="TIKER"   name="TIKER">-->	
+							<select id="TIKER_SELECT_BOX"  name="TIKER_SELECT_BOX" 						disabled>
+								<option value="">선택</option>
+								<th:block th:if="${stckInfoInq.size() != 0}">
+									<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.TIKER}" th:text="${stckList.TIKER}">
+								</th:block>
+							</select>
+						</td>
+						<td>					<!--수량 -->
+							<input type="text" placeholder="주식수"	    id="STCKCNT"   name="STCKCNT">	
+						</td>
+						<td>					<!--배당주기 -->
+							<!--<input type="text"     id="DVDNCYC"   name="DVDNCYC">-->	
+							<!--<input type="text" placeholder="주식명"	    id="STCNM"   name="STCNM">	-->
+							<select id="DVDNCYC_SELECT_BOX"  name="DVDNCYC_SELECT_BOX" disabled>
+								<option value="">선택</option>
+								<th:block th:if="${stckInfoInq.size() != 0}">
+									<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.DVDNCYC}" th:text="${stckList.DVDNCYC}">
+								</th:block>
+							</select>
+						</td>					
+						<td>					<!--배당금 -->
+						<select id="DVDN_SELECT_BOX"  name="DVDN_SELECT_BOX" disabled>
+							<option value="">선택</option>
+							<th:block th:if="${stckInfoInq.size() != 0}">
+								<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.DVDN}" th:text="${stckList.DVDN}">
+							</th:block>
+						</select>
+						</td>				
+							<input type="hidden" value="Y" id="USEYN" name="USEYN"> <!--사용여부-->            
+							<input type="hidden" value="N"id="DELYN" name="DELYN"> <!--삭제여부-->
+						<td>					<!--onclick="register()"-->
+							<input type="submit"  value="등록"> 
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+	    </form>
+	</div>	
 	
-	<!-- 연금저축 탭 내용 -->
-	<div id="pension" class="tab-content active">
-	   <table>
-	       <thead>
-	           <tr>
-	               <th>매수여부</th>
-	               <th>거래일자</th>
-	               <th>주식명</th>
-	               <th>수량</th>
-	               <th>배당주기</th>
-	               <th>배당금</th>
-	           </tr>
-	       </thead>
-	       <tbody>
-	           <tr>
-	               <td>매수</td>
-	               <td>2024년09월11일</td>
-	               <td>PLUS 고배당주</td>
-	               <td>10</td>
-	               <td>월</td>
-	               <td>63</td>
-	           </tr>
-	       </tbody>
-	   </table>
-	</div>
-	
-	<!-- 퇴직연금 탭 내용 -->
-	<div id="retirement" class="tab-content">
-	   <table>
-	       <thead>
-	           <tr>
-	               <th>매수</th>
-	               <th>거래일자</th>
-	               <th>주식명</th>
-	               <th>수량</th>
-	               <th>배당주기</th>
-	               <th>배당금</th>
-	           </tr>
-	       </thead>
-	       <tbody>
-	           <tr>
-	               <td>매수</td>
-	               <td>2024년09월11일</td>
-	               <td>PLUS 고배당주</td>
-	               <td>20</td>
-	               <td>월</td>
-	               <td>120</td>
-	           </tr>
-	       </tbody>
-	   </table>
-	</div>
-	
-	<!-- 일반계좌 탭 내용 -->
+   <p>검색영역</p>
+   <div class="search-container">
+	   <div class="form01">
+		<select name="S_CMPR" id="S_CMPR" 		class="custom-select">
+		  <option value="1">연금저축</option>							
+		  <option value="2">퇴직연금</option>						  
+		  <option value="3">일반계좌</option>
+		</select>
+		<select name="S_BYNGYN" id="S_BYNGYN" 		class="custom-select">
+		  <option value="Y">매수</option>							
+		  <option value="N">매도</option>						  
+		</select>
+		  <input type="text" id="search-box" placeholder="주식명" class="search-input">
+		  <input type="text" id="search-box" placeholder="배당주기" class="search-input">
+	      <button onclick="search()" class="search-button">검색</button>
+	   </div>   
+   </div>
+   
+   
+   <p>조회영역</p>
 	<div id="general" class="tab-content">
-	   <table>
+	   <table 		id='stckDlngSelect'>
 	       <thead>
 	           <tr>
-	               <th>순번</th>
+	               <th>순번</th>				
+				   <th>구분</th>
 	               <th>매수여부</th>
 	               <th>거래일자</th>
 	               <th>주식명</th>
 	               <th>수량</th>
 	               <th>배당주기</th>
 	               <th>배당금</th>
-	               <th>1년치 배당</th>
+	               <th>1년치 배당(예상)</th>				   
+				   <th style="width: 140px;">구분</th>
 	               <th>등록일자</th>
-	               <th>등록자</th>
 	               <th>수정일자</th>
 	           </tr>
 	       </thead>
 	       <tbody>
-	           <tr>
-	               <td>1</td>
-	               <td>매수</td>
-	               <td>2024년09월11일</td>
-	               <td>PLUS 고배당주</td>
-	               <td>10</td>
-	               <td>월</td>
-	               <td>63</td>
-	               <td>₩630</td>
-	               <td></td>
-	               <td>WOO</td>
-	               <td></td>
+	           <tr th:each="stckDlng : ${stckDlngSelect}">			
+					<td th:text="${stckDlng.ROW_}">  <!-- 순번		  -->   
+					</td>				
+					<td>  <!-- 구분		  -->   					
+						<!--<input type="text" th:value="${sSelect.CMPR}"/>-->
+						<select class="update-select"  name="U_CMPR" id="U_CMPR">
+						  <option value="1"	th:selected="'1' == ${stckDlng.CMPR}" >연금저축</option>							
+						  <option value="2"	th:selected="'2' == ${stckDlng.CMPR}" >퇴직연금</option>						  
+						  <option value="3"	th:selected="'3' == ${stckDlng.CMPR}" >일반계좌</option>
+						</select>
+					</td>
+					<td>  <!-- 매수여부	  -->   					
+						<!--<input type="text" th:value="${sSelect.BYNGYN}"/>-->
+						<!--<input type="checkbox" id="U_BYNGYN" name="U_BYNGYN" th:checked="${stckDlng.BYNGYN} == 'Y'">-->
+						<select class="update-select"  name="U_BYNGYN" id="U_BYNGYN">
+						  <option value="Y"	th:selected="'Y' == ${stckDlng.BYNGYN}" >매수</option>							
+						  <option value="N"	th:selected="'N' == ${stckDlng.BYNGYN}" >매도</option>						  
+						</select>
+					</td>
+					<td>  <!-- 거래일자	  -->   					
+						<!--<input type="DATE" th:value="${sSelect.DLNGYMD}"/>-->
+						<input class="update-date" type="date" id="U_DLNGYMD" name="U_DLNGYMD" th:value="${#dates.format(stckDlng.DLNGYMD, 'yyyy-MM-dd')}" />
+					</td>
+					<td >  <!-- 주식명	      -->						
+						<!--<input type="text" th:value="${stckDlng.STCNM}"/>-->
+						<select class="update-select"   id="U_STCNM_SELECT_BOX"  name="U_STCNM_SELECT_BOX" onchange="updateDividendCycle03(event)">
+							<option value="">선택</option>
+							<th:block th:if="${stckInfoInq.size() != 0}">
+								<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.STCNM}" th:text="${stckList.STCNM}"
+								th:selected="${stckList.STCNM} == ${stckDlng.STCNM}">
+							</th:block>
+						</select>
+					</th>
+					<td>  <!-- 수량		  -->   					
+						<input type="text" class="update-input"	id="U_STCKCNT" 		name="U_STCKCNT" th:value="${stckDlng.STCKCNT}"/>
+					</td>
+					<td>  <!-- 배당주기	  -->   					
+						<input type="text" class="update-input"id="U_DVDNCYC" 		name="U_DVDNCYC" 	th:value="${stckDlng.DVDNCYC}"						disabled/>
+					</td>                                           
+					<td>  <!-- 배당금	      -->	                			
+						<input type="text" class="update-input" 		id="U_DVDN"			name="U_DVDN"		th:value="${stckDlng.DVDN}"		disabled/>
+					</th>                                           
+					<td>  <!-- 1년치 배당	  -->                    		
+						<input type="text" class="update-input"		id="U_DLNGAMT" 		name="U_DLNGAMT"	th:value="${stckDlng.DLNGAMT}" disabled/>   
+					</td>
+					<td>
+						<input type="button" value="수정" onclick="rowUpdateClicked('#stckDlngSelect', this)" class="	update-button">
+						/
+						<input type="button" value="삭제" onclick="rowUpdateClicked('#stckDlngSelect', this)" class="	delete-button">
+					</td>
+					<td th:text="${stckDlng.REGYMD}">  <!-- 등록일자	  -->					
+					</td>
+					<td th:text="${stckDlng.MDFCNYMD}">  <!-- 수정일자	  -->					
+					</td>
 	           </tr>
 	       </tbody>
 	   </table>
+	   
+	   <br>
 	</div>
 	
-	<script>
-		function showTab(tabName) {
-		     // Hide all tab contents
-		    var tabs = document.getElementsByClassName('tab-content');
-		     for (var i = 0; i < tabs.length; i++) {
-		  tabs[i].classList.remove('active');
-		     }
-		
-		     // Remove active class from all tab buttons
-		     var buttons = document.getElementsByClassName('tab-button');
-		     for (var i = 0; i < buttons.length; i++) {
-		  buttons[i].classList.remove('active');
-		     }
-		
-		     // Show the clicked tab and highlight the active button
-		     document.getElementById(tabName).classList.add('active');
-		     event.currentTarget.classList.add('active');
-		 }
-		
-		 function register() {
-		     alert('등록 버튼이 클릭되었습니다.');
-		     // 등록 기능을 여기에 구현
-		 }
-		
-		 function search() {
-		     let keyword = document.getElementById('search-box').value;
-		     alert('검색어: ' + keyword);
-		     // 검색 기능을 여기에 구현
-		}
-	</script>
 </body>
 </html>
