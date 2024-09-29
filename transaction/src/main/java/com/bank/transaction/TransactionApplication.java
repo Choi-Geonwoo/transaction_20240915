@@ -11,7 +11,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class TransactionApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TransactionApplication.class, args);
-		// 토큰 : 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
 	}
 
 }
