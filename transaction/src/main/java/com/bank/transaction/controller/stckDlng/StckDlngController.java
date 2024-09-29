@@ -63,9 +63,9 @@ public class StckDlngController {
 	*/
     @PostMapping("/stckDlng/stckDlngInsert.do" )
     public String stckDlngInsert(@RequestParam Map<String, Object> stockData, Model model){
-        log.info("========================= > stckDlngInsert");
-        log.info("========================= > value " + stockData.toString());
-        log.debug("========================= > value " + stockData.toString());
+        //log.info("========================= > stckDlngInsert");
+        //log.info("========================= > value " + stockData.toString());
+        //log.debug("========================= > value " + stockData.toString());
         Map<String, Object> mapData = stckDlngService.stckDlngInsert(stockData);
         model.addAttribute("msg",mapData );
 		return "redirect:/stckDlngView";
@@ -94,11 +94,12 @@ public class StckDlngController {
 	* @return		 : 주식거래정보
 	*/
     @GetMapping("/stckDlng/stckDlngSelect.do")
-    public String stckDlngSelect(@RequestParam Map<String, Object> passwordForm, Model model){
+    public String stckDlngSelect(@RequestParam Map<String, Object> parameter, Model model){
 		//log.info("========================= > stckDlngSelect");
-		//log.info("========================= > value " + passwordForm.toString());
-		List<Map<String, Object>> stckDlngSelect = stckDlngService.stckDlngSelect(passwordForm);
-        model.addAttribute("stckDlngSelect", stckDlngSelect);
+		//log.info("========================= > value " + parameter.toString());
+        model.addAttribute("stckDlngSelect", stckDlngService.stckDlngSelect(parameter));
+        model.addAttribute("stckInfoInq", stckDlngService.stckInfoInq());
+        model.addAttribute("parameter", parameter);
 		//return "index";
 		return "view/stckDlng/stckDlngView";
     }

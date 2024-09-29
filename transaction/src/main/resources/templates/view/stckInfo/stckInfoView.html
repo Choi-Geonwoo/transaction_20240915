@@ -50,13 +50,13 @@
 			</table>
         </form>
 	</div>	
-	<p>검색영역</p>
+	<p>검색영역</p>	
 	<div	class="search-container">    
         <form class="form01"  th:action="@{/stckInfo/stckInfoSelect.do}" method="get">        
-            <input class="search-input" type="text" placeholder="티커"     id="TURN"   name="TIKER">       
-            <input class="search-input" type="text" placeholder="주식명"    id="STCNM"   name="STCNM">      
-            <input class="search-input" type="text" placeholder="주기"    id=" DVDNCYC" name="DVDNCYC">        
-            <input class="search-input" type="text" placeholder="배당금"    id="DVDN" name="DVDN">
+            <input class="search-input" type="text" placeholder="티커"	id="TURN"   	name="TIKER" th:value="${parameter?.TIKER}">
+            <input class="search-input" type="text" placeholder="주식명"	id="STCNM"		name="STCNM" th:value="${parameter?.STCNM}">      
+            <input class="search-input" type="text" placeholder="주기"	id="DVDNCYC"	name="DVDNCYC" th:value="${parameter?.DVDNCYC}">	     
+            <input class="search-input" type="text" placeholder="배당금"	id="DVDN" 		name="DVDN"	th:value="${parameter?.DVDN}">
     		<button	onclick="search()">검색</button>        
         </form>
 	</div>

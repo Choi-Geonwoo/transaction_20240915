@@ -8,13 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
      // 등록 기능을 여기에 구현
  }
 
- function search() {
-     let keyword = document.getElementById('search-box').value;
-     alert('검색어: ' + keyword);
-     // 검색 기능을 여기에 구현
-}
-
-
 function chageLangSelect(){
     var langSelect = document.getElementById("STCNM_SELECT_BOX");
      

@@ -43,6 +43,18 @@ SELECT /* SQL_ID : StckDlngMapper.stckDlngSelect(주식 거래 정보 조회) */
 				, ((TO_NUMBER(A.STCKCNT) * TO_NUMBER(B.DVDN)) * DECODE(B.DVDNCYC, '월', 12, REGEXP_COUNT(B.DVDNCYC, ',')) )	AS DLNGAMT	/* 거래금액     */
 			FROM STCKDLNGINFO A, STOCKINFORMATION B
 				WHERE B.TIKER = A.TIKER
+		 		 <if test="S_CMPR!=null and !S_CMPR.equals('')">
+					AND A.CMPR		= #{S_CMPR}		/*구분*/
+				 </if>
+		 		 <if test="S_BYNGYN!=null and !''.equals(S_BYNGYN)">
+					AND A.BYNGYN	= #{S_BYNGYN}		/*매수여부*/
+				</if>
+		 		<if test="S_STCNM!=null and !''.equals(S_STCNM)">
+					AND B.STCNM		= #{S_STCNM}		/*주식명*/
+				 </if>
+		 		 <if test="S_DVDNCYC!=null and !''.equals(S_DVDNCYC)">
+					AND B.DVDNCYC	= #{S_DVDNCYC}	/*배당_주기   */
+				 </if>
 	) TB
 </select>
 

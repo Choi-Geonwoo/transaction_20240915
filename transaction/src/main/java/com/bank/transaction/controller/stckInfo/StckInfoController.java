@@ -92,11 +92,12 @@ public class StckInfoController {
 	* @return		 : 주식정보
 	*/
     @GetMapping("/stckInfo/stckInfoSelect.do")
-    public String stckInfoSelect(@RequestParam Map<String, Object> passwordForm, Model model){
-		//log.info("========================= > stckInfoSelect");
-		//log.info("========================= > value " + passwordForm.toString());
-		List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(passwordForm);
+    public String stckInfoSelect(@RequestParam Map<String, Object> parameter, Model model){
+		log.info("========================= > stckInfoSelect");
+		log.info("========================= > value " + parameter.toString());
+		List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(parameter);
         model.addAttribute("stckInfoSelect", stckInfoSelect);
+        model.addAttribute("parameter", parameter);
 		//return "index";
 		return "view/stckInfo/stckInfoView";
     }

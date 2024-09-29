@@ -98,21 +98,23 @@
 	</div>	
 	
    <p>검색영역</p>
-   <div class="search-container">
-	   <div class="form01">
-		<select name="S_CMPR" id="S_CMPR" 		class="custom-select">
-		  <option value="1">연금저축</option>							
-		  <option value="2">퇴직연금</option>						  
-		  <option value="3">일반계좌</option>
-		</select>
-		<select name="S_BYNGYN" id="S_BYNGYN" 		class="custom-select">
-		  <option value="Y">매수</option>							
-		  <option value="N">매도</option>						  
-		</select>
-		  <input type="text" id="search-box" placeholder="주식명" class="search-input">
-		  <input type="text" id="search-box" placeholder="배당주기" class="search-input">
-	      <button onclick="search()" class="search-button">검색</button>
-	   </div>   
+   <div class="search-container">   
+	   <form class="form01"  th:action="@{/stckDlng/stckDlngSelect.do}" method="get">      
+		   <div >
+			<select name="S_CMPR" id="S_CMPR" 		class="custom-select">
+			  <option value="1" 			  th:selected="'1' == ${parameter?.S_CMPR}">연금저축</option>							
+			  <option value="2" 			  th:selected="'2' == ${parameter?.S_CMPR}">퇴직연금</option>						  
+			  <option value="3" 			  th:selected="'3' == ${parameter?.S_CMPR}">일반계좌</option>
+			</select>
+			<select name="S_BYNGYN" id="S_BYNGYN" 		class="custom-select">
+			  <option value="Y">매수</option>							
+			  <option value="N">매도</option>						  
+			</select>
+			  <input type="text" id="S_STCNM" name="S_STCNM" placeholder="주식명" class="search-input">
+			  <input type="text" id="search-box" name="S_DVDNCYC" placeholder="배당주기" class="search-input">
+		      <button onclick="search()" class="search-button">검색</button>
+		   </div>
+		 </form>   
    </div>
    
    
