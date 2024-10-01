@@ -27,7 +27,7 @@ public class LogConfig {
 
 	    long startAt = System.currentTimeMillis();
 
-	    log.info("-----------> REQUEST : {}({}) = {}", 
+	    log.info("-----------> \nREQUEST : {}\n({}) = {}", 
 	        pjp.getSignature().getDeclaringTypeName(),
 	        pjp.getSignature().getName(), 
 	        params);
@@ -36,7 +36,7 @@ public class LogConfig {
 
 	    long endAt = System.currentTimeMillis();
 
-	    log.info("-----------> RESPONSE : {}({}) = {} ({}ms)", 
+	    log.info("-----------> \nRESPONSE : {}\n({}) = {} ({}ms)", 
 	        pjp.getSignature().getDeclaringTypeName(),
 	        pjp.getSignature().getName(), 
 	        result, 

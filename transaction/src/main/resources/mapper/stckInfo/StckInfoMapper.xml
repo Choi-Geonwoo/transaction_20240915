@@ -6,37 +6,42 @@
 
 <!-- 주식 정보 조회-->
 <select id = "stckInfoSelect"  resultType="Map" parameterType="Map" >
-	SELECT /* SQL_ID : StckInfoMapper.stckInfoSelect(주식 정보 조회) */
-		ROWNUM AS ROW_,
-		TB.* 
-	FROM (
-		SELECT 
-					 TURN		/*순번       */
-					,TIKER		/*주식_티커   */
-					,STCNM		/*주식명     */
-					,DVDNCYC	/*배당_주기   */
-					,DVDN		/*배당금     */
-					,USEYN		/*사용여부    */
-					,DELYN		/*삭제여부    */
-					,REGYMD		/*등록일자    */
-					,MDFCNYMD	/*수정일자    */
-					,CASE 
-					  WHEN REGEXP_LIKE(TIKER, '^[0-9]+$') THEN 2
-					        ELSE 1
-			    	  END AS DLNGAMT	
-		FROM STOCKINFORMATION
-		 WHERE 1=1
-		  <if test="TIKER!=null and !TIKER.equals('')">
-			AND TIKER LIKE #{TIKER} || '%' /*주식_티커   */
-		  </if>
-		  <if test="STCNM!=null and !STCNM.equals('')">
-			AND STCNM LIKE #{STCNM}  || '%'/*주식명     */
-		  </if>
-		  <if test="DVDNCYC!=null and !DVDNCYC.equals('')">
-			AND DVDNCYC LIKE #{DVDNCYC}  || '%'/*배당_주기   */
-		  </if>
-	) TB
-			ORDER BY  DLNGAMT, STCNM
+     			SELECT		/* SQL_ID : StckInfoMapper.stckInfoSelect(주식 정보 조회) */
+	                *
+	            FROM
+	                (
+		                SELECT
+		                    *
+		                FROM
+                    	(
+							SELECT 		 ROW_NUMBER() OVER (ORDER BY USEYN DESC, DELYN,  (CASE WHEN REGEXP_LIKE(TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), STCNM) AS NO_
+										,ROW_NUMBER() OVER (ORDER BY USEYN DESC, DELYN,  (CASE WHEN REGEXP_LIKE(TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), STCNM) AS ROW_
+										,TURN		/*순번       */
+										,TIKER		/*주식_티커   */
+										,STCNM		/*주식명     */
+										,DVDNCYC	/*배당_주기   */
+										,DVDN		/*배당금     */
+										,USEYN		/*사용여부    */
+										,DELYN		/*삭제여부    */
+										,REGYMD		/*등록일자    */
+										,MDFCNYMD	/*수정일자    */
+                        				,COUNT(*) OVER() AS totalPages
+							FROM STOCKINFORMATION
+							 	WHERE 1=1
+							 		  <if test="TIKER!=null and !TIKER.equals('') and !'null'.equals(TIKER)">
+										AND TIKER LIKE #{TIKER} || '%' /*주식_티커   */
+									  </if>
+									  <if test="STCNM!=null and !STCNM.equals('') and !'null'.equals(STCNM)">
+										AND STCNM LIKE #{STCNM}  || '%'/*주식명     */
+									  </if>
+									  <if test="DVDNCYC!=null and !DVDNCYC.equals('') and !'null'.equals(DVDNCYC)">
+										AND DVDNCYC LIKE #{DVDNCYC}  || '%'/*배당_주기   */
+									  </if>
+						)
+                WHERE
+                    NO_  <![CDATA[ <=  ]]>  (#{page} * #{rowCount})
+                       )
+                WHERE (((#{page}-1) * #{rowCount}) + 1) <![CDATA[  <=	]]>   NO_
 </select>
 
 <!-- 주식 정보 등록-->

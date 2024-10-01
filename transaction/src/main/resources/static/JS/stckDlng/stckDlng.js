@@ -216,19 +216,20 @@ async function updateDividendCycle03(event) {
 
       // Create a JSON object to store row data
       var rowData = {};
-
+	  //console.log("1 " + row.cells.length);
       // Loop through each cell in the row, skipping the last column (button)
       for (var i = 0; i < row.cells.length - 1; i++) {
         var input = row.cells[i].querySelector('input');
         var headerName = headers[i].getAttribute('name'); // Get the 'name' attribute from <th>
-        console.log(i +" : " + input);
+        //console.log(i +" : "+ headerName+ " | " + input );
         // Check if input is a checkbox and store value accordingly
         if(!isEmpty(input)){
+			console.log(i +"  " + input.type + " value : " + input.value);
            //if (input.type === 'checkbox') {
            //  rowData[headerName] = input.checked ? 'Y' : 'N';
            //} else {
              rowData[headerName] = input.value;
-             console.log(JSON.stringify(input));
+             //console.log(JSON.stringify(input));
            //}
         }
       }
@@ -237,3 +238,62 @@ async function updateDividendCycle03(event) {
       //fetch API를 사용하여 POST 요청을 보냅니다
       //fetch002('/stckInfo/stckInfoUpdate.do', "post", rowData); //url, method, body
     }
+    
+/**
+ * 주식정보 데이터 수정
+ * @param tb_id     : 테이블 ID
+ * @param button    : 테이블정보(this)
+ * @param cmpr  	: 수정/삭제 여부
+ **/
+function rowUpdateClicked01(tb_id, button, del_yn) {
+    // 클릭된 버튼의 행 가져오기
+    var row = button.parentElement.parentElement;
+    var headerSelector = tb_id + ' thead th';
+    
+    // 테이블 헤더를 키로 사용하기 위해 가져오기
+    var headers = document.querySelectorAll(headerSelector);
+
+    // 행 데이터를 저장할 JSON 객체 생성
+    var rowData = {};
+    
+    // 각 셀을 순회하며 데이터를 추출 (마지막 셀은 버튼이므로 제외)
+    for (var i = 0; i < row.cells.length - 1; i++) {
+        var headerName = headers[i].getAttribute('name');
+        
+        // 셀 안에 있는 입력 요소(input, select 등) 가져오기
+        var input = row.cells[i].querySelector('input, select, textarea');
+        
+        if (!isEmpty(input)) {
+            // input type에 따른 데이터 처리
+            if (input.type === 'checkbox') {
+                rowData[headerName] = input.checked ? 'Y' : 'N';
+            } else if (input.type === 'date') {
+                rowData[headerName] = input.value;  // 날짜 포맷 그대로 전달
+            } else {
+                rowData[headerName] = input.value;  // 일반 텍스트 값
+            }
+        }
+        
+        // 'disabled' 속성이 있는 요소도 처리할 수 있도록 체크 (배당금, 배당주기 등)
+        if (input && input.hasAttribute('disabled')) {
+            rowData[headerName] = input.value;  // disabled 상태라도 값은 포함
+        }
+    }
+    rowData["DEL_YN"] = del_yn;
+    // 확인용 로그 출력 (추후에 Ajax 등을 이용해 서버로 전송 가능)
+    console.log("Row Data: ", JSON.stringify(rowData));
+    //fetch API를 사용하여 POST 요청을 보냅니다
+    fetch002('/stckDlng/stckDlngUpdate.do', "post", rowData); //url, method, body
+}
+
+/**
+ * 콜백함수
+ * @param data     : 리턴값
+ **/    
+function fn_call(data){
+	alert(data.msg);
+	if(data.msg.indexOf('성공') != -1){
+		history.go(0);
+	}
+	
+}

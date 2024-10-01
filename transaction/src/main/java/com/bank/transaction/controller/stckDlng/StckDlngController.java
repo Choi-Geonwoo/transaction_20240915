@@ -80,6 +80,7 @@ public class StckDlngController {
     @PostMapping("/stckDlng/stckDlngUpdate.do" )
     public ResponseEntity<Map> stckDlngUpdate(@RequestBody Map<String, Object> map, Model model){
         Map<String, Object> mapData = stckDlngService.stckDlngUpdate(map);
+        //Map<String, Object> mapData = null;
         //log.debug("========================= > stckDlngInsert");
         //log.debug("========================= > value " + map.toString());
         //log.debug("========================= > value " + mapData.toString());

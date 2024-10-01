@@ -71,6 +71,10 @@ function register(formId) {
       fetch002('/stckInfo/stckInfoUpdate.do', "post", rowData); //url, method, body
     }
     
+/**
+ * 콜백함수
+ * @param data     : 리턴값
+ **/    
 function fn_call(data){
 	alert(data.msg);
 	if(data.msg.indexOf('성공') != -1){
