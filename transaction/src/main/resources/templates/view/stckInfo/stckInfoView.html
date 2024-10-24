@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
     <title>주식정보</title>		
-	<link rel="stylesheet" type="text/css" th:href="@{/CSS/stckInfo/stckInfo.css}">    
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/stckInfo/stckInfo.css}">    	
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">
     <script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>
     <script type="text/javascript" th:src="@{/JS/stckInfo/stckInfo.js}"></script>
 </head>
@@ -29,16 +30,16 @@
 				<tbody>
 					<tr>
 						<td>
-			    			<input type="text" placeholder="티커"	    id="TURN"   name="TIKER">
+			    			<input type="text" placeholder="티커"	    id="TURN" class="full-width-input"   name="TIKER">
 						</td>
 						<td>		
-		    				<input	type="text" placeholder="주식명"	id="STCNM"   name="STCNM">
+		    				<input	type="text" placeholder="주식명"	id="STCNM" class="full-width-input"   name="STCNM">
 						</td>
 						<td>		
-		    				<input type="text" placeholder="주기"    id="	DVDNCYC" name="DVDNCYC">
+		    				<input type="text" placeholder="주기"    id="	DVDNCYC" class="full-width-input" name="DVDNCYC">
 						</td>
 						<td>		
-		    				<input type="text" placeholder="배당금"	id="DVDN" name="DVDN">
+		    				<input type="text" placeholder="배당금"	id="DVDN" class="full-width-input" name="DVDN">
 						</td>
 						<td>            
 		            		<input type="hidden" value="Y" id="USEYN" name="USEYN"> <!--사용여부--> 
@@ -53,10 +54,10 @@
 	<p>검색영역</p>	
 	<div	class="search-container">    
         <form class="form01"  th:action="@{/stckInfo/stckInfoViewPageSelect.do}" method="get">        
-            <input class="search-input" type="text" placeholder="티커"	id="TURN"   	name="TIKER" 	th:value="${parameter?.TIKER}">
-            <input class="search-input" type="text" placeholder="주식명"	id="STCNM"		name="STCNM" 	th:value="${parameter?.STCNM}">      
-            <input class="search-input" type="text" placeholder="주기"	id="DVDNCYC"	name="DVDNCYC" 	th:value="${parameter?.DVDNCYC}">	     
-            <input class="search-input" type="text" placeholder="배당금"	id="DVDN" 		name="DVDN"		th:value="${parameter?.DVDN}">
+            <input class="search-input " type="text" placeholder="티커"	id="TURN"   	name="TIKER" 	th:value="${parameter?.TIKER}">
+            <input class="search-input " type="text" placeholder="주식명"	id="STCNM"		name="STCNM" 	th:value="${parameter?.STCNM}">      
+            <input class="search-input " type="text" placeholder="주기"	id="DVDNCYC"	name="DVDNCYC" 	th:value="${parameter?.DVDNCYC}">	     
+            <input class="search-input " type="text" placeholder="배당금"	id="DVDN" 		name="DVDN"		th:value="${parameter?.DVDN}">
     		<button	onclick="search()">검색</button>        
         </form>
 	</div>
@@ -64,39 +65,41 @@
 	<button onclick="downloadExcel()">엑셀다운로드</button>
 	<p>조회영역</p>
     
-    <table     id='stckInfoSelect'>
-      <thead>
-          <tr>                
-              <th id="ROW_"             name="ROW_">순번</th>
-              <th id="TIKER"            name="TIKER">티커</th>
-              <th id="STCNM"            name="STCNM">주식명</th>
-              <th id="DVDNCYC"          name="DVDNCYC">주기</th>
-              <th id="DVDN"             name="DVDN">배당금</th>
-              <th id="USEYN"            name="USEYN">사용여부</th>
-              <th id="DELYN"            name="DELYN">삭제여부</th>                        
-              <th style="display: none;" id="TURN"  name="TURN">순번</th>              
-              <th id="btn"              name="btn">버튼</th>
-              <th id="REGYMD"           name="REGYMD">등록일자</th>
-              <th id="REGYMD"           name="REGYMD">수정일자</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr th:each="sSelect : ${stckInfoSelect}">                
-              <td th:text="${sSelect.ROW_}"></td>
-              <td ><input type="text" th:value="${sSelect.TIKER}" disabled></td>
-              <td ><input type="text" th:value="${sSelect.STCNM}"></td>
-              <td ><input type="text" th:value="${sSelect.DVDNCYC}"></td>
-              <td ><input type="text" th:value="${sSelect.DVDN}"></td>
-              <td ><input type="checkbox" th:value="${sSelect.USEYN}" th:checked="${sSelect.USEYN == 'Y'}"></td>
-              <td ><input type="checkbox" th:value="${sSelect.DELYN}" th:checked="${sSelect.DELYN == 'Y'}"></td>                              
-              <td style="display: none;"><input type="hidden" th:value="${sSelect.TURN}"></td><!--순번-->               
-              <td  ><input type="button" value="수정" onclick="rowUpdateClicked('#stckInfoSelect', this)"></td>
-              <td th:text="${sSelect.REGYMD}">               등록일자</td>               
-              <td th:text="${sSelect.MDFCNYMD}">               수정일자</td>
-          </tr>
-          <!-- Remaining rows omitted for brevity -->
-      </tbody>
-    </table>
+	<div 	class="height_5">
+	    <table     id='stckInfoSelect'>
+	      <thead>
+	          <tr>                
+	              <th id="ROW_"             name="ROW_">순번</th>
+	              <th id="TIKER"            name="TIKER">티커</th>
+	              <th id="STCNM"            name="STCNM">주식명</th>
+	              <th id="DVDNCYC"          name="DVDNCYC">주기</th>
+	              <th id="DVDN"             name="DVDN">배당금</th>
+	              <th id="USEYN"            name="USEYN">사용여부</th>
+	              <th id="DELYN"            name="DELYN">삭제여부</th>                        
+	              <th style="display: none;" id="TURN"  name="TURN">순번</th>              
+	              <th id="btn"              name="btn">버튼</th>
+	              <th id="REGYMD"           name="REGYMD">등록일자</th>
+	              <th id="REGYMD"           name="REGYMD">수정일자</th>
+	          </tr>
+	      </thead>
+	      <tbody>
+	          <tr th:each="sSelect : ${stckInfoSelect}">                
+	              <td th:text="${sSelect.ROW_}"></td>
+	              <td ><input class="full-width-input" type="text" th:value="${sSelect.TIKER}" disabled></td>
+	              <td ><input class="full-width-input" type="text" th:value="${sSelect.STCNM}"></td>
+	              <td ><input class="full-width-input" type="text" th:value="${sSelect.DVDNCYC}"></td>
+	              <td ><input class="full-width-input" type="text" th:value="${sSelect.DVDN}"></td>
+	              <td ><input class="full-width-input" type="checkbox" th:value="${sSelect.USEYN}" th:checked="${sSelect.USEYN == 'Y'}"></td>
+	              <td ><input class="full-width-input" type="checkbox" th:value="${sSelect.DELYN}" th:checked="${sSelect.DELYN == 'Y'}"></td>                              
+	              <td style="display: none;"><input type="hidden" th:value="${sSelect.TURN}"></td><!--순번-->               
+	              <td  ><input type="button" value="수정" onclick="rowUpdateClicked('#stckInfoSelect', this)"></td>
+	              <td th:text="${sSelect.REGYMD}">               등록일자</td>               
+	              <td th:text="${sSelect.MDFCNYMD}">               수정일자</td>
+	          </tr>
+	          <!-- Remaining rows omitted for brevity -->
+	      </tbody>
+	    </table>
+	</div>
 <!--	<p th:text="${parameter}"></p>
 	<p th:text="${pageVo}"></p>-->
 	<!-- 페이징 처리 -->

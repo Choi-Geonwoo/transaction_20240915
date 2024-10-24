@@ -43,8 +43,8 @@ public class StckDlngServiceImpl implements StckDlngService {
 	 **/
 	@Override
 	public List<Map<String, Object>> stckDlngSelect(Map<String, Object> mapData) {
-		log.info("========================= > stckDlngSelect");
-		log.info("========================= > value " + (stckDlngMapper.stckDlngSelect(mapData)));
+		  log.info("========================= > stckDlngSelect " + mapData.toString());
+		//log.info("========================= > value " + (stckDlngMapper.stckDlngSelect(mapData)));
 		// TODO Auto-generated method stub
 		return stckDlngMapper.stckDlngSelect(mapData);
 	}
@@ -140,8 +140,8 @@ public class StckDlngServiceImpl implements StckDlngService {
 		 * 2024.09.15        Jihun Park       최초 생성
 	 **/
 	@Override
-	public Map<String, String> getDividendCycleByStockName(String STCNM) {
-		return stckDlngMapper.getDividendCycleByStockName(STCNM);
+	public Map<String, String> getDividendCycleByStockName(String TIKER) {
+		return stckDlngMapper.getDividendCycleByStockName(TIKER);
 	}
 
 }

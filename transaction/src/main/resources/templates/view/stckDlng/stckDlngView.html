@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
     <title>주식거래정보</title>		
-	<link rel="stylesheet" type="text/css" th:href="@{/CSS/stckDlng/stckDlng.css}">  	
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/stckDlng/stckDlng.css}">  		
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">
 	<script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
 	<script type="text/javascript" th:src="@{/JS/stckDlng/stckDlng.js}"></script>
 </head>
@@ -34,30 +35,30 @@
 				<tbody>
 					<tr>				
 						<td>					<!--구분 -->
-							<select name="CMPR" id="CMPR">
+							<select name="CMPR" id="CMPR" class="full-width-input">
 							  <option value="1">연금저축</option>							
 							  <option value="2">퇴직연금</option>						  
 							  <option value="3">일반계좌</option>
 							</select>
 						</td>
 						<td>					<!--매수여부 -->
-							<input type="checkbox"   id="BYNGYN"   name="BYNGYN" >
+							<input type="checkbox"   id="BYNGYN"   name="BYNGYN" class="full-width-input">
 						</td>
 						<td>					<!--거래일자 -->
-							<input type="date"       id="DLNGYMD"   name="DLNGYMD">	
+							<input type="date"       id="DLNGYMD"   name="DLNGYMD" class="full-width-input">	
 						</td>		
 						<td>					<!--주식명 -->
 							<!--<input type="text" placeholder="주식명"	    id="STCNM"   name="STCNM">	-->
-							<select id="STCNM_SELECT_BOX"  name="STCNM_SELECT_BOX" onchange="updateDividendCycle01()">
+							<select id="STCNM_SELECT_BOX"  name="STCNM_SELECT_BOX" onchange="updateDividendCycle01()" class="full-width-input">
 								<option value="">선택</option>
 								<th:block th:if="${stckInfoInq.size() != 0}">
-									<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.STCNM}" th:text="${stckList.STCNM}">
+									<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.TIKER}" th:text="${stckList.STCNM}">
 								</th:block>
 							</select>
 						</td>
 						<td>					<!--주식티커 -->
 							<!--<input type="text"       id="TIKER"   name="TIKER">-->	
-							<select id="TIKER_SELECT_BOX"  name="TIKER_SELECT_BOX" 						disabled>
+							<select id="TIKER_SELECT_BOX"  name="TIKER_SELECT_BOX" class="full-width-input" disabled>
 								<option value="">선택</option>
 								<th:block th:if="${stckInfoInq.size() != 0}">
 									<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.TIKER}" th:text="${stckList.TIKER}">
@@ -65,12 +66,12 @@
 							</select>
 						</td>
 						<td>					<!--수량 -->
-							<input type="text" placeholder="주식수"	    id="STCKCNT"   name="STCKCNT">	
+							<input type="text" placeholder="주식수"	    id="STCKCNT"   name="STCKCNT" class="full-width-input">	
 						</td>
 						<td>					<!--배당주기 -->
 							<!--<input type="text"     id="DVDNCYC"   name="DVDNCYC">-->	
 							<!--<input type="text" placeholder="주식명"	    id="STCNM"   name="STCNM">	-->
-							<select id="DVDNCYC_SELECT_BOX"  name="DVDNCYC_SELECT_BOX" disabled>
+							<select id="DVDNCYC_SELECT_BOX"  name="DVDNCYC_SELECT_BOX" class="full-width-input" disabled>
 								<option value="">선택</option>
 								<th:block th:if="${stckInfoInq.size() != 0}">
 									<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.DVDNCYC}" th:text="${stckList.DVDNCYC}">
@@ -78,7 +79,7 @@
 							</select>
 						</td>					
 						<td>					<!--배당금 -->
-						<select id="DVDN_SELECT_BOX"  name="DVDN_SELECT_BOX" disabled>
+						<select id="DVDN_SELECT_BOX"  name="DVDN_SELECT_BOX" class="full-width-input" disabled>
 							<option value="">선택</option>
 							<th:block th:if="${stckInfoInq.size() != 0}">
 								<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.DVDN}" th:text="${stckList.DVDN}">
@@ -97,41 +98,64 @@
 	    </form>
 	</div>	
 	
-   <p>검색영역</p>
-   <div class="search-container">   
-	   <form class="form01"  th:action="@{/stckDlng/stckDlngSelect.do}" method="get">      
-		   <div >
-			<select name="S_CMPR" id="S_CMPR" 		class="custom-select">
-			  <option value="1" 			  th:selected="'1' == ${parameter?.S_CMPR}">연금저축</option>							
-			  <option value="2" 			  th:selected="'2' == ${parameter?.S_CMPR}">퇴직연금</option>						  
-			  <option value="3" 			  th:selected="'3' == ${parameter?.S_CMPR}">일반계좌</option>
-			</select>
-			<select name="S_BYNGYN" id="S_BYNGYN" 		class="custom-select">
-			  <option value="Y">매수</option>							
-			  <option value="N">매도</option>						  
-			</select>
-			  <input type="text" id="S_STCNM" name="S_STCNM" placeholder="주식명" class="search-input">
-			  <input type="text" id="search-box" name="S_DVDNCYC" placeholder="배당주기" class="search-input">
-		      <button onclick="search()" class="search-button">검색</button>
+   <div class="search-container div_outline"> 
+   <h2 class="div_title">검색영역</h2>  
+	   <form class="form01"  th:action="@{/stckDlng/stckDlngSelectPage.do}" method="get">      
+		   <div class="parent-div">		
+				<div class="child-div">
+					구분
+					<select name="S_CMPR" id="S_CMPR" 		class="full-width-input">
+					  <option value="" 			  th:selected="'' == ${parameter?.S_CMPR}">전체</option>							
+					  <option value="1" 			  th:selected="'1' == ${parameter?.S_CMPR}">연금저축</option>							
+					  <option value="2" 			  th:selected="'2' == ${parameter?.S_CMPR}">퇴직연금</option>						  
+					  <option value="3" 			  th:selected="'3' == ${parameter?.S_CMPR}">일반계좌</option>
+					</select>
+				</div>								
+				<div class="child-div">
+				시작일자
+					<input type="date" id="S_START_YMD" name="S_START_YMD" class="full-width-input">
+				 </div>					
+				<div class="child-div">
+				 종료일자
+					 <input type="date" id="S_END_YMD" name="S_END_YMD" class="full-width-input">
+				</div>
+				<div class="child-div">
+					매수/매도
+				<select name="S_BYNGYN" id="S_BYNGYN" 		class="full-width-input">
+				  <option value="Y">매수</option>							
+				  <option value="N">매도</option>						  
+				</select>
+				</div>
+				 <div class="child-div">
+					주식명
+				  <input type="text" id="S_STCNM" name="S_STCNM" placeholder="주식명" class="full-width-input" th:value="${parameter?.S_STCNM}">
+				 </div>			  
+			     <div class="child-div">
+					배당주기
+				  <input type="text" id="search-box" name="S_DVDNCYC" placeholder="배당주기" class="full-width-input">
+				 </div>			  
+			  	 <div class="child-div">
+			      <button  class="search-button">검색</button><!--					onclick="search()"-->
+				 </div>
 		   </div>
 		 </form>   
    </div>
+     
    
-   
-   <p>조회영역</p>
+   <p th:text="'조회 영역 총 건수 : ' + ${stckDlngSelect[0].TOTALPAGES}"></p>
 	<div id="stckDlngSelect" class="tab-content">
 	   <table 		id='stckDlngSelect'>
 	       <thead>
 	           <tr>
 	               <th>순번</th>				
 				   <th name="U_CMPR">구분</th>
-	               <th name="U_BYNGYN">매수여부</th>
+	               <th name="S_BYNGYN">매수여부</th>
 	               <th name="U_DLNGYMD">거래일자</th>
 	               <th name="U_STCNM_SELECT_BOX">주식명</th>
 	               <th name="U_STCKCNT">수량</th>
 	               <th name="U_DVDNCYC">배당주기</th>
 	               <th name="U_DVDN">배당금</th>
-	               <th name="U_DLNGAMT">1년치 배당(예상)</th>				   
+	               <th name="U_DLNGAMT">1년치<br>배당(예상)</th>				   
 				   <th  style="width: 140px;">구분</th>
 	               <th>등록일자</th>
 	               <th>수정일자</th>
@@ -139,11 +163,11 @@
 	       </thead>
 	       <tbody>
 	           <tr th:each="stckDlng : ${stckDlngSelect}">			
-					<td th:text="${stckDlng.ROW_}">  <!-- 순번		  -->   
+					<td th:text="${stckDlng.NO_}">  <!-- 순번		  -->   
 					</td>				
 					<td>  <!-- 구분		  -->   					
 						<!--<input type="text" th:value="${sSelect.CMPR}"/>-->
-						<select class="update-select"  name="U_CMPR" id="U_CMPR">
+						<select class="full-width-input"  name="U_CMPR" id="U_CMPR">
 						  <option value="1"	th:selected="'1' == ${stckDlng.CMPR}" >연금저축</option>							
 						  <option value="2"	th:selected="'2' == ${stckDlng.CMPR}" >퇴직연금</option>						  
 						  <option value="3"	th:selected="'3' == ${stckDlng.CMPR}" >일반계좌</option>
@@ -151,19 +175,19 @@
 					</td>
 					<td>  <!-- 매수여부	  -->   					
 						<!--<input type="text" th:value="${sSelect.BYNGYN}"/>-->
-						<!--<input type="checkbox" id="U_BYNGYN" name="U_BYNGYN" th:checked="${stckDlng.BYNGYN} == 'Y'">-->
-						<select class="update-select"  name="U_BYNGYN" id="U_BYNGYN">
+						<!--<input type="checkbox" id="S_BYNGYN" name="S_BYNGYN" th:checked="${stckDlng.BYNGYN} == 'Y'">-->
+						<select class="full-width-input"  name="S_BYNGYN" id="S_BYNGYN">
 						  <option value="Y"	th:selected="'Y' == ${stckDlng.BYNGYN}" >매수</option>							
 						  <option value="N"	th:selected="'N' == ${stckDlng.BYNGYN}" >매도</option>						  
 						</select>
 					</td>
 					<td>  <!-- 거래일자	  -->   					
 						<!--<input type="DATE" th:value="${sSelect.DLNGYMD}"/>-->
-						<input class="update-date" type="date" id="U_DLNGYMD" name="U_DLNGYMD" th:value="${#dates.format(stckDlng.DLNGYMD, 'yyyy-MM-dd')}" />
+						<input class="full-width-input" type="date" id="U_DLNGYMD" name="U_DLNGYMD" th:value="${#dates.format(stckDlng.DLNGYMD, 'yyyy-MM-dd')}" />
 					</td>
 					<td >  <!-- 주식명	      -->						
 						<!--<input type="text" th:value="${stckDlng.STCNM}"/>-->
-						<select class="update-select"   id="U_STCNM_SELECT_BOX" name="U_STCNM_SELECT_BOX" onchange="updateDividendCycle03(event)">
+						<select class="full-width-input"   id="U_STCNM_SELECT_BOX" name="U_STCNM_SELECT_BOX" onchange="updateDividendCycle03(event)">
 							<option value="">선택</option>
 							<th:block th:if="${stckInfoInq.size() != 0}">
 								<option th:each="stckList : ${stckInfoInq}" th:value="${stckList.STCNM}" th:text="${stckList.STCNM}"
@@ -172,16 +196,16 @@
 						</select>
 					</th>
 					<td>  <!-- 수량		  -->   					
-						<input type="text" class="update-input"	id="U_STCKCNT" name="U_STCKCNT" th:value="${stckDlng.STCKCNT}"/>
+						<input type="text" class="full-width-input"	id="U_STCKCNT" name="U_STCKCNT" th:value="${stckDlng.STCKCNT}"/>
 					</td>
 					<td>  <!-- 배당주기	  -->   					
-						<input type="text" class="update-input"id="U_DVDNCYC" name="U_DVDNCYC" 	th:value="${stckDlng.DVDNCYC}"						disabled/>
+						<input type="text" class="full-width-input"id="U_DVDNCYC" name="U_DVDNCYC" 	th:value="${stckDlng.DVDNCYC}"						disabled/>
 					</td>                                           
 					<td>  <!-- 배당금	      -->	                			
-						<input type="text" class="update-input" id="U_DVDN" name="U_DVDN" th:value="${stckDlng.DVDN}"		disabled/>
+						<input type="text" class="full-width-input" id="U_DVDN" name="U_DVDN" th:value="${stckDlng.DVDN}"		disabled/>
 					</th>                                           
 					<td>  <!-- 1년치 배당	  -->                    		
-						<input type="text" class="update-input"		id="U_DLNGAMT" 		name="U_DLNGAMT"	th:value="${stckDlng.DLNGAMT}" disabled/>   
+						<input type="text" class="full-width-input"		id="U_DLNGAMT" 		name="U_DLNGAMT"	th:value="${stckDlng.DLNGAMT}" disabled/>   
 					</td>
 					<td>
 						<input type="button" value="수정" onclick="rowUpdateClicked01('#stckDlngSelect', this, 'N')" class="	update-button">
@@ -199,41 +223,40 @@
 	   <br>
 	</div>
 	<br>
-	<p th:text="${parameter}"></p>
 <!-- 페이징 처리 -->
-	            <!--<nav aria-label="Page navigation example" th:if="${!#lists.isEmpty(parameter)}">
-	                <ul class="pagination justify-content-center">
-	                 맨 처음 페이지로 이동하는 버튼 
-	                <li class="page-item">
-	                    <span th:if="${pageVo.startPage > 1}">
-	                    <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPage?page=1'+ '&S_CMPR=' +${parameter?.S_CMPR} + '&U_BYNGYN=' + ${parameter?.U_BYNGYN}}" th:text="'처음'"></a>
-	                    </span>
-	                </li>
-	                 이전 블록으로 이동하는 버튼 
-	                <li class="page-item">
-	                    <span th:if="${pageVo.isPrev == true}">
-	                    <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPage?page=' + ${pageVo.startPage - 1} + '&S_CMPR=' +${parameter?.S_CMPR} + '&U_BYNGYN=' + ${parameter?.U_BYNGYN}}" th:text="'이전'"></a>
-	                    </span>
-	                </li>
-	                 시퀀스 보여주는 값을 변경. 
-	                <li class="page-item" th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
-	                    <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPage?page=' + ${pageNum}+ '&S_CMPR=' +${parameter?.S_CMPR} + '&U_BYNGYN=' + ${parameter?.U_BYNGYN}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
-	                </li>
-	                <li class="page-item">
-	                 다음 블록으로 이동하는 버튼 
-	                <span th:if="${pageVo.isNext == true}">
-	                    <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPage?page=' + ${pageVo.endPage + 1}+ '&S_CMPR=' +${parameter?.S_CMPR} + '&U_BYNGYN=' + ${parameter?.U_BYNGYN}}" th:text="'다음'"></a>
-	                </span>
-	                </li>
-	                 맨 뒷 페이지로 이동하는 버튼 
-	                <li class="page-item">
-	                    <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
-	                    <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPage?page=' + ${pageVo.totalPageCount}+ '&S_CMPR=' +${parameter?.S_CMPR} + '&U_BYNGYN=' + ${parameter?.U_BYNGYN}}" th:text="|&emsp;끝|"></a>
-	                    </span>
-	                    <a th:href="@{'/bank/bankList?searchType='+${pageVo.searchType} +'&keyword='+${pageVo.keyword}+'&page='+${pageVo.totalPageCount}}" th:text="|&emsp;끝|"></a>
-	                </li>
-	                </ul>
-	            </nav>			-->	
+
+<nav aria-label="Page navigation example" >
+    <ul class="pagination justify-content-center">
+     <!--맨 처음 페이지로 이동하는 버튼 -->
+    <li class="page-item">
+        <span th:if="${pageVo.startPage > 1}">
+        <a class="page-link" th:href="@{'/stckDlng/stckDlngSelectPage.do?page=1' + '&S_CMPR=' + ${parameter?.S_CMPR} + '&S_START_YMD=' + ${parameter?.S_START_YMD} + '&S_END_YMD=' + ${parameter?.S_END_YMD} + '&S_BYNGYN=' + ${parameter?.S_BYNGYN} + '&S_STCNM=' + ${parameter?.S_STCNM} + '&S_DVDNCYC=' + ${parameter?.S_DVDNCYC}}" th:text="'처음'"></a>
+        </span>
+    </li>
+     <!--이전 블록으로 이동하는 버튼 -->
+    <li class="page-item">
+        <span th:if="${pageVo.isPrev == true}">
+        <a class="page-link" th:href="@{'/stckDlng/stckDlngSelectPage.do?page=' + ${pageVo.startPage - 1} + '&S_CMPR=' + ${parameter?.S_CMPR} + '&S_START_YMD=' + ${parameter?.S_START_YMD} + '&S_END_YMD=' + ${parameter?.S_END_YMD} + '&S_BYNGYN=' + ${parameter?.S_BYNGYN} + '&S_STCNM=' + ${parameter?.S_STCNM} + '&S_DVDNCYC=' + ${parameter?.S_DVDNCYC}}" th:text="'이전'"></a>
+        </span>
+    </li>
+     <!--시퀀스 보여주는 값을 변경. -->
+    <li class="page-item" th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
+        <a class="page-link" th:href="@{'/stckDlng/stckDlngSelectPage.do?page=' + ${pageNum} 		+ '&S_CMPR=' + ${parameter?.S_CMPR} + '&S_START_YMD=' + ${parameter?.S_START_YMD} + '&S_END_YMD=' + ${parameter?.S_END_YMD} + '&S_BYNGYN=' + ${parameter?.S_BYNGYN} + '&S_STCNM=' + ${parameter?.S_STCNM} + '&S_DVDNCYC=' + ${parameter?.S_DVDNCYC}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
+    </li>
+    <li class="page-item">
+     <!--다음 블록으로 이동하는 버튼 -->
+    <span th:if="${pageVo.isNext == true}">
+        <a class="page-link" th:href="@{'/stckDlng/stckDlngSelectPage.do?page=' + ${pageVo.endPage + 1}		+ '&S_CMPR=' + ${parameter?.S_CMPR} + '&S_START_YMD=' + ${parameter?.S_START_YMD} + '&S_END_YMD=' + ${parameter?.S_END_YMD} + '&S_BYNGYN=' + ${parameter?.S_BYNGYN} + '&S_STCNM=' + ${parameter?.S_STCNM} + '&S_DVDNCYC=' + ${parameter?.S_DVDNCYC}}" th:text="'다음'"></a>
+    </span>
+    </li>
+     <!--맨 뒷 페이지로 이동하는 버튼 -->
+    <li class="page-item">
+        <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
+        <a class="page-link" th:href="@{'/stckDlng/stckDlngSelectPage.do?page=' + ${pageVo.totalPageCount}			+ '&S_CMPR=' + ${parameter?.S_CMPR} + '&S_START_YMD=' + ${parameter?.S_START_YMD} + '&S_END_YMD=' + ${parameter?.S_END_YMD} + '&S_BYNGYN=' + ${parameter?.S_BYNGYN} + '&S_STCNM=' + ${parameter?.S_STCNM} + '&S_DVDNCYC=' + ${parameter?.S_DVDNCYC}}" th:text="|&emsp;끝|"></a>
+        </span>
+    </li>
+   </ul>
+</nav>	
 <!-- 페이징 처리 -->
 	
 </body>

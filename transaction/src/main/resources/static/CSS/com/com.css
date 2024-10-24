@@ -1,0 +1,55 @@
+
+/* 페이징 처리용 */
+/* Basic Pagination Styling */
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.25rem;
+}
+
+.page-item {
+  margin: 0 5px; /* Adds space between pagination items */
+}
+
+.page-item .page-link {
+  color: #007bff; /* Link color */
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  background-color: #fff; /* Button background */
+  border: 1px solid #dee2e6; /* Border color */
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+}
+
+.page-item .page-link:hover {
+  background-color: #007bff; /* Hover background color */
+  color: #fff; /* Hover text color */
+}
+
+.page-item.active .page-link {
+  background-color: #007bff; /* Active background color */
+  border-color: #007bff; /* Active border color */
+  color: white;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d; /* Disabled text color */
+  pointer-events: none; /* Prevent clicking on disabled items */
+  background-color: #e9ecef; /* Disabled background color */
+  border-color: #dee2e6;
+}
+
+/*페이징 끝 */
+
+/* DIV 테두리 */
+.div_title{
+  background-color: #d1d8e0; 
+  margin: 0; 
+}
+.div_outline {
+	border: 1px solid #d1d8e0; 
+	border-radius: 1em;
+}
+/* DIV 테두리 */

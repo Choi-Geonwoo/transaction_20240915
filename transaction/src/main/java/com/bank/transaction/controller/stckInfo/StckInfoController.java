@@ -67,11 +67,12 @@ public class StckInfoController {
 	@GetMapping("/stckInfo/stckInfoView")
 	public String stckInfoViewPage(Model model
 		     ,@RequestParam(value = "page", defaultValue = "1") final int page) {
-		Map<String, Object> mapData = new HashMap<>();
 		/*페이징 처리용 */
+		Map<String, Object> mapData = new HashMap<>();
         mapData.put("page", page);
         mapData.put("rowCount", 10);
 		/*페이징 처리용 */
+        // (주식정보)
 		List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(mapData);
 
         /* ### 페이징 처리 ### */

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
+    <title>주식정보</title>		
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">    	
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/weeklyAllocation/weeklyAllocation.css}">    
+    <script type="text/javascript" th:src="@{/JS/com/modal.js}"></script>	
+	<script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
+</head>
+<body>
+	<h4>
+        <ul class="nav flex-column" th:replace="view/layout/menuBar.html"></ul>
+    </h4>
+	
+	<p>검색영역</p>	
+	<div	class="search-container">    
+	</div>
+	<button onclick="downloadExcel()">엑셀다운로드</button>	
+	<button id="openModalBtn">모달</button>
+	<p>조회영역</p>	
+	<div 	class="height_5">
+		<table>
+			<thead>
+				<tr>
+					<th>순번   </th>
+					<th>배당일  </th>
+					<th>주식명  </th>
+					<th>배당금  </th>
+					<th>금액   </th>					
+					<th>등록일  </th>
+				</tr>
+			</thead>
+			<tbody th:if="${!#lists.isEmpty(byWeekList)}">
+				<tr  th:each="byWeekList : ${byWeekList}">
+					<td th:text="${byWeekList.NO_}">      </td>   <!-- 순번   -->
+					<td th:text="${byWeekList.TRNSCDATE}"> </td>   <!-- 배당일  -->
+					<td th:text="${byWeekList.STOCK_NAME}"> </td>  <!-- 주식명  -->
+					<td th:text="${byWeekList.DIVIDEND}">   </td>  <!-- 배당금  -->
+					<td th:text="${byWeekList.AMOUNT}">     </td>  <!-- 금액   -->
+					<td th:text="${byWeekList.RGSTDATE}">   </td>  <!-- 등록일  -->
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 페이징 처리 -->
+<!--		<nav aria-label="Page navigation example" >
+		    <ul class="pagination justify-content-center">
+		     맨 처음 페이지로 이동하는 버튼 
+		    <li class="page-item">
+		        <span th:if="${pageVo.startPage > 1}">
+		        <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPageSelect.do?page=1'+ '&TIKER=' +${parameter?.TIKER} + '&STCNM=' + ${parameter?.STCNM} + '&DVDNCYC=' + ${parameter?.DVDNCYC}+ '&DVDN=' + ${parameter?.DVDN}}" th:text="'처음'"></a>
+		        </span>
+		    </li>
+		     이전 블록으로 이동하는 버튼 
+		    <li class="page-item">
+		        <span th:if="${pageVo.isPrev == true}">
+		        <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPageSelect.do?page=' + ${pageVo.startPage - 1} + '&TIKER=' +${parameter?.TIKER} + '&STCNM=' + ${parameter?.STCNM} + '&DVDNCYC=' + ${parameter?.DVDNCYC}+ '&DVDN=' + ${parameter?.DVDN}}" th:text="'이전'"></a>
+		        </span>
+		    </li>
+		     시퀀스 보여주는 값을 변경. 
+		    <li class="page-item" th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
+		        <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPageSelect.do?page=' + ${pageNum}+ '&TIKER=' +${parameter?.TIKER} + '&STCNM=' + ${parameter?.STCNM} + '&DVDNCYC=' + ${parameter?.DVDNCYC}+ '&DVDN=' + ${parameter?.DVDN}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
+		    </li>
+		    <li class="page-item">
+		     다음 블록으로 이동하는 버튼 
+		    <span th:if="${pageVo.isNext == true}">
+		        <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPageSelect.do?page=' + ${pageVo.endPage + 1}+ '&TIKER=' +${parameter?.TIKER} + '&STCNM=' + ${parameter?.STCNM} + '&DVDNCYC=' + ${parameter?.DVDNCYC}+ '&DVDN=' + ${parameter?.DVDN}}" th:text="'다음'"></a>
+		    </span>
+		    </li>
+		     맨 뒷 페이지로 이동하는 버튼 
+		    <li class="page-item">
+		        <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
+		        <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPageSelect.do?page=' + ${pageVo.totalPageCount}+ '&TIKER=' +${parameter?.TIKER} + '&STCNM=' + ${parameter?.STCNM} + '&DVDNCYC=' + ${parameter?.DVDNCYC}+ '&DVDN=' + ${parameter?.DVDN}}" th:text="|&emsp;끝|"></a>
+		        </span>
+		    </li>
+		    </ul>
+		</nav>	-->
+	<!-- 페이징 처리 -->
+	
+	<!-- 모달 -->
+	<div id="myModal" class="modal">
+	  <div class="modal-content">
+	    <span class="close">&times;</span>
+	    <div id="modalBody">
+	      <!-- 여기서 외부 HTML이 불러와짐 -->
+	    </div>
+	  </div>
+	</div>
+	
+</body>
+</html>

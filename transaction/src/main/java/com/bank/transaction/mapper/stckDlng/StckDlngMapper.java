@@ -84,5 +84,5 @@ public interface StckDlngMapper {
 			* -----------------------------------------------------------
 			* 2024.09.17        Jihun Park       최초 생성
 	**/
-	public Map<String, String> getDividendCycleByStockName(String STCNM);
+	public Map<String, String> getDividendCycleByStockName(String TIKER);
 }

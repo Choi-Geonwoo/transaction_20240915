@@ -25,7 +25,7 @@
 										,DELYN		/*삭제여부    */
 										,REGYMD		/*등록일자    */
 										,MDFCNYMD	/*수정일자    */
-                        				,COUNT(*) OVER() AS totalPages
+                        				,COUNT(*) OVER() AS totalPages /*페이징 처리용 총 건수*/
 							FROM STOCKINFORMATION
 							 	WHERE 1=1
 							 		  <if test="TIKER!=null and !TIKER.equals('') and !'null'.equals(TIKER)">

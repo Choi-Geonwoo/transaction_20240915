@@ -1,10 +1,10 @@
 table {
-    width: 98%;
+    width: 100%;
     border-collapse: collapse;
 }
 th, td {
     border: 1px solid black;
-    padding: 8px;
+    padding: 0;
     text-align: center;
 }
 th {
@@ -62,4 +62,13 @@ th {
 
 .search-button:hover {
     background-color: #0056b3; /* 호버 시 배경색 변화 */
+}
+
+.full-width-input {
+  width: 100%; /* Makes the input fill the width of the table cell */
+  box-sizing: border-box; /* Ensures the input width includes padding and borders */
+  padding: 8px; /* Optional: Add some padding inside the input */
+  margin: 0; /* Removes margin */
+  border: 1px solid #ccc; /* Adds a border to the input */
+  border-radius: 4px; /* Optional: Adds a slight border radius */
 }

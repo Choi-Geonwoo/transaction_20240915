@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- com.bank.transaction.mapper.stckInfo(주식정보) -->
+<mapper namespace="com.bank.transaction.mapper.weeklyAllocation.WeeklyAllocationMapper">
+
+<!-- 주간 배당 내역-->
+<select id = "weeklyAllocationList"  resultType="Map" parameterType="Map" >
+            SELECT /* SQL_ID : WeeklyAllocationMapper.weeklyAllocationList */
+               ROW_NUMBER() OVER ( ORDER BY TRNSCDATE,       STOCK_NAME) AS NO_,
+               ROW_NUMBER() OVER ( ORDER BY TRNSCDATE,       STOCK_NAME) AS currentPage,
+               to_char(TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE,
+               STOCK_NAME,
+               AMOUNT,
+               RGSTDATE,
+               DIVIDEND,
+               COUNT(*) OVER() AS totalPages,
+               SUM(AMOUNT) OVER() AS TOTAL
+            FROM
+                 TRANSACTION
+            WHERE
+                        1 = 1
+                        
+
+</select>
+
+</mapper>

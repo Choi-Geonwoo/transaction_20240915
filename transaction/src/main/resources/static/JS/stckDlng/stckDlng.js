@@ -90,7 +90,7 @@ function chageLangSelect(){
 		//console.log(selectedStock);
         try {
             // 서버로 비동기 요청을 보내 주식명에 해당하는 배당주기 가져오기 (JSON 응답)
-            const response = await fetch(`/getDividendCycle?STCNM=${selectedStock}`);
+            const response = await fetch(`/getDividendCycle?TIKER=${selectedStock}`);
             
             if (response.ok) {
                 // JSON 형식의 응답 파싱
@@ -102,13 +102,13 @@ function chageLangSelect(){
                 const option = document.createElement('option');
                 option.value = data.DVDNCYC;
                 option.text = data.DVDNCYC;
-                console.log(`1. option.value : ${option.value}, option.text: ${option.text}`);
+                //console.log(`1. option.value : ${option.value}, option.text: ${option.text}`);
                 dividendCycleSelectBox.appendChild(option);
                 // 배당금
                 const option01 = document.createElement('option');
                 option01.value = data.DVDN;
                 option01.text = data.DVDN;
-                console.log(`2. option01.value : ${option.value}, option.text: ${option01.text}`);
+                //console.log(`2. option01.value : ${option.value}, option.text: ${option01.text}`);
                 dvdnSelectBox.appendChild(option01);
                 //주식명
                 const option02 = document.createElement('option');
