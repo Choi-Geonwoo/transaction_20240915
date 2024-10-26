@@ -5,9 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
     <title>주식거래정보</title>		
 	<link rel="stylesheet" type="text/css" th:href="@{/CSS/stckDlng/stckDlng.css}">  		
-	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">
-	<script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">    	
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
+	<script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  		
+	<script type="text/javascript" th:src="@{/JS/com/modal.js}"></script>	
 	<script type="text/javascript" th:src="@{/JS/stckDlng/stckDlng.js}"></script>
+	<script th:inline="javascript">
+	
+		<!--let sessionID = [[${msg}]];
+		alert(sessionID);-->
+	
+	</script>
 </head>
 <body>
 <h4>
@@ -42,7 +50,7 @@
 							</select>
 						</td>
 						<td>					<!--매수여부 -->
-							<input type="checkbox"   id="BYNGYN"   name="BYNGYN" class="full-width-input">
+							<input type="checkbox"   id="BYNGYN"   name="BYNGYN" class="full-width-input" 	checked>
 						</td>
 						<td>					<!--거래일자 -->
 							<input type="date"       id="DLNGYMD"   name="DLNGYMD" class="full-width-input">	
@@ -224,7 +232,6 @@
 	</div>
 	<br>
 <!-- 페이징 처리 -->
-
 <nav aria-label="Page navigation example" >
     <ul class="pagination justify-content-center">
      <!--맨 처음 페이지로 이동하는 버튼 -->
@@ -256,7 +263,7 @@
         </span>
     </li>
    </ul>
-</nav>	
+</nav>	   
 <!-- 페이징 처리 -->
 	
 </body>

@@ -1,12 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-   // DOM이 완전히 로드된 후 실행되는 코드
-   document.getElementById("STCNM_SELECT_BOX").addEventListener('change', updateDividendCycle01);
-});
-    
- function register() {
-     alert('등록 버튼이 클릭되었습니다.');
-     // 등록 기능을 여기에 구현
- }
+
 
 function chageLangSelect(){
     var langSelect = document.getElementById("STCNM_SELECT_BOX");
@@ -17,11 +9,11 @@ function chageLangSelect(){
     // select element에서 선택된 option의 text가 저장된다.
     var selectText = langSelect.options[langSelect.selectedIndex].text;
     alert("text : " + selectText + " value : " + selectValue);
-}
+};
 
 
-    // 주식명 선택 시 배당주기 업데이트 함수
-    async function updateDividendCycle() {
+// 주식명 선택 시 배당주기 업데이트 함수
+async function updateDividendCycle() {
         const stockSelectBox = document.getElementById("STCNM_SELECT_BOX");
         const dividendCycleSelectBox = document.getElementById("DVDNCYC_SELECT_BOX");
 
@@ -60,11 +52,11 @@ function chageLangSelect(){
         } catch (error) {
             console.error('Error:', error);
         }
-    }
+};
 
     
-    // 주식명 선택 시 배당주기 업데이트 함수
-    async function updateDividendCycle01() {
+// 주식명 선택 시 배당주기 업데이트 함수
+async function updateDividendCycle01() {
         const stockSelectBox = document.getElementById("STCNM_SELECT_BOX"); //주식명
         const dividendCycleSelectBox = document.getElementById("DVDNCYC_SELECT_BOX"); //배당주기
         const dvdnSelectBox = document.getElementById("DVDN_SELECT_BOX"); //배당금
@@ -122,12 +114,12 @@ function chageLangSelect(){
         } catch (error) {
             console.error('Error:', error);
         }
-    }
+};
     
     
    
-    // 주식명 선택 시 배당주기 업데이트 함수
-    async function updateDividendCycle02() {
+// 주식명 선택 시 배당주기 업데이트 함수
+async function updateDividendCycle02() {
         const stockSelectBox = document.getElementById("U_STCNM_SELECT_BOX"); //주식명
         const dvdncyc= document.getElementById("U_DVDNCYC"); //배당주기
         const dvdn = document.getElementById("U_DVDN"); //배당금
@@ -157,7 +149,7 @@ function chageLangSelect(){
         } catch (error) {
             console.error('Error:', error);
         }
-    }
+};
     
 // 주식명 선택 시 배당주기 업데이트 함수
 async function updateDividendCycle03(event) {
@@ -237,7 +229,7 @@ async function updateDividendCycle03(event) {
       // document.querySelector('p').innerText = JSON.stringify(rowData, null, 2);
       //fetch API를 사용하여 POST 요청을 보냅니다
       //fetch002('/stckInfo/stckInfoUpdate.do', "post", rowData); //url, method, body
-    }
+};
     
 /**
  * 주식정보 데이터 수정
@@ -284,7 +276,7 @@ function rowUpdateClicked01(tb_id, button, del_yn) {
     console.log("Row Data: ", JSON.stringify(rowData));
     //fetch API를 사용하여 POST 요청을 보냅니다
     fetch002('/stckDlng/stckDlngUpdate.do', "post", rowData); //url, method, body
-}
+};
 
 /**
  * 콜백함수
@@ -297,3 +289,5 @@ function fn_call(data){
 	}
 	
 }
+
+

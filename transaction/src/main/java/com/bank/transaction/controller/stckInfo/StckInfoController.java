@@ -86,8 +86,6 @@ public class StckInfoController {
         Map<String, Object> paginationMap = paginationService.calculatePagination(totalCount, currentPage);
         /* ### 페이징 처리 ### */
 
-        log.info("page " + page);
-        log.info("pageVo " + paginationMap);
         model.addAttribute("stckInfoSelect", stckInfoSelect);
         /* ### 페이징 처리 ### */
         model.addAttribute("page", page);
@@ -156,7 +154,7 @@ public class StckInfoController {
 	*/
     @GetMapping("/stckInfo/stckInfoViewPageSelect.do")
     public String stckInfoViewPageSelect(@RequestParam Map<String, Object> parameter
-    		,@RequestParam(value = "page", defaultValue = "1") final int page
+    		, @RequestParam(value = "page", defaultValue = "1") final int page
 		    , Model model){
 		//log.info("========================= > stckInfoSelect");
 		//log.info("========================= > value " + parameter.toString());

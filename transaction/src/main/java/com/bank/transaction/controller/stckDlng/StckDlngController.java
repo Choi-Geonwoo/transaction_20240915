@@ -120,7 +120,7 @@ public class StckDlngController {
         //log.debug("========================= > value " + stockData.toString());
         Map<String, Object> mapData = stckDlngService.stckDlngInsert(stockData);
         model.addAttribute("msg",mapData );
-		return "redirect:/stckDlngView";
+		return "/view/stckDlng/stckDlngView";
     }
 
     /**

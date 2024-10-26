@@ -1,3 +1,4 @@
+
 /**
  * POST 방식으로 비동기 전송
  * @param url       : 호출 URL
@@ -28,7 +29,10 @@ function fetch002(url, method, body) {
     .then(result => {
         console.log('Success:', JSON.stringify(result));
         //alert(result.msg);
-        fn_call(result);
+        //showModal(result.msg);
+        //showModal('Here is some important information.');
+        //fn_call(result);
+        showModal(result.msg, () => fn_call(result));
     })
     .catch(error => {
         console.log('Error:', error);

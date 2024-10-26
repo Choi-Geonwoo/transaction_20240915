@@ -15,11 +15,32 @@
         <ul class="nav flex-column" th:replace="view/layout/menuBar.html"></ul>
     </h4>
 	
-	<p>검색영역</p>	
-	<div	class="search-container">    
+	<div class="search-container div_outline"> 
+	<h2 class="div_title">검색영역</h2>  
+	   <form class="form01"  th:action="@{/weeklyAllocation/WeeklyAllocationSelectPage.do}" method="get">      
+		   <div class="parent-div">								
+				<div class="child-div">
+				시작일자
+					<input type="date" id="S_START_YMD" name="S_START_YMD" class="full-width-input" th:value="${not #strings.isEmpty(S_START_YMD)} ? ${S_START_YMD} : ${#temporals.format(#temporals.createNow().minusDays(6), 'yyyy-MM-dd')}">
+				 </div>					
+				<div class="child-div">
+				 종료일자
+					 <input type="date" id="S_END_YMD" name="S_END_YMD" class="full-width-input" th:value="${not #strings.isEmpty(S_END_YMD)} ? ${S_END_YMD} : ${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+				</div>
+				 <div class="child-div">
+					주식명
+				  <input type="text" id="S_STCNM" name="S_STCNM" placeholder="주식명" class="full-width-input" th:value="${parameter?.S_STCNM}">
+				 </div>			  	  
+			  	 <div class="child-div">
+			      	<button  class="search-button">검색</button><!--					onclick="search()"-->
+				 </div>
+		   </div>
+		 </form>   
 	</div>
 	<button onclick="downloadExcel()">엑셀다운로드</button>	
-	<button id="openModalBtn">모달</button>
+	<button onclick="showModal('성공')">모달 열기</button>
+	
+	
 	<p>조회영역</p>	
 	<div 	class="height_5">
 		<table>
@@ -45,50 +66,43 @@
 			</tbody>
 		</table>
 	</div>
-	<!-- 페이징 처리 -->
-<!--		<nav aria-label="Page navigation example" >
+	
+	<th:block 	th:if="${!#lists.isEmpty(byWeekList)}">
+		<!-- 페이징 처리 -->
+		<nav aria-label="Page navigation example" >
 		    <ul class="pagination justify-content-center">
-		     맨 처음 페이지로 이동하는 버튼 
+		     <!--맨 처음 페이지로 이동하는 버튼 -->
 		    <li class="page-item">
 		        <span th:if="${pageVo.startPage > 1}">
-		        <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPageSelect.do?page=1'+ '&TIKER=' +${parameter?.TIKER} + '&STCNM=' + ${parameter?.STCNM} + '&DVDNCYC=' + ${parameter?.DVDNCYC}+ '&DVDN=' + ${parameter?.DVDN}}" th:text="'처음'"></a>
+		        <a class="page-link" th:href="@{'/weeklyAllocation/WeeklyAllocationSelectPage.do?page=1' +' '&S_START_YMD=' +${parameter?.S_START_YMD} + '&S_END_YMD=' +${parameter?.S_END_YMD} +				'&S_STCNM=' + ${parameter?.S_STCNM}}" th:text="'처음'"></a>
 		        </span>
 		    </li>
-		     이전 블록으로 이동하는 버튼 
+		     <!--이전 블록으로 이동하는 버튼 -->
 		    <li class="page-item">
 		        <span th:if="${pageVo.isPrev == true}">
-		        <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPageSelect.do?page=' + ${pageVo.startPage - 1} + '&TIKER=' +${parameter?.TIKER} + '&STCNM=' + ${parameter?.STCNM} + '&DVDNCYC=' + ${parameter?.DVDNCYC}+ '&DVDN=' + ${parameter?.DVDN}}" th:text="'이전'"></a>
+		        <a class="page-link" th:href="@{'/weeklyAllocation/WeeklyAllocationSelectPage.do?page=' + '${pageVo.startPage - 1} + '&S_START_YMD=' +${parameter?.S_START_YMD} + '&S_END_YMD=' +${parameter?.S_END_YMD} + 				'&S_STCNM=' + ${parameter?.S_STCNM}}" th:text="'이전'"></a>
 		        </span>
 		    </li>
-		     시퀀스 보여주는 값을 변경. 
+		     <!--시퀀스 보여주는 값을 변경. -->
 		    <li class="page-item" th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}">
-		        <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPageSelect.do?page=' + ${pageNum}+ '&TIKER=' +${parameter?.TIKER} + '&STCNM=' + ${parameter?.STCNM} + '&DVDNCYC=' + ${parameter?.DVDNCYC}+ '&DVDN=' + ${parameter?.DVDN}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
+		        <a class="page-link" th:href="@{'/weeklyAllocation/WeeklyAllocationSelectPage.do?page=' + ${pageNum} + '&S_START_YMD=' +${parameter?.S_START_YMD} + '&S_END_YMD=' +${parameter?.S_END_YMD} + 			'&S_STCNM=' + ${parameter?.S_STCNM}}" th:text="|&emsp;${pageNum}&emsp;|"></a>
 		    </li>
 		    <li class="page-item">
-		     다음 블록으로 이동하는 버튼 
+		     <!--다음 블록으로 이동하는 버튼--> 
 		    <span th:if="${pageVo.isNext == true}">
-		        <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPageSelect.do?page=' + ${pageVo.endPage + 1}+ '&TIKER=' +${parameter?.TIKER} + '&STCNM=' + ${parameter?.STCNM} + '&DVDNCYC=' + ${parameter?.DVDNCYC}+ '&DVDN=' + ${parameter?.DVDN}}" th:text="'다음'"></a>
+		        <a class="page-link" th:href="@{'/weeklyAllocation/WeeklyAllocationSelectPage.do?page=' + ${pageVo.endPage + 1} + '&S_START_YMD=' +${parameter?.S_START_YMD} + '&S_END_YMD=' +${parameter?.S_END_YMD} +			'&S_STCNM=' + ${parameter?.S_STCNM}}" th:text="'다음'"></a>
 		    </span>
 		    </li>
-		     맨 뒷 페이지로 이동하는 버튼 
+		     <!--맨 뒷 페이지로 이동하는 버튼 -->
 		    <li class="page-item">
 		        <span th:if="${pageVo.endPage < pageVo.totalPageCount}">
-		        <a class="page-link" th:href="@{'/stckInfo/stckInfoViewPageSelect.do?page=' + ${pageVo.totalPageCount}+ '&TIKER=' +${parameter?.TIKER} + '&STCNM=' + ${parameter?.STCNM} + '&DVDNCYC=' + ${parameter?.DVDNCYC}+ '&DVDN=' + ${parameter?.DVDN}}" th:text="|&emsp;끝|"></a>
+		        <a class="page-link" th:href="@{'/weeklyAllocation/WeeklyAllocationSelectPage.do?page=' + ${pageVo.totalPageCount} +'&S_START_YMD=' +${parameter?.S_START_YMD} + '&S_END_YMD=' +${parameter?.S_END_YMD} + 				'&S_STCNM=' + ${parameter?.S_STCNM} }" th:text="|&emsp;끝|"></a>
 		        </span>
 		    </li>
 		    </ul>
-		</nav>	-->
-	<!-- 페이징 처리 -->
-	
-	<!-- 모달 -->
-	<div id="myModal" class="modal">
-	  <div class="modal-content">
-	    <span class="close">&times;</span>
-	    <div id="modalBody">
-	      <!-- 여기서 외부 HTML이 불러와짐 -->
-	    </div>
-	  </div>
-	</div>
+		</nav>		
+		<!-- 페이징 처리 -->
+	</th:block>
 	
 </body>
 </html>

@@ -6,22 +6,50 @@
 
 <!-- 주간 배당 내역-->
 <select id = "weeklyAllocationList"  resultType="Map" parameterType="Map" >
-            SELECT /* SQL_ID : WeeklyAllocationMapper.weeklyAllocationList */
-               ROW_NUMBER() OVER ( ORDER BY TRNSCDATE,       STOCK_NAME) AS NO_,
-               ROW_NUMBER() OVER ( ORDER BY TRNSCDATE,       STOCK_NAME) AS currentPage,
-               to_char(TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE,
-               STOCK_NAME,
-               AMOUNT,
-               RGSTDATE,
-               DIVIDEND,
-               COUNT(*) OVER() AS totalPages,
-               SUM(AMOUNT) OVER() AS TOTAL
-            FROM
-                 TRANSACTION
-            WHERE
-                        1 = 1
-                        
+     			SELECT		/* SQL_ID : WeeklyAllocationMapper.weeklyAllocationList ::: 주간 배당 내역 */
+	                *
+	            FROM
+	                (
+		                SELECT
+		                    *
+		                FROM
+                    	(
 
+							            SELECT 
+							               ROW_NUMBER() OVER ( ORDER BY TRNSCDATE DESC,       STOCK_NAME) AS NO_,
+							               to_char(TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE,
+							               STOCK_NAME,
+							               AMOUNT,
+							               RGSTDATE,
+							               DIVIDEND,
+							               COUNT(*) OVER() AS totalPages,
+							               SUM(AMOUNT) OVER() AS TOTAL
+							            FROM
+							                 TRANSACTION
+							            WHERE
+							                        1 = 1
+									 	<if test="(S_STCNM!=null) and (!''.equals(S_STCNM)) and (!'null'.equals(S_STCNM))">
+                                                AND STOCK_NAME LIKE '%'|| #{S_STCNM} ||'%'    /*주식명*/
+										</if>
+							          	<if test="(!'null'.equals(S_START_YMD)) and (!'null'.equals(S_END_YMD))">
+											 <choose>
+										            <when test="(S_START_YMD != null) and (!''.equals(S_START_YMD)) and (S_END_YMD != null) and (!''.equals(S_END_YMD))"> 
+										        AND TRNSCDATE BETWEEN  TO_DATE(#{S_START_YMD} , 'YYYY-MM-DD') AND TO_DATE(#{S_END_YMD} , 'YYYY-MM-DD')
+										            </when>
+										            <when test="(S_START_YMD != null) and (!''.equals(S_START_YMD))"> 
+										        AND A.TRNSCDATE  <![CDATA[ >= ]]> TO_DATE(#{S_START_YMD} , 'YYYY-MM-DD') 
+										            </when>
+										            <when test="(S_END_YMD != null) and (!''.equals(S_END_YMD))"> 
+										        AND A.TRNSCDATE  <![CDATA[ >= ]]> TO_DATE(#{S_END_YMD} , 'YYYY-MM-DD') 
+										            </when>
+											</choose>
+									    </if>
+                    	)
+                WHERE
+                    NO_  <![CDATA[ <=  ]]>  (#{page} * #{rowCount})
+                       )
+                WHERE (((#{page}-1) * #{rowCount}) + 1) <![CDATA[  <=	]]>   NO_
+                        
 </select>
 
 </mapper>

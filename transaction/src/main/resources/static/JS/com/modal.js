@@ -1,39 +1,39 @@
-window.onload = function(){
-    
-// 모달 요소와 버튼, 닫기 버튼을 가져옴
-const modal = document.getElementById('myModal');
-const openModalBtn = document.getElementById('openModalBtn');
-const closeBtn = document.querySelector('.close');
-const modalBody = document.getElementById('modalBody');
+const removeModal = () => {
+  const modal = document.querySelector('.modal-background');
+  if (modal) {
+    document.body.removeChild(modal);
+  }
+};
 
-// 모달 열기 시 외부 HTML 로드
-openModalBtn.onclick = async function() {
-  modal.style.display = 'block';
-
-  try {
-    const response = await fetch('/MODAL/modal-content.html'); // 외부 HTML 파일을 불러옴
-    if (response.ok) {
-      const data = await response.text(); // 텍스트 형식으로 불러오기
-      modalBody.innerHTML = data; // 모달 본문에 외부 HTML 삽입
-    } else {
-      modalBody.innerHTML = '<p>콘텐츠를 불러오는 데 실패했습니다.</p>';
+const handleButtonClick = (event, callback) => {
+  const { target } = event;
+  if (target.classList.contains('close-btn')) {
+    removeModal();
+  } else if (target.classList.contains('confirm-btn')) {
+    // Call the provided callback function when the confirm button is clicked
+    if (callback) {
+      callback(); // Call fn_call or any other function passed as a callback
     }
-  } catch (error) {
-    console.error('Error loading modal content:', error);
-    modalBody.innerHTML = '<p>오류가 발생했습니다.</p>';
+    removeModal(); // Close the modal after confirming
   }
-}
+};
 
-// 모달 닫기
-closeBtn.onclick = function() {
-  modal.style.display = 'none';
-}
-
-// 모달 외부 클릭 시 닫기
-window.onclick = function(event) {
-  if (event.target === modal) {
-    modal.style.display = 'none';
-  }
-}
-
-}
+const showModal = (data, callback) => {
+  const modal = document.createElement('div');
+  modal.classList.add('modal-background');
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h2 class="modal-title">알림</h2>
+      <p class="modal-text"> ${data}</p>
+      <div class="modal-buttons">
+        <button class="close-btn">닫기</button>
+        <button class="confirm-btn">확인</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  
+  // Pass the callback to the handleButtonClick function
+  modal.addEventListener('click', (event) => handleButtonClick(event, callback));
+  
+};

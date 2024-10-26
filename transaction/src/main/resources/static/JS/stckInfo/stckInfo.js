@@ -54,7 +54,7 @@ function register(formId) {
       for (var i = 0; i < row.cells.length - 1; i++) {
         var input = row.cells[i].querySelector('input');
         var headerName = headers[i].getAttribute('name'); // Get the 'name' attribute from <th>
-        console.log(i +" : " + input);
+        //console.log(i +" : " + input);
         // Check if input is a checkbox and store value accordingly
         if(!isEmpty(input)){
            if (input.type === 'checkbox') {
@@ -76,7 +76,7 @@ function register(formId) {
  * @param data     : 리턴값
  **/    
 function fn_call(data){
-	alert(data.msg);
+	//showModal(data.msg);
 	if(data.msg.indexOf('성공') != -1){
 		history.go(0);
 	}

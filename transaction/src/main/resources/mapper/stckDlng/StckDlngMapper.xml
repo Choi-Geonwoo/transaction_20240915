@@ -56,6 +56,8 @@
                         					,COUNT(*) OVER() AS totalPages /*페이징 처리용 총 건수*/
 										FROM STCKDLNGINFO A, STOCKINFORMATION B
 											WHERE B.TIKER = A.TIKER
+											    AND A.USEYN    ='Y'
+											    AND A.DELYN    ='N'
 									 		 <if test="(S_CMPR!=null) and (!S_CMPR.equals('')) and (!S_CMPR.equals('null'))">
 												AND A.CMPR      = #{S_CMPR}    /*구분*/
 											 </if>
@@ -126,7 +128,7 @@
 
 <!-- 주식 거래 정보 수정-->
 <update id="stckDlngUpdate" parameterType="Map" >
-	UPDATE  /* SQL_ID : StckDlngMapper.stckDlngUpdate(주식 거래 정보 수정) */
+	UPDATE  /* SQL_ID : StckDlngMapper.stckDlngUpdate(주식 거래 정보 수정) */ STCKDLNGINFO
 		SET  	  BYNGYN 	= #{BYNGYN}	    /*매수여부*/
 				, CMPR 		= #{CMPR}		/*구분*/
 				, DLNGYMD 	= #{DLNGYMD}	/*거래일자*/
