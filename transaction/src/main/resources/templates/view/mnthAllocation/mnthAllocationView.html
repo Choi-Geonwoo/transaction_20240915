@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
+    <title>주식정보</title>		 	
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/mnthAllocation/mnthAllocation.css}">    
+    <script type="text/javascript" th:src="@{/JS/com/modal.js}"></script>	
+	<script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
+	<script type="text/javascript" th:src="@{/JS/mnthAllocation/mnthAllocation.js}"></script>  
+	<!--차트-->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script th:inline="javascript">
+	  window.onload = function(){
+	    const data = /*[[${		mSelect}]]*/;
+		mnthAllocationBarChart(data);
+	  }
+	
+	</script>
+</head>
+<body>
+	<h4>
+        <ul class="nav flex-column" th:replace="view/layout/menuBar.html"></ul>
+    </h4>
+	
+	<div class="container01"> 
+		<div class="div_title01">검색영역</div>  
+	</div>
+	
+	
+	<div class="container01">	
+		<div class="div_title01">조회영역</div>  
+		<div class="div_body01">
+			<table class="table table-bordered container" th:if="${!#lists.isEmpty(mSelect)}" >
+			  <thead class="text-center">
+			    <tr >        
+			    <!--년도--><th >년도</th>
+			    <!--1월--> <th>01월</th>
+			    <!--2월--> <th>02월</th>
+			    <!--3월--> <th>03월</th>
+			    <!--4월--> <th>04월</th>
+			    <!--5월--> <th>05월</th>
+			    <!--6월--> <th>06월</th>
+			    <!--7월--> <th>07월</th>
+			    <!--8월--> <th>08월</th>
+			    <!--9월--> <th>09월</th>
+			    <!--10월--><th>10월</th>
+			    <!--11월--><th>11월</th>
+			    <!--12월--><th>12월</th>
+			    <!--12월--><th>합계</th>
+			    </tr>
+			  </thead>
+			  <tbody class="text-center">
+			    <tr  th:each="mSelect : ${mSelect}">    
+			          <!--년도--><td  th:text="${mSelect.TRNSCDATE}"></td>
+			          <!--1월--><td  th:text="${mSelect.JANUARY}"></td>
+			          <!--2월--> <td  th:text="${mSelect.FEBRUARY}"></td>
+			          <!--3월--> <td  th:text="${mSelect.MARCH}"></td>
+			          <!--4월--> <td  th:text="${mSelect.APRIL}"></td>
+			          <!--5월--> <td  th:text="${mSelect.MAY}"></td>
+			          <!--6월--> <td  th:text="${mSelect.JUNE}" ></td>
+			          <!--7월--> <td  th:text="${mSelect.JULY}" ></td>
+			          <!--8월--> <td  th:text="${mSelect.AUGUST}" ></td>
+			          <!--9월--> <td  th:text="${mSelect.SEPTEMBER}" ></td>
+			          <!--10월--><td  th:text="${mSelect.OCTOBER}" ></td>
+			          <!--11월--><td  th:text="${mSelect.NOVEMBER}" ></td>
+			          <!--12월--><td  th:text="${mSelect.DECEMBER}" ></td>
+			          <!--12월--><td  th:text="${mSelect.ALL_SUM}" ></td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+	</div>
+	<br>
+	
+	<!-- 바차트 시작-->
+	<br>
+	<div  th:if="${!#lists.isEmpty(	mSelect)}" class="container">
+	  <canvas id="bar_chart"></canvas>
+	</div>
+	<!-- 바차트 종료-->
+</body>
+</html>

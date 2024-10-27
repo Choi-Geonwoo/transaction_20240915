@@ -238,44 +238,49 @@ async function updateDividendCycle03(event) {
  * @param cmpr  	: 수정/삭제 여부
  **/
 function rowUpdateClicked01(tb_id, button, del_yn) {
-    // 클릭된 버튼의 행 가져오기
-    var row = button.parentElement.parentElement;
-    var headerSelector = tb_id + ' thead th';
-    
-    // 테이블 헤더를 키로 사용하기 위해 가져오기
-    var headers = document.querySelectorAll(headerSelector);
+		// 클릭된 버튼의 행 가져오기
+		var row = button.parentElement.parentElement;
+		var headerSelector = tb_id + ' thead th';
+		
+		// 테이블 헤더를 키로 사용하기 위해 가져오기
+		var headers = document.querySelectorAll(headerSelector);
+		
+		// 행 데이터를 저장할 JSON 객체 생성
+		var rowData = {};
+		
+		// 각 셀을 순회하며 데이터를 추출 (마지막 셀은 버튼이므로 제외)
+		for (var i = 0; i < row.cells.length - 1; i++) {
+		    var headerName = headers[i].getAttribute('name');
+		    
+		    // 셀 안에 있는 입력 요소(input, select 등) 가져오기
+		    var input = row.cells[i].querySelector('input, select, textarea');
+		
+		    if (input) {
+				console.log(headerName+ " | "+input.type + " | " + input.value);
+		        // input type에 따른 데이터 처리
+		        if (input.type === 'checkbox') {
+		            rowData[headerName] = input.checked ? 'Y' : 'N';
+		        } else if (input.type === 'date') {
+		            rowData[headerName] = input.value;  // 날짜 포맷 그대로 전달
+		        } else if (input.type === 'hidden') {
+		            rowData[headerName] = input.value;  // hidden 값 추가
+		        } else {
+		            rowData[headerName] = input.value;  // 일반 텍스트 값
+		        }
+		        
+		        // 'disabled' 속성이 있는 요소도 처리할 수 있도록 체크 (배당금, 배당주기 등)
+		        if (input.hasAttribute('disabled')) {
+		            rowData[headerName] = input.value;  // disabled 상태라도 값은 포함
+		        }
+		    }
+		}
+		
+		rowData["DEL_YN"] = del_yn; // 삭제 여부 추가
+		// 확인용 로그 출력 (추후에 Ajax 등을 이용해 서버로 전송 가능)
+		//console.log("Row Data: ", JSON.stringify(rowData));
+		//fetch API를 사용하여 POST 요청을 보냅니다
+		fetch002('/stckDlng/stckDlngUpdate.do', "post", rowData); //url, method, body
 
-    // 행 데이터를 저장할 JSON 객체 생성
-    var rowData = {};
-    
-    // 각 셀을 순회하며 데이터를 추출 (마지막 셀은 버튼이므로 제외)
-    for (var i = 0; i < row.cells.length - 1; i++) {
-        var headerName = headers[i].getAttribute('name');
-        
-        // 셀 안에 있는 입력 요소(input, select 등) 가져오기
-        var input = row.cells[i].querySelector('input, select, textarea');
-        
-        if (!isEmpty(input)) {
-            // input type에 따른 데이터 처리
-            if (input.type === 'checkbox') {
-                rowData[headerName] = input.checked ? 'Y' : 'N';
-            } else if (input.type === 'date') {
-                rowData[headerName] = input.value;  // 날짜 포맷 그대로 전달
-            } else {
-                rowData[headerName] = input.value;  // 일반 텍스트 값
-            }
-        }
-        
-        // 'disabled' 속성이 있는 요소도 처리할 수 있도록 체크 (배당금, 배당주기 등)
-        if (input && input.hasAttribute('disabled')) {
-            rowData[headerName] = input.value;  // disabled 상태라도 값은 포함
-        }
-    }
-    rowData["DEL_YN"] = del_yn;
-    // 확인용 로그 출력 (추후에 Ajax 등을 이용해 서버로 전송 가능)
-    console.log("Row Data: ", JSON.stringify(rowData));
-    //fetch API를 사용하여 POST 요청을 보냅니다
-    fetch002('/stckDlng/stckDlngUpdate.do', "post", rowData); //url, method, body
 };
 
 /**
@@ -283,7 +288,7 @@ function rowUpdateClicked01(tb_id, button, del_yn) {
  * @param data     : 리턴값
  **/    
 function fn_call(data){
-	alert(data.msg);
+	//alert(data.msg);
 	if(data.msg.indexOf('성공') != -1){
 		history.go(0);
 	}

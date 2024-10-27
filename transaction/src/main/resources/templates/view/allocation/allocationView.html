@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
+    <title>거래정보</title>		
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/allocation/allocation.css}">    	
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">    	
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
+    <script type="text/javascript" th:src="@{/JS/com/modal.js}"></script>	
+	<script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
+</head>
+<body>
+	<h4>
+        <ul class="nav flex-column" th:replace="view/layout/menuBar.html"></ul>
+    </h4>
+	
+	<div class="container01"> 
+	<div class="div_title01">검색영역</div>  
+	</div>
+	
+	<div class="container01">	
+	<div class="div_title01">조회영역</div>  		
+	  <div class="div_body01">
+		
+		<table>
+		  <thead>
+		      <tr>                
+				<!--년도--><th style="border:none;">년도</th>
+				<!--항목--><th style="border:none;">항목</th>
+				<!--1월--> <th style="border:none;">01월</th>
+				<!--2월--> <th style="border:none;">02월</th>
+				<!--3월--> <th style="border:none;">03월</th>
+				<!--4월--> <th style="border:none;">04월</th>
+				<!--5월--> <th style="border:none;">05월</th>
+				<!--6월--> <th style="border:none;">06월</th>
+				<!--7월--> <th style="border:none;">07월</th>
+				<!--8월--> <th style="border:none;">08월</th>
+				<!--9월--> <th style="border:none;">09월</th>
+				<!--10월--><th style="border:none;">10월</th>
+				<!--11월--><th style="border:none;">11월</th>
+				<!--12월--><th style="border:none;">12월</th>
+				<!--합계--><th style="border:none;">합계</th>
+		      </tr>
+		  </thead>
+		  <tbody>
+			<tr  th:each="aSelect : ${aSelect}">    
+			      <!--년도--><td scope="col"><label th:text="${aSelect.TRNSCDATE}"></label></td>
+			      <!--항목--><td th:text="${aSelect.STOCK_NAME}"></td>
+			      <!--1월--> <td class="JANUARY"   th:classappend="${aSelect.JANUARY eq 0}   ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.JANUARY}"></td>
+			      <!--2월--> <td class="FEBRUARY"  th:classappend="${aSelect.FEBRUARY eq 0}  ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.FEBRUARY}"></td>
+			      <!--3월--> <td class="MARCH"     th:classappend="${aSelect.MARCH eq 0}     ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.MARCH}"></td>
+			      <!--4월--> <td class="APRIL"     th:classappend="${aSelect.APRIL eq 0}     ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.APRIL}"></td>
+			      <!--5월--> <td class="MAY"       th:classappend="${aSelect.MAY eq 0}       ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.MAY}"></td>
+			      <!--6월--> <td class="JUNE"      th:classappend="${aSelect.JUNE eq 0}      ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.JUNE}" ></td>
+			      <!--7월--> <td class="JULY"      th:classappend="${aSelect.JULY eq 0}      ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.JULY}" ></td>
+			      <!--8월--> <td class="AUGUST"    th:classappend="${aSelect.AUGUST eq 0}    ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.AUGUST}" ></td>
+			      <!--9월--> <td class="SEPTEMBER" th:classappend="${aSelect.SEPTEMBER eq 0} ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}"  th:text="${aSelect.SEPTEMBER}" ></td>
+			      <!--10월--><td class="OCTOBER"   th:classappend="${aSelect.OCTOBER eq 0}   ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}"  th:text="${aSelect.OCTOBER}" ></td>
+			      <!--11월--><td class="NOVEMBER"  th:classappend="${aSelect.NOVEMBER eq 0}  ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}"  th:text="${aSelect.NOVEMBER}" ></td>
+			      <!--12월--><td class="DECEMBER"  th:classappend="${aSelect.DECEMBER eq 0}  ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}"  th:text="${aSelect.DECEMBER}" ></td>
+			      <!--합계--><td th:text="${
+			        aSelect.JANUARY 
+			        + aSelect.FEBRUARY
+			        + aSelect.MARCH
+			        + aSelect.APRIL
+			        + aSelect.MAY
+			        + aSelect.JUNE
+			        + aSelect.JULY
+			        + aSelect.AUGUST
+			        + aSelect.SEPTEMBER
+			        + aSelect.OCTOBER
+			        + aSelect.NOVEMBER
+			        + aSelect.DECEMBER
+			      }" ></td>
+			</tr>
+		  </tbody>
+		</table>
+		
+	  </div>
+	</div>
+	
+
+	
+</body>
+</html>

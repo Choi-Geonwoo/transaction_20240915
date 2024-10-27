@@ -33,6 +33,10 @@ th {
     background-color: #f0f0f0; /* 타이틀 배경색 */
     border-bottom: 1px solid #ddd; /* 구분선 */
 }
+.div_body01{
+	margin: 10px;
+}
+
 .form02 {
     display: flex;
     align-items: center;
@@ -61,7 +65,4 @@ th {
 }
 .form02 button:hover {
     background-color: #333;
-}
-.div_body01{
-	margin: 10px;
 }

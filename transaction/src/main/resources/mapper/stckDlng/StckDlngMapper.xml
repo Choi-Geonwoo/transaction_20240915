@@ -129,16 +129,15 @@
 <!-- 주식 거래 정보 수정-->
 <update id="stckDlngUpdate" parameterType="Map" >
 	UPDATE  /* SQL_ID : StckDlngMapper.stckDlngUpdate(주식 거래 정보 수정) */ STCKDLNGINFO
-		SET  	  BYNGYN 	= #{BYNGYN}	    /*매수여부*/
-				, CMPR 		= #{CMPR}		/*구분*/
-				, DLNGYMD 	= #{DLNGYMD}	/*거래일자*/
-				, TIKER 	= #{TIKER}	    /*주식_티커*/
-				, STCKCNT 	= #{STCKCNT}	/*주식수*/
-				, DLNGAMT	= #{DLNGAMT}	/*거래금액*/
-				, USEYN 	= DECODE(#{DELYN}, 'Y', 'Y', #{USEYN})	    /*사용여부*/
-				, DELYN 	= #{DELYN}		/*삭제여부*/
-				, MDFCNYMD = SYSDATE		/*수정일자*/
-	WHERE TURN = #{TURN}
+		SET  	  BYNGYN 	= #{S_BYNGYN}	                                /*매수여부*/
+				, CMPR 		= #{U_CMPR}		                                /*구분*/
+				, DLNGYMD 	= REGEXP_REPLACE(#{U_DLNGYMD}, '[[:punct:]]')	/*거래일자*/
+				, TIKER 	= #{U_STCNM_SELECT_BOX}	                        /*주식_티커*/
+				, STCKCNT 	= #{U_STCKCNT}	                                /*주식수*/
+				, USEYN 	= DECODE(#{DEL_YN}, 'Y', 'Y', #{DEL_YN})	    /*사용여부*/
+				, DELYN 	= #{DEL_YN}		                                /*삭제여부*/
+				, MDFCNYMD  = SYSDATE		                                /*수정일자*/
+	WHERE TURN = #{U_TURN }
 </update>
 
 <!-- 주식 정보 조회-->

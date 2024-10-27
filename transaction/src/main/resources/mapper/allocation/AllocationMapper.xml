@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- com.bank.transaction.mapper.stckInfo(주식정보) -->
+<mapper namespace="com.bank.transaction.mapper.allocation.AllocationMapper">
+
+		<select id = "allocationMapperSelect"  resultType="Map" parameterType="Map">
+				SELECT /* SQL_ID : AllocationMapper.allocationMapperSelect */
+                    NVL(B.STCNM,A.STOCK_NAME) AS STOCK_NAME,
+                    to_char(A.TRNSCDATE, 'YYYY') AS TRNSCDATE,
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '01' , AMOUNT, '0') ) AS january,
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '02' , AMOUNT, '0') ) AS february,
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '03' , AMOUNT, '0') ) AS march,
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '04' , AMOUNT, '0') ) AS april,
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '05' , AMOUNT, '0') ) AS may,  
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '06' , AMOUNT, '0') ) AS june, 
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '07' , AMOUNT, '0') ) AS july, 
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '08' , AMOUNT, '0') ) AS august,
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '09' , AMOUNT, '0') ) AS september,
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '10' , AMOUNT, '0') ) AS october,
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '11' , AMOUNT, '0') ) AS november,
+                    sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '12' , AMOUNT, '0') ) AS december
+                FROM
+                    TRANSACTION A
+                        LEFT JOIN STOCKINFORMATION B ON ( A.TIKER = B.TIKER AND B.USEYN = 'Y' AND B.DELYN = 'N')       
+                where 1=1
+                GROUP BY
+                    NVL(B.STCNM,A.STOCK_NAME),
+                    to_char(A.TRNSCDATE, 'YYYY')
+                ORDER BY TRNSCDATE, NVL(B.STCNM,A.STOCK_NAME)
+	
+</select>
+</mapper>
