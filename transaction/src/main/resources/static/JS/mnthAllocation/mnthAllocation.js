@@ -22,7 +22,7 @@ function mnthAllocationBarChart(data) {
         ];
       }
       //console.log("1. " + JSON.stringify(dataValues));
-      const backgroundColor = chartColorr[data.indexOf(item)]; // Assuming chartColorr is defined elsewhere.
+      const backgroundColor = fn_chartColor[data.indexOf(item)]; // Assuming chartColorr is defined elsewhere.
       //console.log("2. " + JSON.stringify(backgroundColor));
       if(label != ""){
             dataArray.push({
@@ -70,47 +70,107 @@ function createBarChart(dataArray, months) {
   });
 }
 
+/**
+ * 상세 조회
+ * @param trnscdate     : 년도
+ * @param month         : 월
+ **/    
+function mnthDetail(trnscdate, month){
+    //TRNSCDATE
+    // 행 데이터를 저장할 JSON 객체 생성
+    var rowData = {};
+    rowData["trnscdate"]  = trnscdate + month + "";
+    console.log("Row Data: ", JSON.stringify(rowData));
+    //fetch API를 사용하여 POST 요청을 보냅니다
+    fetch002('/mnthAllocation/allocationDetail.do', "post", rowData); //url, method, body
+}
 
 
-const chartColor = [
-		 "rgba(18, 203, 87, 0.6)"
-		,"rgba(255, 97, 63, 0.2)"
-		,"rgba(74, 128, 255, 0.8)"
-		,"rgba(150, 50, 200, 0.4)"
-		,"rgba(10, 180, 130, 0.7)"
-		,"rgba(88, 40, 120, 0.5)"
-		,"rgba(200, 80, 40, 0.3)"
-		,"rgba(33, 150, 210, 0.9)"
-		,"rgba(255, 175, 0, 0.1)"
-		,"rgba(120, 60, 255, 0.6)"
-		,"rgba(48, 205, 112, 0.4)"
-		,"rgba(180, 20, 65, 0.8)"
-		,"rgba(100, 160, 240, 0.7)"
-		,"rgba(220, 90, 30, 0.5)"
-		,"rgba(5, 190, 175, 0.3)"
-		,"rgba(75, 130, 220, 0.9)"
-		,"rgba(255, 150, 20, 0.1)"
-		,"rgba(130, 80, 190, 0.6)"
-		,"rgba(55, 215, 100, 0.4)"
-		,"rgba(190, 10, 90, 0.8)"
-		,"rgba(80, 140, 250, 0.7)"
-		,"rgba(240, 100, 50, 0.5)"
-		,"rgba(15, 180, 160, 0.3)"
-		,"rgba(85, 125, 230, 0.9)"
-		,"rgba(255, 135, 10, 0.1)"
-		,"rgba(140, 70, 180, 0.6)"
-		,"rgba(35, 220, 125, 0.4)"
-		,"rgba(200, 30, 60, 0.8)"
-		,"rgba(120, 170, 230, 0.7)"
-		,"rgba(230, 110, 20, 0.5)"
-		,"rgba(25, 200, 145, 0.3)"
-		,"rgba(95, 120, 240, 0.9)"
-		,"rgba(255, 120, 0, 0.1)"
-		,"rgba(160, 90, 170, 0.6)"
-		,"rgba(45, 225, 80, 0.4)"
-		,"rgba(210, 40, 50, 0.8)"
-		,"rgba(110, 150, 220, 0.7)"
-		,"rgba(250, 120, 40, 0.5)"
-		,"rgba(35, 210, 150, 0.3)"
-		,"rgba(65, 110, 235, 0.9)"  
-];
+/**
+ * 콜백함수
+ * @param data     : 리턴값
+ **/    
+function fn_call(data){
+    if (isEmpty(data)) {
+        alert("조회 결과가 없습니다.");
+        return;
+    }
+    
+    var jsonData = JSON.stringify(data);
+    var obj = JSON.parse(jsonData);
+    
+    // 테이블 행을 담을 변수를 초기화합니다.
+    let tableRows = '';
+    
+    // `for` 루프를 사용하여 테이블 행을 생성합니다.
+    for (var i in obj) {
+        tableRows += `<tr>`
+        tableRows += `<td>${obj[i].TRNSCDATE}</td>`;       //날짜
+        if(!isEmpty(obj[i].STOCK_NAME)){
+            tableRows += `<td>${obj[i].STOCK_NAME}</td>`;    //주식명
+        }else{
+            tableRows += `<td></td>`;        //배당금
+        }       
+        if(!isEmpty(obj[i].DIVIDEND)){
+            tableRows += `<td>${obj[i].DIVIDEND}</td>`;        //배당금
+        }else{
+            tableRows += `<td></td>`;        //배당금
+        }
+        tableRows += `<td>${obj[i].AMOUNT}</td>`;          //거래금액
+        tableRows += `</tr>`
+    }
+    
+    // 모달을 생성하고 HTML 구조를 설정합니다.
+    const modal = document.createElement('div');
+    modal.classList.add('modal-background');
+    modal.innerHTML = `
+        <div class="modal-content02">
+            <div class="container01"> 
+                <div class="div_title01">년도 : ${obj[0].TRNSCDATE} </div>       
+                <div class="div_body01">
+                    <table>
+                        <thead class="text-center">
+                            <tr>
+                                <th >년도</th>
+                                <th >주식명</th>
+                                <th >배당금</th>
+                                <th >거래금액</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center" style="overflow-x:hidden; overflow-y:auto; height: 200px;">
+                            ${tableRows}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <button class="update-button">확인</button>
+                                </td>
+                            </tr>
+                         </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // 모달을 문서에 추가합니다.
+    document.body.appendChild(modal);
+    
+    // 모달에 클릭 이벤트를 추가합니다.
+    modal.addEventListener('click', handleButtonClick01);
+
+}
+const handleButtonClick01 = (event) => {
+  const { target } = event;
+  if (target.classList.contains('delete-button')) {
+    removeModal01();
+  } else if (target.classList.contains('update-button')) {
+    removeModal01();
+  }
+};
+
+const removeModal01 = () => {
+  const modal = document.querySelector('.modal-background');
+  document.body.removeChild(modal);
+};

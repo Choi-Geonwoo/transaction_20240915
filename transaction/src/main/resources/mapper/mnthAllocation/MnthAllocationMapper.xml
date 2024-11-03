@@ -4,38 +4,51 @@
 <!-- com.bank.transaction.mapper.stckInfo(주식정보) -->
 <mapper namespace="com.bank.transaction.mapper.mnthAllocation.MnthAllocationMapper">
 
-		<select id = "mnthAllocationSelect"  resultType="Map" parameterType="Map">
-		               SELECT /*SQL_ID :  MnthAllocationMapper.mnthAllocationSelect*/
-							DECODE(GROUPING(TO_CHAR(TRNSCDATE, 'YYYY')), 1, '합계', TO_CHAR(TRNSCDATE, 'YYYY')) AS TRNSCDATE,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '01' , AMOUNT, '0') ) AS JANUARY,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '02' , AMOUNT, '0') ) AS FEBRUARY,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '03' , AMOUNT, '0') ) AS MARCH,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '04' , AMOUNT, '0') ) AS APRIL,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '05' , AMOUNT, '0') ) AS MAY,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '06' , AMOUNT, '0') ) AS JUNE,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '07' , AMOUNT, '0') ) AS JULY,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '08' , AMOUNT, '0') ) AS AUGUST,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '09' , AMOUNT, '0') ) AS SEPTEMBER,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '10' , AMOUNT, '0') ) AS OCTOBER,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '11' , AMOUNT, '0') ) AS NOVEMBER,
-		                    SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '12' , AMOUNT, '0') ) AS DECEMBER,
-		                      SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '01' , AMOUNT, '0') )
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '02' , AMOUNT, '0') ) 
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '03' , AMOUNT, '0') ) 
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '04' , AMOUNT, '0') ) 
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '05' , AMOUNT, '0') ) 
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '06' , AMOUNT, '0') ) 
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '07' , AMOUNT, '0') ) 
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '08' , AMOUNT, '0') ) 
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '09' , AMOUNT, '0') ) 
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '10' , AMOUNT, '0') ) 
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '11' , AMOUNT, '0') ) 
-		                    + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '12' , AMOUNT, '0') ) 
-		                    AS ALL_SUM
-		                FROM
-		                    TRANSACTION
-		                WHERE 1=1
-		                GROUP BY ROLLUP(TO_CHAR(TRNSCDATE, 'YYYY'))
-		
-		</select>
+        <select id = "mnthAllocationSelect"  resultType="Map" parameterType="Map">
+                       SELECT /*SQL_ID :  MnthAllocationMapper.mnthAllocationSelect*/
+                        	DECODE(GROUPING(TO_CHAR(TRNSCDATE, 'YYYY')), 1, '합계', TO_CHAR(TRNSCDATE, 'YYYY')) AS TRNSCDATE,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '01' , AMOUNT, '0') ) AS JANUARY,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '02' , AMOUNT, '0') ) AS FEBRUARY,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '03' , AMOUNT, '0') ) AS MARCH,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '04' , AMOUNT, '0') ) AS APRIL,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '05' , AMOUNT, '0') ) AS MAY,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '06' , AMOUNT, '0') ) AS JUNE,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '07' , AMOUNT, '0') ) AS JULY,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '08' , AMOUNT, '0') ) AS AUGUST,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '09' , AMOUNT, '0') ) AS SEPTEMBER,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '10' , AMOUNT, '0') ) AS OCTOBER,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '11' , AMOUNT, '0') ) AS NOVEMBER,
+                            SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '12' , AMOUNT, '0') ) AS DECEMBER,
+                              SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '01' , AMOUNT, '0') )
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '02' , AMOUNT, '0') ) 
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '03' , AMOUNT, '0') ) 
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '04' , AMOUNT, '0') ) 
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '05' , AMOUNT, '0') ) 
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '06' , AMOUNT, '0') ) 
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '07' , AMOUNT, '0') ) 
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '08' , AMOUNT, '0') ) 
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '09' , AMOUNT, '0') ) 
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '10' , AMOUNT, '0') ) 
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '11' , AMOUNT, '0') ) 
+                            + SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '12' , AMOUNT, '0') ) 
+                            AS ALL_SUM
+                        FROM
+                            TRANSACTION
+                        WHERE 1=1
+                        GROUP BY ROLLUP(TO_CHAR(TRNSCDATE, 'YYYY'))
+        </select>
+        <select id = "mnthAllocationDetail"  resultType="Map" parameterType="Map">
+            SELECT /*SQL_ID :  MnthAllocationMapper.mnthAllocationDetail*/
+                DECODE(GROUPING_ID(TO_CHAR(TRNSCDATE, 'YYYYMMDD'), STOCK_NAME, DIVIDEND), 7, '합계',TO_CHAR(TRNSCDATE, 'YYYYMMDD')) AS TRNSCDATE,
+                STOCK_NAME,
+                DIVIDEND,
+                SUM(AMOUNT) AS AMOUNT
+            FROM
+                TRANSACTION
+            WHERE 1=1
+                AND TO_CHAR(TRNSCDATE, 'YYYYMM') = #{trnscdate}
+            GROUP BY
+                GROUPING SETS((TO_CHAR(TRNSCDATE, 'YYYYMMDD'), STOCK_NAME, DIVIDEND), ())
+            ORDER BY DECODE(TRNSCDATE, '합계', 99, TRNSCDATE) DESC
+        </select>
 </mapper>

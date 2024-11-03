@@ -1,67 +1,37 @@
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-th, td {
-    border: 1px solid black;
-    padding: 6px;
-    text-align: center;
-}
-th {
-    background-color: #f2f2f2;
+.div_body01 {
+    display: flex; /* 자식 요소들을 수평으로 나열 */
 }
 
-.full-width-input {
-  width: 20%; /* Makes the input fill the width of the table cell */
-  box-sizing: border-box; /* Ensures the input width includes padding and borders */
-  padding: 8px; /* Optional: Add some padding inside the input */
-  margin: 0; /* Removes margin */
-  border: 1px solid #ccc; /* Adds a border to the input */
-  border-radius: 4px; /* Optional: Adds a slight border radius */
-}
-
-.container01 {
-    width: 100%;
-    margin: 20px auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-.div_title01 {
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px;
-    background-color: #f0f0f0; /* 타이틀 배경색 */
-    border-bottom: 1px solid #ddd; /* 구분선 */
-}
-.form02 {
+.div_menu {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
+    flex-direction: column; /* 세로 방향으로 나열 */
+    margin-right: 20px; /* div_menu와 div_container_main 사이의 간격 조정 */
 }
-.form02 label {
-    font-size: 14px;
-    font-weight: bold;
+
+.div_container_main {
+    overflow-x: auto; /* 가로 스크롤 가능 */
+    white-space: nowrap; /* 내용이 한 줄로 나열되도록 설정 */
+    width: 1800px; /* 너비 설정 */
 }
-.form02 select,
-.form02 input[type="date"],
-.form02 button {
-    padding: 5px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+
+.div_content {
+    display: inline-block; /* 인라인 블록으로 설정하여 옆으로 나란히 배치 */
+    margin: 10px; /* 각 div_content 사이의 간격 조정 */
+    padding: 20px; /* 내부 여백 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    background-color: #f9f9f9; /* 배경색 */
+    min-width: 150px; /* 최소 너비 설정 */
 }
-.form02 button {
-    background-color: #555;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-weight: bold;
-}
-.form02 button:hover {
-    background-color: #333;
-}
-.div_body01{
-	margin: 10px;
+.div_menu{
+    display: inline-block; /* 인라인 블록으로 설정하여 옆으로 나란히 배치 */
+    margin: 20px; /* 각 div_content 사이의 간격 조정 */
+    padding: 20px; /* 내부 여백 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    background-color: #f9f9f9; /* 배경색 */
+    min-width: 50px; /* 최소 너비 설정 */
+    min-height: 300px;
+      /* 수평 중앙 정렬하기 */
+    text-align: center;
 }

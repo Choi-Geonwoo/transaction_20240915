@@ -3,9 +3,8 @@
 
 <!-- com.bank.transaction.mapper.stckInfo(주식정보) -->
 <mapper namespace="com.bank.transaction.mapper.allocation.AllocationMapper">
-
-		<select id = "allocationMapperSelect"  resultType="Map" parameterType="Map">
-				SELECT /* SQL_ID : AllocationMapper.allocationMapperSelect */
+       <select id = "allocationSelect"  resultType="Map" parameterType="Map">
+               SELECT /* SQL_ID : AllocationMapper.allocationMapperSelect */
                     NVL(B.STCNM,A.STOCK_NAME) AS STOCK_NAME,
                     to_char(A.TRNSCDATE, 'YYYY') AS TRNSCDATE,
                     sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '01' , AMOUNT, '0') ) AS january,
@@ -23,11 +22,40 @@
                 FROM
                     TRANSACTION A
                         LEFT JOIN STOCKINFORMATION B ON ( A.TIKER = B.TIKER AND B.USEYN = 'Y' AND B.DELYN = 'N')       
-                where 1=1
+                WHERE 1=1
+                   <if test="(stockName!=null and !''.equals(stockName))">
+                      AND NVL(B.STCNM,A.STOCK_NAME) = #{stockName}
+                   </if>
+                   <if test="(year!=null and !''.equals(year) and !'null'.equals(year))">
+                      AND to_char(A.TRNSCDATE, 'YYYY') = #{year}
+                   </if>
+                   <if test="(month!=null and !''.equals(month) and !'null'.equals(month))">
+                      AND to_char(A.TRNSCDATE, 'MM') = TO_CHAR(#{month}, '00')
+                   </if>
                 GROUP BY
                     NVL(B.STCNM,A.STOCK_NAME),
                     to_char(A.TRNSCDATE, 'YYYY')
                 ORDER BY TRNSCDATE, NVL(B.STCNM,A.STOCK_NAME)
-	
-</select>
+        </select>
+        
+        <select id = "allocationDetail"  resultType="Map" parameterType="Map">
+		SELECT
+			/* DividendMapper.allocationDetail */
+			A.NO
+			,NVL(B.STCNM, A.STOCK_NAME) AS STOCK_NAME
+			,TO_CHAR(A.TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE
+			,A.AMOUNT
+			,A.DIVIDEND
+		FROM
+			TRANSACTION A
+		LEFT JOIN STOCKINFORMATION B ON
+			( A.TIKER = B.TIKER
+				AND B.USEYN = 'Y'
+				AND B.DELYN = 'N')
+		WHERE
+			(A.STOCK_NAME = #{stockName}
+				OR B.STCNM = #{stockName})
+			AND A.TRNSCDATE BETWEEN TO_DATE(#{trnscdate}, 'yyyy-MM-dd') AND 
+		                            LAST_DAY(TO_DATE(#{trnscdate}, 'yyyy-MM-dd'))
+        </select>
 </mapper>

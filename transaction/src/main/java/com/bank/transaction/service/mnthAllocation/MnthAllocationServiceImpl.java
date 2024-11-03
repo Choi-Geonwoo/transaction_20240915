@@ -33,4 +33,9 @@ public class MnthAllocationServiceImpl implements MnthAllocationService {
 		return mnthAllocationMapper.mnthAllocationSelect(map);
 	}
 
+	@Override
+	public List<Map<String, Object>> mnthAllocationDetail(Map<String, Object> map) {
+		return mnthAllocationMapper.mnthAllocationDetail(map);
+	}
+
 }

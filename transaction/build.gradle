@@ -1,52 +1,55 @@
 plugins {
-	 id 'java' //아파치 톰캣 변경
-	//id 'war' // war로 패키징 명시
-	id 'org.springframework.boot' version '3.3.3'
-	id 'io.spring.dependency-management' version '1.1.6'
+    id 'java' // 아파치 톰캣 변경
+    // id 'war' // war로 패키징 명시
+    id 'org.springframework.boot' version '3.3.3'
+    id 'io.spring.dependency-management' version '1.1.6'
 }
 
 group = 'com.bank'
 version = '0.0.1-SNAPSHOT'
 
-//bootWar.enabled = false // bootWar : 내장 톰캣 어플리케이션으로 실행이 가능하도록 패키징하는 task (단독 실행 가능)
-//war.enabled = true //war : 외장 톰캣 서버에 배포할 목적으로 패키징하는 task (단독 실행 불가능)
+// bootWar.enabled = false // bootWar : 내장 톰캣 어플리케이션으로 실행이 가능하도록 패키징하는 task (단독 실행 가능)
+// war.enabled = true // war : 외장 톰캣 서버에 배포할 목적으로 패키징하는 task (단독 실행 불가능)
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	//내장톰캣이 외부톰캣에 영향을 주지 않도록 providedRuntime으로 명시해주어야 함
-	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat' 
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
-	implementation 'org.springframework.session:spring-session-core'
-    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'  /* Log4JDBC */
-    implementation 'org.springframework.boot:spring-boot-starter-aop' /* AOP 적용*/
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	compile('org.springframework.boot:spring-boot-starter-aop')
-  	compile group: 'com.google.guava', name: 'guava', version: '21.0'
+    // 내장 톰캣이 외부 톰캣에 영향을 주지 않도록 providedRuntime으로 명시
+    // providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+    implementation 'org.springframework.session:spring-session-core'
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'  // Log4JDBC
+    implementation 'org.springframework.boot:spring-boot-starter-aop' // AOP 적용
+    
+    // 아래 두 줄의 compile을 implementation으로 변경
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation group: 'com.google.guava', name: 'guava', version: '21.0'
+    
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

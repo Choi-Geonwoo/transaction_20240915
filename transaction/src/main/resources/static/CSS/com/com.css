@@ -53,3 +53,168 @@
 	border-radius: 1em;
 }
 /* DIV 테두리 */
+
+
+
+/*********** 테이블 *********************/
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid black;
+    padding: 6px;
+    text-align: center;
+}
+th {
+    background-color: #f2f2f2;
+}
+/*********** 테이블 *********************/
+
+/*********** 입력칸 *********************/
+.full-width-input {
+  width: 100%; /* Makes the input fill the width of the table cell */
+  box-sizing: border-box; /* Ensures the input width includes padding and borders */
+  padding: 8px; /* Optional: Add some padding inside the input */
+  margin: 0; /* Removes margin */
+  border: 1px solid #ccc; /* Adds a border to the input */
+  border-radius: 4px; /* Optional: Adds a slight border radius */
+}
+
+.full-width-input01 {
+  width: 10%; /* Makes the input fill the width of the table cell */
+  box-sizing: border-box; /* Ensures the input width includes padding and borders */
+  padding: 8px; /* Optional: Add some padding inside the input */
+  margin: 0; /* Removes margin */
+  border: 1px solid #ccc; /* Adds a border to the input */
+  border-radius: 4px; /* Optional: Adds a slight border radius */
+}
+
+.full-width-input02 {
+  width: 20%; /* Makes the input fill the width of the table cell */
+  box-sizing: border-box; /* Ensures the input width includes padding and borders */
+  padding: 8px; /* Optional: Add some padding inside the input */
+  margin: 0; /* Removes margin */
+  border: 1px solid #ccc; /* Adds a border to the input */
+  border-radius: 4px; /* Optional: Adds a slight border radius */
+}
+
+.full-width-input01_data {
+    /* Add your styles here */
+    color: #333;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+}
+.full-width-input09_data {
+    /* Add your styles here */
+    width: 91%;
+    color: #333;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+}
+/*********** 입력칸 *********************/
+.container01 {
+    width: 100%;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.div_title01 {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #f0f0f0; /* 타이틀 배경색 */
+    border-bottom: 1px solid #ddd; /* 구분선 */
+}
+
+.div_body01{
+	margin: 10px;
+}
+
+
+/*********** form *********************/
+.form02 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+.form02 label {
+    font-size: 14px;
+    font-weight: bold;
+}
+.form02 select,
+.form02 input[type="date"],
+.form02 button {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.form02 button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.form02 button:hover {
+    background-color: #333;
+}
+/*********** form *********************/
+
+/*********** 버튼 *********************/
+.update-button {
+    background-color:  #45a049; /* 수정 버튼 배경색 */
+    color: white; /* 글자 색 */
+    border: none; /* 테두리 제거 */
+    padding: 5px 15px; /* 내부 여백 */
+    cursor: pointer; /* 포인터 효과 */
+    border-radius: 5px; /* 둥근 모서리 */
+    font-size: 12px; /* 글자 크기 */
+    transition: background-color 0.3s; /* 배경색 변화 효과 */
+}
+
+.update-button:hover {
+    background-color: #45a049; /* 수정 버튼 호버 시 색상 변화 */
+}
+
+
+
+.delete-button {
+    background-color: #dc3545; /* 삭제 버튼 배경색 */
+    color: white; /* 글자 색 */
+    border: none; /* 테두리 제거 */
+    padding: 5px 15px; /* 내부 여백 */
+    cursor: pointer; /* 포인터 효과 */
+    border-radius: 5px; /* 둥근 모서리 */
+    font-size: 12px; /* 글자 크기 */
+    transition: background-color 0.3s; /* 배경색 변화 효과 */
+}
+
+.delete-button:hover {
+    background-color: #c82333; /* 삭제 버튼 호버 시 색상 변화 */
+}
+
+/*********** 버튼 *********************/
+
+
+/*********** 버튼 이벤트 *********************/
+/* 클릭 불가 영역 */
+.container-able {
+  /* 클릭 가능 auto (기본설정)*/
+  pointer-events : auto;
+  cursor:pointer;
+}
+/* 클릭 영역 */
+.container-disable { 
+  /* 클릭 불가능 none */
+  pointer-events : none;
+}
+/*********** 버튼 이벤트 *********************/
+
+

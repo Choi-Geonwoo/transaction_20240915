@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
-    <title>주식정보</title>		 	
+    <title>주식정보</title>		 	    
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">     
 	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
 	<link rel="stylesheet" type="text/css" th:href="@{/CSS/mnthAllocation/mnthAllocation.css}">    
-    <script type="text/javascript" th:src="@{/JS/com/modal.js}"></script>	
+    <script type="text/javascript" th:src="@{/JS/utlt/modal.js}"></script>	
 	<script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
 	<script type="text/javascript" th:src="@{/JS/mnthAllocation/mnthAllocation.js}"></script>  
 	<!--차트-->
@@ -53,20 +54,20 @@
 			  </thead>
 			  <tbody class="text-center">
 			    <tr  th:each="mSelect : ${mSelect}">    
-			          <!--년도--><td  th:text="${mSelect.TRNSCDATE}"></td>
-			          <!--1월--><td  th:text="${mSelect.JANUARY}"></td>
-			          <!--2월--> <td  th:text="${mSelect.FEBRUARY}"></td>
-			          <!--3월--> <td  th:text="${mSelect.MARCH}"></td>
-			          <!--4월--> <td  th:text="${mSelect.APRIL}"></td>
-			          <!--5월--> <td  th:text="${mSelect.MAY}"></td>
-			          <!--6월--> <td  th:text="${mSelect.JUNE}" ></td>
-			          <!--7월--> <td  th:text="${mSelect.JULY}" ></td>
-			          <!--8월--> <td  th:text="${mSelect.AUGUST}" ></td>
-			          <!--9월--> <td  th:text="${mSelect.SEPTEMBER}" ></td>
-			          <!--10월--><td  th:text="${mSelect.OCTOBER}" ></td>
-			          <!--11월--><td  th:text="${mSelect.NOVEMBER}" ></td>
-			          <!--12월--><td  th:text="${mSelect.DECEMBER}" ></td>
-			          <!--12월--><td  th:text="${mSelect.ALL_SUM}" ></td>
+                    <!--년도--><td  th:text="${mSelect.TRNSCDATE}"></td>
+                    <!--1월--> <td   th:text="${mSelect.JANUARY}" th:classappend="${mSelect.JANUARY   eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '01')"></td>
+                    <!--2월--> <td  th:text="${mSelect.FEBRUARY}" th:classappend="${mSelect.FEBRUARY  eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '02')"></td>
+                    <!--3월--> <td  th:text="${mSelect.MARCH}"    th:classappend="${mSelect.MARCH     eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '03')"></td>
+                    <!--4월--> <td  th:text="${mSelect.APRIL}"    th:classappend="${mSelect.APRIL     eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '04')"></td>
+                    <!--5월--> <td  th:text="${mSelect.MAY}"      th:classappend="${mSelect.MAY       eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '05')"></td>
+                    <!--6월--> <td  th:text="${mSelect.JUNE}"     th:classappend="${mSelect.JUNE      eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '06')" ></td>
+                    <!--7월--> <td  th:text="${mSelect.JULY}"     th:classappend="${mSelect.JULY      eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '07')"></td>
+                    <!--8월--> <td  th:text="${mSelect.AUGUST}"   th:classappend="${mSelect.AUGUST    eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '08')"></td>
+                    <!--9월--> <td  th:text="${mSelect.SEPTEMBER}"th:classappend="${mSelect.SEPTEMBER eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '09')"></td>
+                    <!--10월--><td  th:text="${mSelect.OCTOBER}"  th:classappend="${mSelect.OCTOBER   eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '10')"></td>
+                    <!--11월--><td  th:text="${mSelect.NOVEMBER}" th:classappend="${mSelect.NOVEMBER  eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '11')"></td>
+                    <!--12월--><td  th:text="${mSelect.DECEMBER}" th:classappend="${mSelect.DECEMBER  eq 0} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '12')"></td>
+                    <!--합계--> <td th:text="${mSelect.ALL_SUM}"  ></td>
 			    </tr>
 			  </tbody>
 			</table>

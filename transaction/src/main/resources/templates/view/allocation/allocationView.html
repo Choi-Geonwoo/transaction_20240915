@@ -3,84 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
-    <title>거래정보</title>		
-	<link rel="stylesheet" type="text/css" th:href="@{/CSS/allocation/allocation.css}">    	
-	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">    	
-	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
-    <script type="text/javascript" th:src="@{/JS/com/modal.js}"></script>	
-	<script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
+    <title>거래정보</title>        
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/allocation/allocation.css}">        
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">        
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
+    <script type="text/javascript" th:src="@{/JS/utlt/modal.js}"></script>    
+    <script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
+    <script type="text/javascript" th:src="@{/JS/allocation/allocation.js}"></script>  
+    <!--차트-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+      window.onload = function(){
+        const data = /*[[${aSelect}]]*/;
+        allocationBarChart(data);
+      }
+    
+    </script>
 </head>
 <body>
-	<h4>
+    <h4>
         <ul class="nav flex-column" th:replace="view/layout/menuBar.html"></ul>
     </h4>
-	
-	<div class="container01"> 
-	<div class="div_title01">검색영역</div>  
-	</div>
-	
-	<div class="container01">	
-	<div class="div_title01">조회영역</div>  		
-	  <div class="div_body01">
-		
-		<table>
-		  <thead>
-		      <tr>                
-				<!--년도--><th style="border:none;">년도</th>
-				<!--항목--><th style="border:none;">항목</th>
-				<!--1월--> <th style="border:none;">01월</th>
-				<!--2월--> <th style="border:none;">02월</th>
-				<!--3월--> <th style="border:none;">03월</th>
-				<!--4월--> <th style="border:none;">04월</th>
-				<!--5월--> <th style="border:none;">05월</th>
-				<!--6월--> <th style="border:none;">06월</th>
-				<!--7월--> <th style="border:none;">07월</th>
-				<!--8월--> <th style="border:none;">08월</th>
-				<!--9월--> <th style="border:none;">09월</th>
-				<!--10월--><th style="border:none;">10월</th>
-				<!--11월--><th style="border:none;">11월</th>
-				<!--12월--><th style="border:none;">12월</th>
-				<!--합계--><th style="border:none;">합계</th>
-		      </tr>
-		  </thead>
-		  <tbody>
-			<tr  th:each="aSelect : ${aSelect}">    
-			      <!--년도--><td scope="col"><label th:text="${aSelect.TRNSCDATE}"></label></td>
-			      <!--항목--><td th:text="${aSelect.STOCK_NAME}"></td>
-			      <!--1월--> <td class="JANUARY"   th:classappend="${aSelect.JANUARY eq 0}   ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.JANUARY}"></td>
-			      <!--2월--> <td class="FEBRUARY"  th:classappend="${aSelect.FEBRUARY eq 0}  ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.FEBRUARY}"></td>
-			      <!--3월--> <td class="MARCH"     th:classappend="${aSelect.MARCH eq 0}     ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.MARCH}"></td>
-			      <!--4월--> <td class="APRIL"     th:classappend="${aSelect.APRIL eq 0}     ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.APRIL}"></td>
-			      <!--5월--> <td class="MAY"       th:classappend="${aSelect.MAY eq 0}       ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.MAY}"></td>
-			      <!--6월--> <td class="JUNE"      th:classappend="${aSelect.JUNE eq 0}      ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.JUNE}" ></td>
-			      <!--7월--> <td class="JULY"      th:classappend="${aSelect.JULY eq 0}      ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.JULY}" ></td>
-			      <!--8월--> <td class="AUGUST"    th:classappend="${aSelect.AUGUST eq 0}    ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}" th:text="${aSelect.AUGUST}" ></td>
-			      <!--9월--> <td class="SEPTEMBER" th:classappend="${aSelect.SEPTEMBER eq 0} ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}"  th:text="${aSelect.SEPTEMBER}" ></td>
-			      <!--10월--><td class="OCTOBER"   th:classappend="${aSelect.OCTOBER eq 0}   ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}"  th:text="${aSelect.OCTOBER}" ></td>
-			      <!--11월--><td class="NOVEMBER"  th:classappend="${aSelect.NOVEMBER eq 0}  ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}"  th:text="${aSelect.NOVEMBER}" ></td>
-			      <!--12월--><td class="DECEMBER"  th:classappend="${aSelect.DECEMBER eq 0}  ? td_disable : td_hove" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#updateModal2" th:attr="data-bs-whatever=${aSelect}"  th:text="${aSelect.DECEMBER}" ></td>
-			      <!--합계--><td th:text="${
-			        aSelect.JANUARY 
-			        + aSelect.FEBRUARY
-			        + aSelect.MARCH
-			        + aSelect.APRIL
-			        + aSelect.MAY
-			        + aSelect.JUNE
-			        + aSelect.JULY
-			        + aSelect.AUGUST
-			        + aSelect.SEPTEMBER
-			        + aSelect.OCTOBER
-			        + aSelect.NOVEMBER
-			        + aSelect.DECEMBER
-			      }" ></td>
-			</tr>
-		  </tbody>
-		</table>
-		
-	  </div>
-	</div>
-	
-
-	
+    
+    <div class="container01"> 
+    <div class="div_title01">검색영역</div>          
+        <div class="div_body01">
+            <form class="form02"  th:action="@{/allocation/allocationSearch.do}" method="get">
+                <label for="년도">년도 :</label>
+                <select name="year">                   
+                    <option value="null">전체</option>
+                    <option th:each="i : ${#numbers.sequence(2020, #dates.year(#dates.createNow()))}" th:value="${i}" th:text="${i}">   </option>
+                </select>
+                <label for="월">월 :</label>
+                <select name="year">
+                    <option value="null">전체</option>
+                    <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i + '월'}"></option>
+                </select>
+                <label for="주식명">주식명 :</label>
+                <input name="stockName"type="text" class="full-width-input02">                
+                <button  class="search-button">검색</button><!--                    onclick="search()"-->
+            </form>
+        </div>
+    </div>
+    
+    <div class="container01">    
+        <div class="div_title01">조회영역</div>          
+            <div class="div_body01">
+                    <div  class="div_menu" style="display: inline-block;">
+                                                <div>년도 </div>
+                                                <div>항목</div>
+                                                <div>01월</div>
+                                                <div>02월</div>
+                                                <div>03월</div>
+                                                <div>04월</div>
+                                                <div>05월</div>
+                                                <div>06월</div>
+                                                <div>07월</div>
+                                                <div>08월</div>
+                                                <div>09월</div>
+                                                <div>10월</div>
+                                                <div>11월</div>
+                                                <div>12월</div>
+                    </div>
+                    <div class="div_container_main" style="overflow-x: auto; white-space: nowrap;">
+                        
+                        <div th:each="aSelect : ${aSelect}" class="div_content">
+                            <div th:text="${aSelect.TRNSCDATE}"    ></div>
+                            <div th:text="${aSelect.STOCK_NAME}" ></div>
+                            <div th:text="${aSelect.JANUARY}"   th:classappend="${aSelect.JANUARY   eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '01')"></div>
+                            <div th:text="${aSelect.FEBRUARY}"  th:classappend="${aSelect.FEBRUARY  eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '02')"></div>
+                            <div th:text="${aSelect.MARCH}"     th:classappend="${aSelect.MARCH     eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '03')"></div>
+                            <div th:text="${aSelect.APRIL}"     th:classappend="${aSelect.APRIL     eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '04')"></div>
+                            <div th:text="${aSelect.MAY}"       th:classappend="${aSelect.MAY       eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '05')"></div>
+                            <div th:text="${aSelect.JUNE}"      th:classappend="${aSelect.JUNE      eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '06')"></div>
+                            <div th:text="${aSelect.JULY}"      th:classappend="${aSelect.JULY      eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '07')"></div>
+                            <div th:text="${aSelect.AUGUST}"    th:classappend="${aSelect.AUGUST    eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '08')"></div>
+                            <div th:text="${aSelect.SEPTEMBER}" th:classappend="${aSelect.SEPTEMBER eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '09')"></div>
+                            <div th:text="${aSelect.OCTOBER}"   th:classappend="${aSelect.OCTOBER   eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '10')"></div>
+                            <div th:text="${aSelect.NOVEMBER}"  th:classappend="${aSelect.NOVEMBER  eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '11')"></div>
+                            <div th:text="${aSelect.DECEMBER}"  th:classappend="${aSelect.DECEMBER  eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '12')"></div>
+                        </div>
+            </div>
+      </div>
+      <!-- 바차트 시작-->
+        <br>
+        <div  th:if="${!#lists.isEmpty(aSelect)}" class="container">
+          <canvas id="bar_chart"></canvas>
+        </div>
+        <!-- 바차트 종료-->
+    </div><!--   container01 end -->
+    
 </body>
 </html>

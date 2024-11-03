@@ -1,9 +1,15 @@
 package com.bank.transaction.controller.allocation;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bank.transaction.service.allocation.AllocationService;
 
@@ -25,16 +31,42 @@ public class AllocationController {
     private AllocationService allocationService;
 
 	/**
-	* @methodName    : stckDlngView(주식거래화면 페이징 추가)
+	* @methodName    : allocationView(주식거래화면 추가)
 	* @author        : Jihun Park
 	* @date          : 2024.09.15
 	* @return
 	*/
 	@GetMapping("/allocation/allocationView")
 	public String allocationView(Model model) {
-        
-		model.addAttribute("aSelect", allocationService.allocationMapperSelect(null));
+		model.addAttribute("aSelect", allocationService.allocationSelect(null));
 		//return "index";
 		return "view/allocation/allocationView";
 	}
+
+	/**
+	* @methodName    : allocation(주식거래화면 검색 페이징 추가)
+	* @author        : Jihun Park
+	* @date          : 2024.09.15
+	* @return
+	*/
+	@GetMapping("/allocation/allocationSearch.do")
+	public String allocation(@RequestParam Map<String, Object> data, Model model) {
+		model.addAttribute("aSelect", allocationService.allocationSelect(data));
+		//return "index";
+		return "view/allocation/allocationView";
+	}
+	
+    /**
+	* @methodName    : allocationView(주식거래 상세 조회)
+	* @author        : Jihun Park
+	* @date          : 2024.09.15
+	* @return
+    */
+    @PostMapping("/stckDlng/allocationDetail.do" )
+    public ResponseEntity<Map> allocationDetail(@RequestBody Map<String, Object> map, Model model){
+        Map<String, Object> mapData = allocationService.allocationDetail(map);
+        return ResponseEntity.ok().header("Content-Type", "application/json").body(mapData);
+    }
+    
+
 }
