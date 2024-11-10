@@ -57,7 +57,7 @@
                                     <!--<input type="text" placeholder="주식명"        id="STCNM"   name="STCNM">    -->
                                     <select id="STCNM_SELECT_BOX"  name="STCNM_SELECT_BOX" onchange="updateDividendCycle01()" class="full-width-input">
                                         <option value="">선택</option>
-                                        <th:block th:if="${stckInfoInq.size() != 0}">
+                                        <th:block th:if="${!#lists.isEmpty(stckInfoInq)}">
                                             <option th:each="stckList : ${stckInfoInq}" th:value="${stckList.TIKER}" th:text="${stckList.STCNM}">
                                         </th:block>
                                     </select>
@@ -66,7 +66,7 @@
                                     <!--<input type="text"       id="TIKER"   name="TIKER">-->    
                                     <select id="TIKER_SELECT_BOX"  name="TIKER_SELECT_BOX" class="full-width-input" disabled>
                                         <option value="">선택</option>
-                                        <th:block th:if="${stckInfoInq.size() != 0}">
+                                        <th:block th:if="${!#lists.isEmpty(stckInfoInq)}">
                                             <option th:each="stckList : ${stckInfoInq}" th:value="${stckList.TIKER}" th:text="${stckList.TIKER}">
                                         </th:block>
                                     </select>
@@ -79,7 +79,7 @@
                                     <!--<input type="text" placeholder="주식명"        id="STCNM"   name="STCNM">    -->
                                     <select id="DVDNCYC_SELECT_BOX"  name="DVDNCYC_SELECT_BOX" class="full-width-input" disabled>
                                         <option value="">선택</option>
-                                        <th:block th:if="${stckInfoInq.size() != 0}">
+                                        <th:block th:if="${!#lists.isEmpty(stckInfoInq)}">
                                             <option th:each="stckList : ${stckInfoInq}" th:value="${stckList.DVDNCYC}" th:text="${stckList.DVDNCYC}">
                                         </th:block>
                                     </select>
@@ -87,7 +87,7 @@
                                 <td>                    <!--배당금 -->
                                 <select id="DVDN_SELECT_BOX"  name="DVDN_SELECT_BOX" class="full-width-input" disabled>
                                     <option value="">선택</option>
-                                    <th:block th:if="${stckInfoInq.size() != 0}">
+                                    <th:block th:if="${!#lists.isEmpty(stckInfoInq)}">
                                         <option th:each="stckList : ${stckInfoInq}" th:value="${stckList.DVDN}" th:text="${stckList.DVDN}">
                                     </th:block>
                                 </select>
@@ -110,7 +110,7 @@
        <form class="form02"  th:action="@{/stckDlng/stckDlngSelectPage.do}" method="get">      
             <label for="구분">구분 :</label>
                     <select name="S_CMPR" id="S_CMPR"         class="full-width-input01">
-                      <option value=""                    th:selected="'' == ${parameter?.S_CMPR}">전체</option>                            
+                      <option value=""                th:selected="'' == ${parameter?.S_CMPR}">전체</option>                            
                       <option value="1"               th:selected="'1' == ${parameter?.S_CMPR}">연금저축</option>                            
                       <option value="2"               th:selected="'2' == ${parameter?.S_CMPR}">퇴직연금</option>                          
                       <option value="3"               th:selected="'3' == ${parameter?.S_CMPR}">일반계좌</option>
@@ -129,17 +129,19 @@
                   
             <label for="배당주기">배당주기</label>
                   <input type="text"  name="S_DVDNCYC" placeholder="배당주기" class="full-width-input01">
-
                   <button  class="search-button">검색</button><!--                    onclick="search()"-->
-
            </div>
          </form>   
      </div>
    </div>
      
- <div class="container01"> 
-       <div class="div_title01"     th:text="'조회 영역 총 건수 : ' + ${stckDlngSelect[0].TOTALPAGES}">등록영역</div>
-    
+ <div class="container01">    
+   <th:block th:if="${!#lists.isEmpty(stckDlngSelect)}">
+       <div class="div_title01" th:text="'조회 영역 총 건수 : ' + ${stckDlngSelect[0].TOTALPAGES}">등록영역</div>
+   </th:block>
+   <th:block th:if="${#lists.isEmpty(stckDlngSelect)}">
+       <div class="div_title01" th:text="'조회 영역 총 건수 : ' + 0">등록영역</div>
+   </th:block>
     <div class="div_body01">
     <table id='stckDlngSelect'>
         <thead>
@@ -154,7 +156,7 @@
                 <th name="U_DVDN">배당금</th>
                 <th name="U_DLNGAMT">1년치<br>배당(예상)</th>
                 <th style="width: 140px;">구분</th>
-                <th>등록일자</th>
+                <!--<th>등록일자</th>-->
                 <th>수정일자</th>
             </tr>
         </thead>
@@ -190,7 +192,7 @@
                     <select class="full-width-input" id="U_STCNM_SELECT_BOX" name="U_STCNM_SELECT_BOX"
                         onchange="updateDividendCycle03(event)">
                         <option value="">선택</option>
-                        <th:block th:if="${stckInfoInq.size() != 0}">
+                        <th:block th:if="${!#lists.isEmpty(stckInfoInq)}">
                             <option th:each="stckList : ${stckInfoInq}" th:value="${stckList.TIKER}"
                                 th:text="${stckList.STCNM}" th:selected="${stckList.STCNM} == ${stckDlng.STCNM}">
                         </th:block>
@@ -219,8 +221,8 @@
                     <input type="button" value="삭제" onclick="rowUpdateClicked01('#stckDlngSelect', this, 'Y')"
                         class="    delete-button">
                 </td>
-                <td th:text="${stckDlng.REGYMD}"> <!-- 등록일자      -->
-                </td>
+                <!--<td th:text="${stckDlng.REGYMD}">  등록일자      
+                </td>-->
                 <td th:text="${stckDlng.MDFCNYMD}"> <!-- 수정일자      -->
                 </td>
             </tr>
@@ -228,7 +230,8 @@
     </table>
 
     <br>
-    <!-- 페이징 처리 -->
+    <!-- 페이징 처리 -->    
+    <th:block th:if="${!#lists.isEmpty(stckDlngSelect)}">
     <nav aria-label="Page navigation example" >
        <ul class="pagination justify-content-center">
         <!--맨 처음 페이지로 이동하는 버튼 -->
@@ -261,6 +264,7 @@
        </li>
       </ul>
     </nav>       
+    </th:block>
     <!-- 페이징 처리 -->
     </div>
  </div>   

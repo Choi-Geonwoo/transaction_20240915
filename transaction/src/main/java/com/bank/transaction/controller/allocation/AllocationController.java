@@ -1,5 +1,6 @@
 package com.bank.transaction.controller.allocation;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bank.transaction.service.allocation.AllocationService;
+import com.bank.transaction.uitle.Data;
 
 /**
 * @packageName    : com.bank.transaction.controller.allocation(거래정보)
@@ -38,7 +40,11 @@ public class AllocationController {
 	*/
 	@GetMapping("/allocation/allocationView")
 	public String allocationView(Model model) {
-		model.addAttribute("aSelect", allocationService.allocationSelect(null));
+		Map<String, Object> data = new HashMap();
+		data.put("year", String.valueOf(Data.todayDateFormat("year")));
+		data.put("month", String.valueOf(Data.todayDateFormat("month")));
+		model.addAttribute("aSelect", allocationService.allocationSelect(data));
+        model.addAttribute("parameter", data);
 		//return "index";
 		return "view/allocation/allocationView";
 	}
@@ -51,6 +57,7 @@ public class AllocationController {
 	*/
 	@GetMapping("/allocation/allocationSearch.do")
 	public String allocation(@RequestParam Map<String, Object> data, Model model) {
+        model.addAttribute("parameter", data);
 		model.addAttribute("aSelect", allocationService.allocationSelect(data));
 		//return "index";
 		return "view/allocation/allocationView";

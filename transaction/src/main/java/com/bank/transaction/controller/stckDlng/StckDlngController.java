@@ -113,7 +113,7 @@ public class StckDlngController {
 	* @date          : 2024.09.16
 	* @return		 : 주식거래정보
 	*/
-    @PostMapping("/stckDlng/allocationSearch.do" )
+    @PostMapping("/stckDlng/stckDlngInsert.do" )
     public String stckDlngInsert(@RequestParam Map<String, Object> stockData, Model model){
         //log.info("========================= > stckDlngInsert");
         //log.info("========================= > value " + stockData.toString());

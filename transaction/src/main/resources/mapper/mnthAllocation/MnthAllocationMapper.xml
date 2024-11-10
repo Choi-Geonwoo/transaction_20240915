@@ -5,7 +5,7 @@
 <mapper namespace="com.bank.transaction.mapper.mnthAllocation.MnthAllocationMapper">
 
         <select id = "mnthAllocationSelect"  resultType="Map" parameterType="Map">
-                       SELECT /*SQL_ID :  MnthAllocationMapper.mnthAllocationSelect*/
+                       SELECT /*SQL_ID :  MnthAllocationMapper.mnthAllocationSelect ::: 월간 배당 내역*/
                         	DECODE(GROUPING(TO_CHAR(TRNSCDATE, 'YYYY')), 1, '합계', TO_CHAR(TRNSCDATE, 'YYYY')) AS TRNSCDATE,
                             SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '01' , AMOUNT, '0') ) AS JANUARY,
                             SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '02' , AMOUNT, '0') ) AS FEBRUARY,
@@ -38,17 +38,33 @@
                         GROUP BY ROLLUP(TO_CHAR(TRNSCDATE, 'YYYY'))
         </select>
         <select id = "mnthAllocationDetail"  resultType="Map" parameterType="Map">
-            SELECT /*SQL_ID :  MnthAllocationMapper.mnthAllocationDetail*/
-                DECODE(GROUPING_ID(TO_CHAR(TRNSCDATE, 'YYYYMMDD'), STOCK_NAME, DIVIDEND), 7, '합계',TO_CHAR(TRNSCDATE, 'YYYYMMDD')) AS TRNSCDATE,
+            SELECT
+                DECODE(GROUPING_ID(TRNSCDATE, STOCK_NAME, DIVIDEND), 7, '합계', TRNSCDATE) AS TRNSCDATE,
                 STOCK_NAME,
                 DIVIDEND,
                 SUM(AMOUNT) AS AMOUNT
-            FROM
-                TRANSACTION
-            WHERE 1=1
-                AND TO_CHAR(TRNSCDATE, 'YYYYMM') = #{trnscdate}
+            FROM (
+            
+                SELECT
+                    /*SQL_ID :  MnthAllocationMapper.mnthAllocationDetail ::: 월간 배당 내역 상세*/
+                    TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE,
+                    STOCK_NAME,
+                    DIVIDEND,
+                    AMOUNT
+                FROM
+                    TRANSACTION
+                WHERE
+                    1 = 1
+                    AND TO_CHAR(TRNSCDATE, 'YYYYMM') = #{trnscdate}
+            )
             GROUP BY
-                GROUPING SETS((TO_CHAR(TRNSCDATE, 'YYYYMMDD'), STOCK_NAME, DIVIDEND), ())
-            ORDER BY DECODE(TRNSCDATE, '합계', 99, TRNSCDATE) DESC
+                GROUPING SETS
+                (
+                    (TRNSCDATE,
+                    STOCK_NAME,
+                    DIVIDEND),
+                    ()
+                )
+            ORDER BY TRNSCDATE ASC
         </select>
 </mapper>

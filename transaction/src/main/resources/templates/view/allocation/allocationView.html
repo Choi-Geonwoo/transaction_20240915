@@ -26,18 +26,53 @@
     </h4>
     
     <div class="container01"> 
-    <div class="div_title01">검색영역</div>          
+    <div class="div_title01">검색영역</div>
         <div class="div_body01">
             <form class="form02"  th:action="@{/allocation/allocationSearch.do}" method="get">
                 <label for="년도">년도 :</label>
-                <select name="year">                   
-                    <option value="null">전체</option>
-                    <option th:each="i : ${#numbers.sequence(2020, #dates.year(#dates.createNow()))}" th:value="${i}" th:text="${i}">   </option>
+                <select name="year">
+                    <option value="null">전체</option>                    
+                    <th:block th:if="${'null' != parameter.year}">                    
+                        <option th:each="i : ${#numbers.sequence(2020, #dates.year(#dates.createNow()))}"
+                               th:value="${i}" th:text="${i}"
+                               th:selected="${parameter != null and i == T(java.lang.Integer).parseInt(parameter.year)}">
+                        </option>
+                    </th:block>
+                    <th:block th:if="${'null' == parameter.year}">                    
+                        <option th:each="i : ${#numbers.sequence(2020, #dates.year(#dates.createNow()))}"
+                               th:value="${i}" th:text="${i}">
+                        </option>
+                    </th:block>
                 </select>
                 <label for="월">월 :</label>
-                <select name="year">
+                <select name="month">
                     <option value="null">전체</option>
-                    <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i + '월'}"></option>
+                    <th:block th:if="${'null' != parameter.month}">
+                        <option th:each="i : ${#numbers.sequence(1, 12)}" 
+                               th:value="${i}" 
+                               th:text="${i + '월'}"
+                               th:selected="${parameter != null and i == T(java.lang.Integer).parseInt(parameter?.month)}">
+                        </option>
+                    </th:block>
+                    <th:block th:if="${'null' == parameter.month}">
+                        <option th:each="i : ${#numbers.sequence(1, 12)}" 
+                               th:value="${i}" 
+                               th:text="${i + '월'}">
+                        </option>
+                    </th:block>
+<!--                    <th:block th:if="${'null' != parameter}">                    
+                        <option th:each="i : ${#numbers.sequence(1, 12)}" 
+                               th:value="${i}" 
+                               th:text="${i + '월'}"
+                               th:selected="${parameter != null and i == T(java.lang.Integer).parseInt(parameter?.month)}">
+                        </option>
+                    </th:block>
+                    <th:block th:if="${'null' == parameter}">                    
+                        <option th:each="i : ${#numbers.sequence(1, 12)}" 
+                               th:value="${i}" 
+                               th:text="${i + '월'}">
+                        </option>
+                    </th:block>-->
                 </select>
                 <label for="주식명">주식명 :</label>
                 <input name="stockName"type="text" class="full-width-input02">                

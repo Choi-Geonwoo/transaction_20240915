@@ -30,7 +30,8 @@
                       AND to_char(A.TRNSCDATE, 'YYYY') = #{year}
                    </if>
                    <if test="(month!=null and !''.equals(month) and !'null'.equals(month))">
-                      AND to_char(A.TRNSCDATE, 'MM') = TO_CHAR(#{month}, '00')
+                      AND to_char(A.TRNSCDATE, 'MM') = LPAD(#{month}, 2, '0')
+                      
                    </if>
                 GROUP BY
                     NVL(B.STCNM,A.STOCK_NAME),
