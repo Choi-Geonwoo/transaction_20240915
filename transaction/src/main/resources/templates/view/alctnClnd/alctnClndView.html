@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
+    <title>테스트</title>	    
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">        
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
+    
+    <!-- FullCalendar JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    
+    <script type="text/javascript" th:src="@{/JS/utlt/modal.js}"></script>    
+    <script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>      
+    <script type="text/javascript" th:src="@{/JS/utlt/data.js}"></script>      
+    <script type="text/javascript" th:src="@{/JS/alctnClnd/alctnClnd.js}"></script>  
+    <script th:inline="javascript">
+      window.onload = function(){
+      }
+    </script>    
+</head>
+<body>
+    <h4>
+        <ul class="nav flex-column" th:replace="view/layout/menuBar.html"></ul>
+    </h4>
+    
+    <div class="container01"> 
+        <div class="div_title01">검색영역</div>
+            <div class="div_body01" style="position: relative;">
+                <label for="매수/매도">거래구분</label>
+                <select  id="S_DVSN" onchange="fn()" class="full-width-input01">
+                  <option name="S_DVSN" value="전체">전체내역</option>
+                  <option name="S_DVSN" value="배당">배당내역</option>
+                  <option name="S_DVSN" value="주식">주식거래</option>
+                </select>
+             </div>
+        </div>
+    </div>
+    <div class="container01">    
+        <div class="div_title01">조회영역</div>          
+            <div class="calendar_body" style="float: left;">
+                <div id='calendar' ></div>
+            </div>
+        </div>
+        
+        <div style="float: left; width : 38%;">
+            <table class="table table-bordered " >
+                <colgroup>
+                    <col style="width: 7%;">
+                    <col style="width: 8%;">
+                    <col style="width: 10%;">
+                    <col style="width: 1%;">
+                </colgroup>
+              <thead>
+                <tr>
+                  <th>구분</th>
+                  <th>종목</th>
+                  <th>날짜</th>
+                  <th>금액</th>
+                </tr>
+              </thead>
+              <tbody id="tbody_00">
+            
+              </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

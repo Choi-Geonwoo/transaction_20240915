@@ -108,7 +108,7 @@ th {
 }
 .full-width-input09_data {
     /* Add your styles here */
-    width: 91%;
+    width: 96%;
     color: #333;
     font-weight: bold;
     padding: 10px;
@@ -135,6 +135,13 @@ th {
 }
 
 
+.calendar_body{
+    margin: 10px;
+    width: 60%;
+    height: 40%;
+}
+
+
 /*********** form *********************/
 .form02 {
     display: flex;
@@ -144,27 +151,16 @@ th {
 }
 .form02 label {
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 100px;
 }
 .form02 select,
-.form02 input[type="date"],
-.form02 button {
+.form02 input[type="date"]{
     padding: 5px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 3px;
 }
-.form02 button {
-    background-color: #555;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-weight: bold;
-}
-.form02 button:hover {
-    background-color: #333;
-}
+
 /*********** form *********************/
 
 /*********** 버튼 *********************/
@@ -186,7 +182,7 @@ th {
 
 
 .delete-button {
-    background-color: #dc3545; /* 삭제 버튼 배경색 */
+    background-color: #FF9C73; /* 삭제 버튼 배경색 */
     color: white; /* 글자 색 */
     border: none; /* 테두리 제거 */
     padding: 5px 15px; /* 내부 여백 */
@@ -197,7 +193,37 @@ th {
 }
 
 .delete-button:hover {
-    background-color: #c82333; /* 삭제 버튼 호버 시 색상 변화 */
+    background-color: #FF9C73; /* 삭제 버튼 호버 시 색상 변화 */
+}
+
+.search-button {
+    background-color: #4CC9FE; /* 버튼 배경색 */
+    color: white; /* 글자 색 */
+    border: none; /* 테두리 제거 */
+    padding: 5px 10px; /* 내부 여백 */
+    cursor: pointer; /* 포인터 효과 */
+    border-radius: 5px; /* 둥근 모서리 */
+    font-size: 16px; /* 글자 크기 */
+    transition: background-color 0.3s; /* 배경색 변화 효과 */
+}
+
+.search-button:hover {
+    background-color: #4CC9FE; /* 호버 시 배경색 변화 */
+}
+
+.insert-button {
+    background-color: #72BF78; /* 버튼 배경색 */
+    color: white; /* 글자 색 */
+    border: none; /* 테두리 제거 */
+    padding: 5px 10px; /* 내부 여백 */
+    cursor: pointer; /* 포인터 효과 */
+    border-radius: 5px; /* 둥근 모서리 */
+    font-size: 16px; /* 글자 크기 */
+    transition: background-color 0.3s; /* 배경색 변화 효과 */
+}
+
+.insert-button {
+    background-color: #72BF78; /* 호버 시 배경색 변화 */
 }
 
 /*********** 버튼 *********************/
@@ -217,4 +243,45 @@ th {
 }
 /*********** 버튼 이벤트 *********************/
 
+/*********** 버튼 파일 이벤트 *********************/
+.file-upload {
+    width: 97%;
+    padding: 5px;
+    color: #333;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    /*cursor: pointer;*/
+}
+/*********** 버튼 파일 이벤트 *********************/
 
+/*********** 닫기 버튼 생성 *********************/
+.close {
+    position:relative;
+    float:left;
+    display:inline-block;
+    display:inline;
+    width:50px;height:50px;
+    text-align:center;
+    margin-right:20px;
+}
+.close2:after {
+    content: "\00d7"; 
+    font-size:25pt;
+    line-height:45px;
+}
+
+/*********** 닫기 버튼 생성 *********************/
+
+/*********** 달력 주말 색상*********************/
+/* 일요일 날짜 빨간색 */
+.fc-day-sun a {
+  color: red;
+  text-decoration: none;
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none;
+}
+/*********** 달력 주말 색상*********************/

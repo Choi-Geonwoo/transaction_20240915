@@ -27,13 +27,13 @@
                     <table>            
                         <thead>
                             <tr>                
-                                <th>구분        </th>
-                                <th>매수여부    </th>
-                                <th>거래일자    </th>                            
-                                <th>주식명    </th>            
-                                <th>주식티커    </th>
+                                <th>구분     </th>
+                                <th>매수여부  </th>
+                                <th>거래일자  </th>                            
+                                <th>주식명   </th>            
+                                <th>주식티커  </th>
                                 <th>주식수    </th>
-                                <th>배당주기    </th>                    
+                                <th>배당주기  </th>                    
                                 <th>배당금    </th>
                                 <th>        </th>
                             </tr>                
@@ -95,7 +95,7 @@
                                     <input type="hidden" value="Y" id="USEYN" name="USEYN"> <!--사용여부-->            
                                     <input type="hidden" value="N"id="DELYN"  name="DELYN"> <!--삭제여부-->
                                 <td>                    <!--onclick="register()"-->
-                                    <input class="search-button" type="submit"  value="등록"> 
+                                    <input class="insert-button" type="submit"  value="등록"> 
                                 </td>
                             </tr>
                         </tbody>
@@ -144,6 +144,19 @@
    </th:block>
     <div class="div_body01">
     <table id='stckDlngSelect'>
+          <colgroup>
+            <col style="width: 2%">
+            <col style="width: 5%">
+            <col style="width: 4%">
+            <col style="width: 2%">
+            <col style="width: 10%">
+            <col style="width: 3%">
+            <col style="width: 2%">
+            <col style="width: 3%">
+            <col style="width: 5%">
+            <col style="width: 6%">
+            <col style="width: 5%">
+          </colgroup>
         <thead>
             <tr>
                 <th name="U_TURN">순번</th>
@@ -155,7 +168,7 @@
                 <th name="U_DVDNCYC">배당주기</th>
                 <th name="U_DVDN">배당금</th>
                 <th name="U_DLNGAMT">1년치<br>배당(예상)</th>
-                <th style="width: 140px;">구분</th>
+                <th >구분</th>
                 <!--<th>등록일자</th>-->
                 <th>수정일자</th>
             </tr>
@@ -215,7 +228,7 @@
                         th:value="${stckDlng.DLNGAMT}" disabled />
                 </td>
                 <td>
-                    <input type="button" value="수정" onclick="rowUpdateClicked01('#stckDlngSelect', this, 'N')"
+                    <input type="button" value="수정" onclick="rowUpdateClicked01('#stckDlngSelect', this, 'N', 'Y')"
                         class="    update-button">
                     /
                     <input type="button" value="삭제" onclick="rowUpdateClicked01('#stckDlngSelect', this, 'Y')"

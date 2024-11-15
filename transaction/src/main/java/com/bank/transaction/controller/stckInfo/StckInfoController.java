@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -102,13 +103,15 @@ public class StckInfoController {
 	* @return		 : 주식정보
 	*/
     @PostMapping("/stckInfo/stckInfoInsert.do" )
-    public ResponseEntity<Map> stckInfoInsert(@RequestBody Map<String, Object> map, Model model){
+    public ResponseEntity<Object> stckInfoInsert(@RequestBody Map<String, Object> map, Model model){
         Map<String, Object> mapData = stckInfoService.stckInfoInsert(map);
-        //log.debug("========================= > stckInfoInsert");
-        //log.debug("========================= > value " + map.toString());
-        //log.debug("========================= > value " + mapData.toString());
-        //model.addAttribute("msg",mapData );
-        return ResponseEntity.ok().header("Content-Type", "application/json").body(mapData);
+        
+        // JSON 객체 생성
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("list", mapData);
+
+        // 성공 응답 반환
+        return ResponseEntity.ok(jsonObject.toString());
     }
 
     /**
@@ -118,13 +121,15 @@ public class StckInfoController {
     * @return        : 주식정보
     */
     @PostMapping("/stckInfo/stckInfoUpdate.do" )
-    public ResponseEntity<Map> stckInfoUpdate(@RequestBody Map<String, Object> map, Model model){
+    public ResponseEntity<Object> stckInfoUpdate(@RequestBody Map<String, Object> map, Model model){
         Map<String, Object> mapData = stckInfoService.stckInfoUpdate(map);
-        //log.debug("========================= > stckInfoInsert");
-        //log.debug("========================= > value " + map.toString());
-        //log.debug("========================= > value " + mapData.toString());
-        //model.addAttribute("msg",mapData );
-        return ResponseEntity.ok().header("Content-Type", "application/json").body(mapData);
+        
+        // JSON 객체 생성
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("list", mapData);
+
+        // 성공 응답 반환
+        return ResponseEntity.ok(jsonObject.toString());
     }
 
 	/**

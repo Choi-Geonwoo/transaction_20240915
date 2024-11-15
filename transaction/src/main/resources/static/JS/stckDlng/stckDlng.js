@@ -237,7 +237,7 @@ async function updateDividendCycle03(event) {
  * @param button    : 테이블정보(this)
  * @param cmpr  	: 수정/삭제 여부
  **/
-function rowUpdateClicked01(tb_id, button, del_yn) {
+function rowUpdateClicked01(tb_id, button, del_yn, use_Yn) {
 		// 클릭된 버튼의 행 가져오기
 		var row = button.parentElement.parentElement;
 		var headerSelector = tb_id + ' thead th';
@@ -256,7 +256,7 @@ function rowUpdateClicked01(tb_id, button, del_yn) {
 		    var input = row.cells[i].querySelector('input, select, textarea');
 		
 		    if (input) {
-				console.log(headerName+ " | "+input.type + " | " + input.value);
+				//console.log(headerName+ " | "+input.type + " | " + input.value);
 		        // input type에 따른 데이터 처리
 		        if (input.type === 'checkbox') {
 		            rowData[headerName] = input.checked ? 'Y' : 'N';
@@ -276,10 +276,12 @@ function rowUpdateClicked01(tb_id, button, del_yn) {
 		}
 		
 		rowData["DEL_YN"] = del_yn; // 삭제 여부 추가
+		rowData["USE_YN"] = use_Yn; // 사용 여부 추가
 		// 확인용 로그 출력 (추후에 Ajax 등을 이용해 서버로 전송 가능)
 		//console.log("Row Data: ", JSON.stringify(rowData));
 		//fetch API를 사용하여 POST 요청을 보냅니다
-		fetch002('/stckDlng/stckDlngUpdate.do', "post", rowData); //url, method, body
+		//fetch002('/stckDlng/stckDlngUpdate.do', "post", rowData); //url, method, body
+		postFetch('/stckDlng/stckDlngUpdate.do', rowData, 'update');
 
 };
 
@@ -287,11 +289,23 @@ function rowUpdateClicked01(tb_id, button, del_yn) {
  * 콜백함수
  * @param data     : 리턴값
  **/    
-function fn_call(data){
+function fn_call(data, id){
 	//alert(data.msg);
-	if(data.msg.indexOf('성공') != -1){
-		history.go(0);
-	}
+	if('update' == id){
+        // JSON 데이터 처리
+        //console.log("응답 데이터:", data.list.msg);
+        /*newShowModal(data, '');
+        if(data.list.msg.indexOf('성공') != -1){
+            history.go(0);
+        }*/
+        // newShowModal에 메시지만 전달
+        newShowModal(data.list.msg, () => {
+              // 성공적으로 확인 버튼을 눌렀을 때 처리
+              if (data.list.msg.indexOf('성공') != -1) {
+                history.go(0);  // 페이지 새로 고침
+              }
+        });
+    }
 	
 }
 

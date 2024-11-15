@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
-    <title>주식정보</title>		
+    <title>주식정보</title>		    
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">   
 	<link rel="stylesheet" type="text/css" th:href="@{/CSS/stckInfo/stckInfo.css}">    		
 	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
     <script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>	
@@ -20,6 +21,13 @@
 		  <div class="div_body01">
 			<form class="from02" id="stckInfoForm" ><!-- th:action="@{/stckInfo/stckInfoInsert.do}" method="post"-->
 			<table>
+                <colgroup>
+                  <col style="width: 5%">
+                  <col style="width: 10%">
+                  <col style="width: 5%">
+                  <col style="width: 5%">
+                  <col style="width: 5%">
+                </colgroup>
 				<thead>
 					<tr>
 						<th>주식티커</th>
@@ -46,7 +54,7 @@
 						<td>            
 			           		<input type="hidden" value="Y" id="USEYN" name="USEYN"> <!--사용여부--> 
 			           		<input type="hidden" value="N"id="DELYN" name="DELYN"> <!--삭제여부-->
-			   				<input	 type="button" onclick="register('stckInfoForm')" value="등록">
+			   				<input class="insert-button" type="button" onclick="register('stckInfoForm')" value="등록">
 						</td>
 					</tr>
 				</tbody>
@@ -63,7 +71,7 @@
 			    <input class="search-input " type="text" placeholder="주식명"	id="STCNM"		name="STCNM" 	th:value="${parameter?.STCNM}">      
 			    <input class="search-input " type="text" placeholder="주기"	id="DVDNCYC"	name="DVDNCYC" 	th:value="${parameter?.DVDNCYC}">	     
 			    <input class="search-input " type="text" placeholder="배당금"	id="DVDN" 		name="DVDN"		th:value="${parameter?.DVDN}">
-				<button	onclick="search()">검색</button>        
+				<button class="search-button"	onclick="search()">검색</button>        
 			</form>
 		  </div>
     </div>
@@ -73,6 +81,18 @@
 		<div class="div_title01">조회영역</div>  		
 		  <div class="div_body01">
 			<table     id='stckInfoSelect'>
+                <colgroup>
+                  <col style="width: 2%">
+                  <col style="width: 5%">
+                  <col style="width: 10%">
+                  <col style="width: 5%">
+                  <col style="width: 5%">
+                  <col style="width: 3%">
+                  <col style="width: 3%">
+                  <col style="width: 3%">
+                  <col style="width: 7%">
+                  <col style="width: 7%">
+                </colgroup>
 			  <thead>
 			      <tr>                
 			          <th id="ROW_"             name="ROW_">순번</th>

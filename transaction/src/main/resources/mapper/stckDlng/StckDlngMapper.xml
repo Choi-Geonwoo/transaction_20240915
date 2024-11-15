@@ -134,7 +134,7 @@
 				, DLNGYMD 	= REGEXP_REPLACE(#{U_DLNGYMD}, '[[:punct:]]')	/*거래일자*/
 				, TIKER 	= #{U_STCNM_SELECT_BOX}	                        /*주식_티커*/
 				, STCKCNT 	= #{U_STCKCNT}	                                /*주식수*/
-				, USEYN 	= DECODE(#{DEL_YN}, 'Y', 'Y', #{DEL_YN})	    /*사용여부*/
+				, USEYN 	= #{USE_YN}	                                    /*사용여부*/
 				, DELYN 	= #{DEL_YN}		                                /*삭제여부*/
 				, MDFCNYMD  = SYSDATE		                                /*수정일자*/
 	WHERE TURN = #{U_TURN }

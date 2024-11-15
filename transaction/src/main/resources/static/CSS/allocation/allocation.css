@@ -25,7 +25,7 @@
 }
 .div_menu{
     display: inline-block; /* 인라인 블록으로 설정하여 옆으로 나란히 배치 */
-    margin: 20px; /* 각 div_content 사이의 간격 조정 */
+    margin: 10px; /* 각 div_content 사이의 간격 조정 */
     padding: 20px; /* 내부 여백 */
     border: 1px solid #ccc; /* 테두리 */
     border-radius: 5px; /* 모서리 둥글게 */
@@ -35,3 +35,4 @@
       /* 수평 중앙 정렬하기 */
     text-align: center;
 }
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- com.bank.transaction.mapper.stckInfo(주식정보) -->
+<mapper namespace="com.bank.transaction.mapper.com.ComMapper">
+
+<select id="stckInfoInq" resultType="Map">
+    SELECT /* SQL_ID : ComMapper.stckInfoInq(주식 정보 조회) */
+            TURN       /*순번       */
+           ,TIKER      /*주식_티커   */
+           ,STCNM      /*주식명     */
+           ,DVDNCYC    /*배당_주기   */
+           ,DVDN       /*배당금     */
+           ,USEYN      /*사용여부    */
+           ,DELYN      /*삭제여부    */
+    FROM
+        STOCKINFORMATION
+    WHERE 
+        USEYN = 'Y'
+    AND DELYN = 'N'
+        ORDER BY USEYN DESC, DELYN,  (CASE WHEN REGEXP_LIKE(TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), STCNM
+</select>
+
+</mapper>

@@ -41,6 +41,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation group: 'com.google.guava', name: 'guava', version: '21.0'
     
+    // https://mvnrepository.com/artifact/org.json/json
+    implementation 'org.json:json:20230227'
+
+    
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.oracle.database.jdbc:ojdbc11'

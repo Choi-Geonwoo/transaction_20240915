@@ -15,7 +15,9 @@
     <script th:inline="javascript">
       window.onload = function(){
         const data = /*[[${aSelect}]]*/;
-        allocationBarChart(data);
+        var parameter = /*[[${parameter}]]*/;
+        //console.log(parameter.month);
+        allocationBarChart(data,parameter.month);
       }
     
     </script>
@@ -27,7 +29,7 @@
     
     <div class="container01"> 
     <div class="div_title01">검색영역</div>
-        <div class="div_body01">
+        <div class="div_body01" style="position: relative;">
             <form class="form02"  th:action="@{/allocation/allocationSearch.do}" method="get">
                 <label for="년도">년도 :</label>
                 <select name="year">
@@ -76,8 +78,10 @@
                 </select>
                 <label for="주식명">주식명 :</label>
                 <input name="stockName"type="text" class="full-width-input02">                
+                &nbsp;                &nbsp;                &nbsp;
                 <button  class="search-button">검색</button><!--                    onclick="search()"-->
             </form>
+              <button  class="insert-button" style="transform: translateY(45%); height: 30px;" onclick="fn_inputModalCall();">등록</button><!--                    onclick="search()"-->
         </div>
     </div>
     
@@ -85,7 +89,51 @@
         <div class="div_title01">조회영역</div>          
             <div class="div_body01">
                     <div  class="div_menu" style="display: inline-block;">
-                                                <div>년도 </div>
+                        <table>
+                            <tr>
+                                <td>년도</td>
+                            </tr>
+                            <tr>
+                                <td>종목</td>
+                            </tr>
+                            <tr>
+                               <td>01월</td>
+                            </tr>
+                            <tr>
+                               <td>02월</td>
+                            </tr>
+                            <tr>
+                               <td>03월</td>
+                            </tr>
+                            <tr>
+                               <td>04월</td>
+                            </tr>
+                            <tr>
+                               <td>05월</td>
+                            </tr>
+                            <tr>
+                               <td>06월</td>
+                            </tr>
+                            <tr>
+                               <td>07월</td>
+                            </tr>
+                            <tr>
+                               <td>08월</td>
+                            </tr>
+                            <tr>
+                               <td>09월</td>
+                            </tr>
+                            <tr>
+                               <td>10월</td>
+                            </tr>
+                            <tr>
+                               <td>11월</td>
+                            </tr>
+                            <tr>
+                               <td>12월</td>
+                            </tr>
+                        </table>
+<!--                                                <div>년도</div>
                                                 <div>항목</div>
                                                 <div>01월</div>
                                                 <div>02월</div>
@@ -98,12 +146,57 @@
                                                 <div>09월</div>
                                                 <div>10월</div>
                                                 <div>11월</div>
-                                                <div>12월</div>
+                                                <div>12월</div>-->
                     </div>
                     <div class="div_container_main" style="overflow-x: auto; white-space: nowrap;">
                         
                         <div th:each="aSelect : ${aSelect}" class="div_content">
-                            <div th:text="${aSelect.TRNSCDATE}"    ></div>
+                            
+                            <table>
+                               <tr>
+                                   <td th:text="${aSelect.TRNSCDATE}">년도</td>
+                               </tr>
+                               <tr>
+                                   <td  th:text="${aSelect.STOCK_NAME}">종목</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.JANUARY}"   th:classappend="${aSelect.JANUARY   eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '01')">01</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.FEBRUARY}"  th:classappend="${aSelect.FEBRUARY  eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '02')">02</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.MARCH}"     th:classappend="${aSelect.MARCH     eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '03')">03</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.APRIL}"     th:classappend="${aSelect.APRIL     eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '04')">04</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.MAY}"       th:classappend="${aSelect.MAY       eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '05')">05</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.JUNE}"      th:classappend="${aSelect.JUNE      eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '06')">06</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.JULY}"      th:classappend="${aSelect.JULY      eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '07')">07</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.AUGUST}"    th:classappend="${aSelect.AUGUST    eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '08')">08</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.SEPTEMBER}" th:classappend="${aSelect.SEPTEMBER eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '09')">09</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.OCTOBER}"   th:classappend="${aSelect.OCTOBER   eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '10')">10</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.NOVEMBER}"  th:classappend="${aSelect.NOVEMBER  eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '11')">11</td>
+                               </tr>
+                               <tr>
+                                  <td th:text="${aSelect.DECEMBER}"  th:classappend="${aSelect.DECEMBER  eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '12')">12</td>
+                               </tr>
+                            </table>
+<!--                            <div th:text="${aSelect.TRNSCDATE}"    ></div>
                             <div th:text="${aSelect.STOCK_NAME}" ></div>
                             <div th:text="${aSelect.JANUARY}"   th:classappend="${aSelect.JANUARY   eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '01')"></div>
                             <div th:text="${aSelect.FEBRUARY}"  th:classappend="${aSelect.FEBRUARY  eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '02')"></div>
@@ -116,7 +209,7 @@
                             <div th:text="${aSelect.SEPTEMBER}" th:classappend="${aSelect.SEPTEMBER eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '09')"></div>
                             <div th:text="${aSelect.OCTOBER}"   th:classappend="${aSelect.OCTOBER   eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '10')"></div>
                             <div th:text="${aSelect.NOVEMBER}"  th:classappend="${aSelect.NOVEMBER  eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '11')"></div>
-                            <div th:text="${aSelect.DECEMBER}"  th:classappend="${aSelect.DECEMBER  eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '12')"></div>
+                            <div th:text="${aSelect.DECEMBER}"  th:classappend="${aSelect.DECEMBER  eq 0} ? container-disable : container-able" th:onclick="sendCountyOffice( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '12')"></div>-->
                         </div>
             </div>
       </div>

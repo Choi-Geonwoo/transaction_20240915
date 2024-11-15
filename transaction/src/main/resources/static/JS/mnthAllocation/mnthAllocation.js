@@ -80,9 +80,10 @@ function mnthDetail(trnscdate, month){
     // 행 데이터를 저장할 JSON 객체 생성
     var rowData = {};
     rowData["trnscdate"]  = trnscdate + month + "";
-    console.log("Row Data: ", JSON.stringify(rowData));
+    //console.log("Row Data: ", JSON.stringify(rowData));
     //fetch API를 사용하여 POST 요청을 보냅니다
-    fetch002('/mnthAllocation/allocationDetail.do', "post", rowData); //url, method, body
+    //fetch002('/mnthAllocation/allocationDetail.do', "post", rowData); //url, method, body
+    postFetch('/mnthAllocation/allocationDetail.do', rowData, 'list');
 }
 
 
@@ -90,75 +91,94 @@ function mnthDetail(trnscdate, month){
  * 콜백함수
  * @param data     : 리턴값
  **/    
-function fn_call(data){
-    if (isEmpty(data)) {
-        alert("조회 결과가 없습니다.");
-        return;
-    }
-    
-    var jsonData = JSON.stringify(data);
-    var obj = JSON.parse(jsonData);
-    
-    // 테이블 행을 담을 변수를 초기화합니다.
-    let tableRows = '';
-    
-    // `for` 루프를 사용하여 테이블 행을 생성합니다.
-    for (var i in obj) {
-        tableRows += `<tr>`
-        tableRows += `<td>${obj[i].TRNSCDATE}</td>`;       //날짜
-        if(!isEmpty(obj[i].STOCK_NAME)){
-            tableRows += `<td>${obj[i].STOCK_NAME}</td>`;    //주식명
-        }else{
-            tableRows += `<td></td>`;        //배당금
-        }       
-        if(!isEmpty(obj[i].DIVIDEND)){
-            tableRows += `<td>${obj[i].DIVIDEND}</td>`;        //배당금
-        }else{
-            tableRows += `<td></td>`;        //배당금
+function fn_call(data, id){
+    if("list11" == id){
+        // 테이블 행을 담을 변수를 초기화합니다.
+        let tableRows = '';
+        data.list.forEach((item, index) => {
+            tableRows += `<tr>`
+            tableRows += `<td>${item.TRNSCDATE}</td>`;       //날짜
+            if(!isEmpty(item.STOCK_NAME)){
+                tableRows += `<td>${item.STOCK_NAME}</td>`;    //주식명
+            }else{
+                tableRows += `<td></td>`;        //배당금
+            }       
+            if(!isEmpty(item.DIVIDEND)){
+                tableRows += `<td>${item.DIVIDEND}</td>`;        //배당금
+            }else{
+                tableRows += `<td></td>`;        //배당금
+            }
+            tableRows += `<td>${item.AMOUNT}</td>`;          //거래금액
+            tableRows += `</tr>`;
+        });
+            console.log(`tableRows  `, tableRows);
+            console.log(data.list[0].TRNSCDATE);
+    }else if("list" == id){
+        // JSON 데이터 처리
+        console.log("응답 데이터:", data);
+        if (!data.list && !Array.isArray(data.list)) {
+            alert("데이터가 없습니다.");
+            return;
         }
-        tableRows += `<td>${obj[i].AMOUNT}</td>`;          //거래금액
-        tableRows += `</tr>`
-    }
-    
-    // 모달을 생성하고 HTML 구조를 설정합니다.
-    const modal = document.createElement('div');
-    modal.classList.add('modal-background');
-    modal.innerHTML = `
-        <div class="modal-content02">
-            <div class="container01"> 
-                <div class="div_title01">년도 : ${obj[0].TRNSCDATE} </div>       
-                <div class="div_body01">
-                    <table>
-                        <thead class="text-center">
-                            <tr>
-                                <th >년도</th>
-                                <th >주식명</th>
-                                <th >배당금</th>
-                                <th >거래금액</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center" style="overflow-x:hidden; overflow-y:auto; height: 200px;">
-                            ${tableRows}
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <button class="update-button">확인</button>
-                                </td>
-                            </tr>
-                         </tbody>
-                    </table>
+        // 테이블 행을 담을 변수를 초기화합니다.
+        let tableRows = '';
+        data.list.forEach((item, index) => {
+            tableRows += `<tr>`
+            tableRows += `<td>${item.TRNSCDATE}</td>`;       //날짜
+            if(!isEmpty(item.STOCK_NAME)){
+                tableRows += `<td>${item.STOCK_NAME}</td>`;    //주식명
+            }else{
+                tableRows += `<td></td>`;        //배당금
+            }       
+            if(!isEmpty(item.DIVIDEND)){
+                tableRows += `<td>${item.DIVIDEND}</td>`;        //배당금
+            }else{
+                tableRows += `<td></td>`;        //배당금
+            }
+            tableRows += `<td>${item.AMOUNT}</td>`;          //거래금액
+            tableRows += `</tr>`;
+        });
+        
+        // 모달을 생성하고 HTML 구조를 설정합니다.
+        const modal = document.createElement('div');
+        modal.classList.add('modal-background');
+        modal.innerHTML = `
+            <div class="modal-content02">
+                <div class="container01"> 
+                    <div class="div_title01">년도 : ${data.list[0].TRNSCDATE} </div>       
+                    <div class="div_body01">
+                        <table>
+                            <thead class="text-center">
+                                <tr>
+                                    <th >년도</th>
+                                    <th >주식명</th>
+                                    <th >배당금</th>
+                                    <th >거래금액</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center" style="overflow-x:hidden; overflow-y:auto; height: 200px;">
+                                ${tableRows}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <button class="update-button">확인</button>
+                                    </td>
+                                </tr>
+                             </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
-    
-    // 모달을 문서에 추가합니다.
-    document.body.appendChild(modal);
-    
-    // 모달에 클릭 이벤트를 추가합니다.
-    modal.addEventListener('click', handleButtonClick01);
+        `;
+        
+        // 모달을 문서에 추가합니다.
+        document.body.appendChild(modal);
+        
+        // 모달에 클릭 이벤트를 추가합니다.
+        modal.addEventListener('click', handleButtonClick01);
+        }
 
 }
 const handleButtonClick01 = (event) => {

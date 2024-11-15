@@ -1,11 +1,11 @@
-
 /**
  * POST 방식으로 비동기 전송
  * @param url       : 호출 URL
  * @param method    : GET/POST
  * @param body      : 전송데이터
+ * @param id        : 콜백용 ID
  **/
-function fetch002(url, method, body) {
+function fetch003(url, method, body, id) {
     fetch(url, {
         method: method,
         headers: {
@@ -26,16 +26,12 @@ function fetch002(url, method, body) {
         return response.json();
     })
     .then(result => {
-        //console.log('Success:', JSON.stringify(result));
-        //alert(result.msg);
-        //showModal(result.msg);
-        //showModal('Here is some important information.');
-        //fn_call(result);
+        result.id = id;
         if(!isEmpty(result.msg)){
              showModal(result.msg, () => fn_call(result));
-		}else{
-			fn_call(result);
-		}
+        }else{
+            fn_call(result);
+        }
     })
     .catch(error => {
         console.log('Error:', error);
@@ -43,6 +39,63 @@ function fetch002(url, method, body) {
     });
 }
 
+/**
+ * get 방식으로 비동기 전송
+ * @param url       : 호출 URL
+ * @param method    : GET
+ * @param body      : 전송데이터
+ * @param id        : 콜백용 ID
+ **/
+function getFetch(url, id) {
+    fetch(url)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        data.id = id;
+        console.log(data); // Spring Boot에서 온 JSON 데이터를 출력
+        fn_call(data);
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+}
+
+/**
+ * POST 방식으로 비동기 전송
+ * @param url       : 호출 URL
+ * @param body      : 전송 데이터
+ * @param id        : 콜백용 ID (옵션)
+ **/
+function postFetch(url, body, id) {
+    fetch(url, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache', // 캐싱 방지
+            'Pragma': 'no-cache'         // HTTP 1.0 호환
+        },
+        body: JSON.stringify(body),
+        cache: 'no-store' // 브라우저 캐시 방지
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json(); // JSON 데이터 파싱
+    })
+    .then(data => {
+
+        fn_call(data, id);
+    })
+    .catch(error => {
+        console.error("요청 중 오류 발생:", error);
+        alert(`오류 발생: ${error.message}`);
+    });
+}
 
 /**
  * 문자열이 빈 문자열인지 체크하여 결과값을 리턴한다. 

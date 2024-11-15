@@ -4,7 +4,9 @@ package com.bank.transaction.controller.mnthAllocation;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,9 +57,26 @@ public class MnthAllocationController {
      * @date          : 2024.09.15
      * @return
     */
-    @PostMapping("/mnthAllocation/allocationDetail.do" )
-    public ResponseEntity<List<Map<String, Object>>> mnthAllocationDetail(@RequestBody Map<String, Object> map, Model model){
-    	List<Map<String, Object>> mapData = mnthAllocationService.mnthAllocationDetail(map);
-        return ResponseEntity.ok().header("Content-Type", "application/json").body(mapData);
+    @PostMapping("/mnthAllocation/allocationDetail.do")
+    public ResponseEntity<Object> mnthAllocationDetail(@RequestBody Map<String, Object> map, Model model) {
+        try {
+            // 서비스 호출 및 데이터 처리
+            List<Map<String, Object>> mapData = mnthAllocationService.mnthAllocationDetail(map);
+            
+            // JSON 객체 생성
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("list", mapData);
+
+            // 성공 응답 반환
+            return ResponseEntity.ok(jsonObject.toString());
+        } catch (Exception e) {
+            // 예외 처리
+            JSONObject errorResponse = new JSONObject();
+            errorResponse.put("error", "데이터를 처리하는 중 오류가 발생했습니다.");
+            errorResponse.put("message", e.getMessage());
+
+            // 에러 응답 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse.toString());
+        }
     }
 }

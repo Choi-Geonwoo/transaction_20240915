@@ -36,20 +36,7 @@
     border-color: #0056b3; /* 포커스 시 테두리 색 */
 }
 
-.search-button {
-    background-color: #007BFF; /* 버튼 배경색 */
-    color: white; /* 글자 색 */
-    border: none; /* 테두리 제거 */
-    padding: 10px 20px; /* 내부 여백 */
-    cursor: pointer; /* 포인터 효과 */
-    border-radius: 5px; /* 둥근 모서리 */
-    font-size: 16px; /* 글자 크기 */
-    transition: background-color 0.3s; /* 배경색 변화 효과 */
-}
 
-.search-button:hover {
-    background-color: #0056b3; /* 호버 시 배경색 변화 */
-}
 
 
 .select-container {

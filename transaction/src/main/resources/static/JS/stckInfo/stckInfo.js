@@ -24,7 +24,8 @@ function register(formId) {
 	      data[key] = value;
   });
  	//fetch API를 사용하여 POST 요청을 보냅니다
-	 fetch002('/stckInfo/stckInfoInsert.do', "post", data); //url, method, body
+	 //fetch002('/stckInfo/stckInfoInsert.do', "post", data); //url, method, body
+	 postFetch('/stckInfo/stckInfoInsert.do', rowData, 'insert');
   } catch (error) {
 	  alert(araa[cnt] + " 입력 후 등록 버튼을 사용해주세요.");
 	  console.log('escaped!');
@@ -68,17 +69,45 @@ function register(formId) {
       // Convert the row data to JSON and display it
       // document.querySelector('p').innerText = JSON.stringify(rowData, null, 2);
       //fetch API를 사용하여 POST 요청을 보냅니다
-      fetch002('/stckInfo/stckInfoUpdate.do', "post", rowData); //url, method, body
+      //fetch002('/stckInfo/stckInfoUpdate.do', "post", rowData); //url, method, body
+      postFetch('/stckInfo/stckInfoUpdate.do', rowData, 'update');
     }
     
 /**
  * 콜백함수
  * @param data     : 리턴값
  **/    
-function fn_call(data){
-	//showModal(data.msg);
-	if(data.msg.indexOf('성공') != -1){
-		history.go(0);
-	}
+function fn_call(data, id){
+        console.log("응답 데이터:" + data.list);
+    //alert(data.msg);
+    if('insert' == id){
+        // JSON 데이터 처리
+        //console.log("응답 데이터:", data.list.msg);
+        /*newShowModal(data, '');
+        if(data.list.msg.indexOf('성공') != -1){
+            history.go(0);
+        }*/
+        // newShowModal에 메시지만 전달
+        newShowModal(data.list.msg, () => {
+              // 성공적으로 확인 버튼을 눌렀을 때 처리
+              if (data.list.msg.indexOf('성공') != -1) {
+                history.go(0);  // 페이지 새로 고침
+              }
+        });
+    }else if('update' == id){
+        // JSON 데이터 처리
+        console.log("응답 데이터:", data.list.msg);
+        /*newShowModal(data, '');
+        if(data.list.msg.indexOf('성공') != -1){
+            history.go(0);
+        }*/
+        // newShowModal에 메시지만 전달
+        newShowModal(data.list.msg, () => {
+              // 성공적으로 확인 버튼을 눌렀을 때 처리
+              if (data.list.msg.indexOf('성공') != -1) {
+                history.go(0);  // 페이지 새로 고침
+              }
+        });
+    }
 	
 }
