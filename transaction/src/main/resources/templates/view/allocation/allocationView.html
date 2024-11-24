@@ -17,7 +17,7 @@
         const data = /*[[${aSelect}]]*/;
         var parameter = /*[[${parameter}]]*/;
         //console.log(parameter.month);
-        allocationBarChart(data,parameter.month);
+        if(!isEmpty(data)) allocationBarChart(data,parameter.month);
       }
     
     </script>

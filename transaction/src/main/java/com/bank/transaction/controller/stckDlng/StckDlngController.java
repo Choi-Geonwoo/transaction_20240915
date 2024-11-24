@@ -115,13 +115,15 @@ public class StckDlngController {
 	* @return		 : 주식거래정보
 	*/
     @PostMapping("/stckDlng/stckDlngInsert.do" )
-    public String stckDlngInsert(@RequestParam Map<String, Object> stockData, Model model){
-        //log.info("========================= > stckDlngInsert");
-        //log.info("========================= > value " + stockData.toString());
-        //log.debug("========================= > value " + stockData.toString());
+    public ResponseEntity<Object> stckDlngInsert(@RequestBody Map<String, Object> stockData, Model model){
         Map<String, Object> mapData = stckDlngService.stckDlngInsert(stockData);
-        model.addAttribute("msg",mapData );
-		return "redirect:/view/stckDlng/stckDlngView";
+        
+        // JSON 객체 생성
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("list", mapData);
+        
+        // 성공 응답 반환
+        return ResponseEntity.ok(jsonObject.toString());
     }
 
     /**

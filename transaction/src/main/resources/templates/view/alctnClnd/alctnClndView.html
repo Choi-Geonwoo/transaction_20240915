@@ -30,11 +30,12 @@
         <div class="div_title01">검색영역</div>
             <div class="div_body01" style="position: relative;">
                 <label for="매수/매도">거래구분</label>
-                <select  id="S_DVSN" onchange="fn()" class="full-width-input01">
+                <select  id="S_DVSN" onchange="fn_selectDvsn()" class="full-width-input01">
                   <option name="S_DVSN" value="전체">전체내역</option>
-                  <option name="S_DVSN" value="배당">배당내역</option>
-                  <option name="S_DVSN" value="주식">주식거래</option>
+                  <option name="S_DVSN" value="배당내역">배당내역</option>
+                  <option name="S_DVSN" value="주식거래">주식거래</option>
                 </select>
+                <input class="search-button" type="button" onclick="fn_search();" value="검색">
              </div>
         </div>
     </div>
@@ -45,15 +46,15 @@
             </div>
         </div>
         
-        <div style="float: left; width : 38%;">
+        <div  style="float: left; width : 33%;">
             <table class="table table-bordered " >
                 <colgroup>
-                    <col style="width: 7%;">
                     <col style="width: 8%;">
-                    <col style="width: 10%;">
-                    <col style="width: 1%;">
+                    <col style="width: 8%;">
+                    <col style="width: 8%;">
+                    <col style="width: 3%;">
                 </colgroup>
-              <thead>
+              <thead >
                 <tr>
                   <th>구분</th>
                   <th>종목</th>
@@ -61,8 +62,7 @@
                   <th>금액</th>
                 </tr>
               </thead>
-              <tbody id="tbody_00">
-            
+              <tbody id="tbody_00" >
               </tbody>
             </table>
         </div>

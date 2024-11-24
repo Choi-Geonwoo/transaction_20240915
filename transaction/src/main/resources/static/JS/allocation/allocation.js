@@ -15,7 +15,7 @@ function sendCountyOffice(stockName,trnscdate, month){
 	//console.log("Row Data: ", JSON.stringify(rowData));
     //fetch002();
  	//fetch API를 사용하여 POST 요청을 보냅니다
-    fetch003('/stckDlng/allocationDetail.do', "post", rowData, "allocationDetail"); //url, method, body
+    fetch003('/allocation/allocationDetail.do', "post", rowData, "allocationDetail"); //url, method, body
 }
 
 
@@ -87,22 +87,30 @@ function fu_img(imgData){
  * @param value     : 주식 정보
  **/
 function allocationBarChart(value, p_month){
-  console.log("1. " + p_month);
+  //console.log("1. " + p_month);
   let labels = [];
   var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+  
   if(!isEmpty(p_month)){
     labels = [p_month + '월'];
   }else {
     labels = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
   }
   var stockNames = value.map(stock => stock.STOCK_NAME);
-
+  var dataValue = "";
     const datasets = stockNames.map((stockName, index) => {
+        console.log(months.map(month => value[index][month]));
+        console.log();
+        if(!isEmpty(p_month)){
+           dataValue = months.map(month => value[index][month]).filter(dataPoint => dataPoint !== 0 && dataPoint !== undefined)
+        }else{
+            dataValue =months.map(month => value[index][month]);
+        }
         return {
             label: stockName,
-            data: months
-                .map(month => value[index][month]) // 각 월의 값을 가져옴
-                .filter(dataPoint => dataPoint !== 0 && dataPoint !== undefined), // 0 또는 undefined가 아닌 값만 포함
+            //data: months.map(month => value[index][month]) // 각 월의 값을 가져옴
+            //    .filter(dataPoint => dataPoint !== 0 && dataPoint !== undefined), // 0 또는 undefined가 아닌 값만 포함
+            data : dataValue,
             backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.2)`,
             borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
             borderWidth: 1
@@ -223,6 +231,7 @@ function fn_updateModal(data){
     fu_img(parsedData.fileList.reContents);
     }
 }
+
 /**
  * 주식 등록 모달
  * @param data     : 주식명 정보
@@ -238,8 +247,8 @@ function fn_insertModal(data){
                                     </select>*/
     // JSON이나 멤버 변수를 갖는 객체에 대한 반복문
     for(let key in data) {
-        //console.log(key);
-        //console.log(data[key]);
+        console.log(key + ' | ' + data[key]);
+        if("id" == key) continue;
         div += `<option value=${data[key].TIKER}>${data[key].STCNM}</option>`;
     }
     div += `</select>`;
@@ -265,7 +274,7 @@ function fn_insertModal(data){
                       거래 일자
                   </td>
                   <td>
-                      <input type="date"  class="full-width-input09_data" >
+                      <input type="date"  class="full-width-input09_data" id="I_TRNSCDATE">
                   </td>
                 </tr>
                 <tr>
@@ -273,7 +282,7 @@ function fn_insertModal(data){
                       배당금
                   </td>
                   <td>
-                      <input type="text"   class="full-width-input" >
+                      <input type="text"   class="full-width-input" id="I_DIVIDEND">
                   </td>
                 </tr>
                 <tr>
@@ -281,7 +290,7 @@ function fn_insertModal(data){
                       거래 금액
                   </td>
                   <td>
-                      <input type="text"  class="full-width-input" >
+                      <input type="text"  class="full-width-input" id="I_AMOUNT" >
                   </td>
                 </tr>
                 <tr>
@@ -289,7 +298,7 @@ function fn_insertModal(data){
                       파일명
                   </td>
                   <td>
-                      <input type="file" class="file-upload" >
+                      <input type="file" class="form-control" id="I_FILE" name="I_FILE"  accept="image/*" onchange="readURL(this, 'I_IMG');"  ><!--onchange="toBase64(event);"-->
                   </td>
                 </tr>
                 <tr >
@@ -297,7 +306,7 @@ function fn_insertModal(data){
                       이미지
                   </td>
                   <td>
-                      <img id="image1" style="height: 330px; width:90%;">
+                      <img id="I_IMG" style="height: 330px; width:90%;">
                   </td>
                 </tr>
                 <tr>
@@ -305,7 +314,7 @@ function fn_insertModal(data){
                   </td>
                   <td>
                     <button class="delete-button">취소</button>
-                    <button class="update-button">저장</button>
+                    <button class="update-button" onclick="allocationInsert();">저장</button>
                   </td>
                 </tr>
               </table>
@@ -319,3 +328,92 @@ function fn_insertModal(data){
   // Pass the callback to the handleButtonClick function
   modal.addEventListener('click', handleButtonClick01);
 }
+
+
+// 파일업로드 사용시 이미지 미리보기용
+  function readURL(input, img) {
+   //console.log("결과"+input.files[0].name)
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById(img).src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+    document.getElementById(img).style.display = '';
+    //document.getElementById("col-sm-11").style.display ='block';  
+  } else {
+  }
+}
+
+// 모달창 등록 이벤트
+function allocationInsert(){
+  const imageFileInput = document.getElementById('I_FILE');             //파일 이미지 전송
+  var selectedFile = imageFileInput.files[0];  
+  var fileName;
+  const inputAmount = document.getElementById('I_AMOUNT').value;        //거래금액
+  const inputDiviend = document.getElementById('I_DIVIDEND').value;     //배당금
+  const inputTrnscdate = document.querySelector('input[type="date"]');  //거래일자
+  var cmr = (CMPR.options[CMPR.selectedIndex].value);    //주식티커
+  if(!isEmpty(imageFileInput.files[0])){
+    fileName = imageFileInput.files[0].name;
+  }
+  
+  let data = {
+              CMPR      : cmr,                   // 주식티커
+              TRNSCDATE : inputTrnscdate.value,  //거래일자
+              AMOUNT    : inputAmount,           // 거래 금액
+              FILENAME  : fileName,              // 파일명
+              DIVIDEND  : inputDiviend           // 배당금
+  }
+  //fetch API를 사용하여 POST 요청을 보냅니다
+  //postFetch('/allocation/allocationInsert.do', data, 'insert');
+  //console.log("주식 티커, 거래일자, 배당금, 파일명 ", {cmr}, {inputTrnscdate}, {inputDiviend}, {fileName});
+  imgFile(selectedFile, data, '/allocation/allocationInsert.do');
+}
+
+// 이미지 포함 전송
+function imgFile(selectedFile, data, url){
+    // 폼 데이터로 보내줘야 함
+    let formData = new FormData();
+    
+var reader = new FileReader();
+
+    reader.onload = function(event) {
+              var fileData = new Uint8Array(event.target.result);
+              formData.append("files", JSON.stringify(Array.from(fileData)));
+              formData.append(
+                "key",
+                new Blob([JSON.stringify(data)], { type: "application/json" })
+              );
+
+                fetch(url,
+                    {
+                        method : "post",
+                        body : formData,
+                    })
+                    .then((response) => {
+                        console.log(response.status);
+                        if(response.status != 200){
+                          alert("오류 발생했습니다.");
+                        }
+                        return response.json(); // 응답 데이터를 파싱하고 반환
+                    })
+                    .then(data => {
+                            if(-1 != data.retNo){
+                              alert(data.list.msg+"되었습니다.");
+                              location.reload();
+                            }else{
+                              alert("오류가 발생되었습니다.");
+                              location.reload();
+                            }
+                          })
+                    .catch((error) => {
+                        alert("error " + error)
+                    }); 
+                };
+
+    reader.readAsArrayBuffer(selectedFile);    
+    
+    
+}
+

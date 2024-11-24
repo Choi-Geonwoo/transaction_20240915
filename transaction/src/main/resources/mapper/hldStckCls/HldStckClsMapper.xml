@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bank.transaction.mapper.hldStckCls.HldStckClsMapper">
+
+<select id = "selectHldStckClsList"  resultType="Map" parameterType="Map">
+                SELECT
+                        /* HldStckClsMapper.selectHldStckClsList */
+                        A.NO,
+                        /* A.STOCK_NAME, */
+                        C.CLSFC_NM AS STOCK_NAME,
+                        A.STOCK_QUANTITY,
+                        A.DIVIDEND_CYCLE,
+                        A.PURCHASE_PRICE,
+                        NVL(B.DIVIDEND, A.DIVIDEND_AMOUNT) AS DIVIDEND_AMOUNT,
+                        A.CLSCD,
+                        A.RGSTDATE
+                FROM
+                        STOCKPORTFOLIO A
+                        , (
+                                SELECT * FROM 
+                                                (
+                                                        SELECT
+                                                        ROW_NUMBER() OVER(PARTITION BY STOCK_NAME ORDER BY TRNSCDATE DESC) AS RNK,
+                                                                STOCK_NAME,
+                                                                AMOUNT,
+                                                                DIVIDEND
+                                                        FROM
+                                                                TRANSACTION
+                                                ) W 
+                                                        WHERE RNK = 1
+                        ) B
+                        , CLSFC C
+                WHERE
+                        A.CLSCD != 'N'
+                        AND A.STOCK_NAME  = B.STOCK_NAME(+) 
+                        AND A.CLSFC_CD = C.CLSFC_CD(+)
+                        AND C.USE_YN ='Y'
+                        AND C.SECTION_CD = 'BANK_001'
+                <if test='stockName != null and stockName != "" '>
+                        AND C.CLSFC_NM = #{stockName}
+                </if>
+                <if test='dividendCycle != null and dividendCycle != "" '>
+                        AND (A.DIVIDEND_CYCLE like #{dividendCycle} || '%'
+                        OR A.DIVIDEND_CYCLE = '월'
+                        )
+                </if>
+                ORDER BY (CASE WHEN REGEXP_LIKE(C.CLSFC_CD, '^[0-9]+$') THEN 2 ELSE 1 END), C.CLSFC_NM
+</select>
+
+
+
+<!-- 주식 상세 조회-->
+<select id = "hldStckClsDetail"  resultType="Map" parameterType="Map" >
+              <![CDATA[  SELECT /* HldStckClsMapper.hldStckClsDetail : 주식 상세 조회 */
+                        C.CLSFC_NM AS STOCK_NAME , --주식명
+                        A.STOCK_QUANTITY, --주식보유수
+                        A.PURCHASE_PRICE, --매입금
+                        A.STOCK_QUANTITY * A.PURCHASE_PRICE AS PURCHASE_PRICE_SUM, --매입금(합계)
+                        SUM(NVL(B.AMOUNT, 0)) AS AMOUNT --배당금(누적)
+                FROM
+                          STOCKPORTFOLIO  A
+                        , TRANSACTION B
+                        , CLSFC C
+                WHERE 
+                        A.STOCK_NAME  = B.STOCK_NAME(+) 
+                        AND A.STOCK_QUANTITY  >  0
+                        AND A.STOCK_NAME  <> '테스트'
+                        AND A.CLSFC_CD = C.CLSFC_CD(+)
+                        AND C.CLSFC_NM = #{stockName}
+                        AND C.USE_YN ='Y'
+                        AND C.SECTION_CD = 'BANK_001'
+                GROUP BY
+                        C.CLSFC_NM ,
+                        A.STOCK_QUANTITY,
+                        A.PURCHASE_PRICE
+                ORDER BY C.CLSFC_NM 
+                 ]]>
+</select>
+
+</mapper>

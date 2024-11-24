@@ -40,4 +40,17 @@ public interface AllocationService {
 	* 2024.09.17        Jihun Park       최초 생성
     **/
     public Map<String, Object> allocationDetail(Map<String, Object> map);
+    
+	/**
+	* @packageName    : com.bank.transaction.mapper.allocation(배당내역)
+	* @fileName       : allocationInsert.java(배당내역 상세 등록)
+	* @author         : Jihun Park
+	* @date           : 2024.09.17
+	* @description    :
+	* ===========================================================
+	* DATE              AUTHOR             NOTE
+	* -----------------------------------------------------------
+	* 2024.09.17        Jihun Park       최초 생성
+    **/
+    public Map  allocationInsert(Map<String, Object> map, String files);
 }

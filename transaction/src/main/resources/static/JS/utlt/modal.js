@@ -75,7 +75,7 @@ const removeModal = () => {
 };
 
 // 버튼 클릭 처리 함수
-const handleButtonClick = (event, callback) => {
+const handleButtonClick = (event, callback, msg) => {
   const { target } = event;
 
   // 모달 내부 버튼 클릭이 아닌 경우 무시
@@ -91,7 +91,7 @@ const handleButtonClick = (event, callback) => {
   // 확인 버튼 클릭 처리
   if (target.classList.contains('confirm-btn')) {
     if (typeof callback === 'function') {
-      callback(); // 콜백 함수 실행
+      callback(msg); // 콜백 함수 실행
     }
     removeModal(); // 모달 닫기
   }

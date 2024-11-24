@@ -83,7 +83,7 @@ function mnthDetail(trnscdate, month){
     //console.log("Row Data: ", JSON.stringify(rowData));
     //fetch API를 사용하여 POST 요청을 보냅니다
     //fetch002('/mnthAllocation/allocationDetail.do', "post", rowData); //url, method, body
-    postFetch('/mnthAllocation/allocationDetail.do', rowData, 'list');
+    postFetch('/mnthAllocation/mnthAllocationDetail.do', rowData, 'list');
 }
 
 

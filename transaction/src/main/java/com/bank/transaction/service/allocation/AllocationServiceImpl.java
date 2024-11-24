@@ -80,5 +80,42 @@ public class AllocationServiceImpl implements AllocationService {
 		}
 		return retMap;
 	}
+	
+	/**
+	* @packageName    : com.bank.transaction.service.allocation(배당내역)
+	* @fileName       : allocationInsert.java(배당내역 상세 등록)
+	* @author         : Jihun Park
+	* @date           : 2024.09.17
+	* @description    :
+	* ===========================================================
+	* DATE              AUTHOR             NOTE
+	* -----------------------------------------------------------
+	* 2024.09.17        Jihun Park       최초 생성
+    **/
+	@Override
+	public Map allocationInsert(Map<String, Object> map, String files) {
+        String tNo = "";
+		FileDTO fDto = new FileDTO();
+		Map<String, Object> retMap = new HashMap<>();
+		try {
+			tNo = allocationMapper.tNoSelect(map);
+		    fDto.setTNo(tNo);
+		    fDto.setFName(String.valueOf(map.get("FILENAME")));
+		    fDto.setContents(files.getBytes());
+		    map.put("no", tNo);
+		    allocationMapper.allocationInsert(map);
+		    log.info("1.  : : : " + fDto.getFName() + " | " + fDto.getFNo() + " | " + fDto.getTNo() + " | " + files.length());
+		    fDto.setContents(files.getBytes());
+		        // ??´??¸??? ?????? ??????
+		    fileService.fileInsert(fDto);
+			// TODO Auto-generated method stub
+		    retMap.put("msg", "성공했습니다.");
+		} catch (Exception e) {
+			log.error("error" + e.toString());
+			// TODO: handle exception
+		    retMap.put("msg", "오류가 발생하였습니다.");
+		}
+		return null;
+	}
 
 }

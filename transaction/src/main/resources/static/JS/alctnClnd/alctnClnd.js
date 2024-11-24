@@ -1,17 +1,19 @@
+var sDvnValue = "전체";
+
 document.addEventListener('DOMContentLoaded', function() {
     // 행 데이터를 저장할 JSON 객체 생성
     var rowData = { YMD: toDay("YYYY-MM"), S_DVSN : "전체"};
     
     // rowData를 URL 파라미터로 변환
     const queryParams = new URLSearchParams(rowData).toString();
-    getFetch(`/alctnClnd/alctnClndSelect?${queryParams}`, "alctnClndSelect");
+    getFetch(`/alctnClnd/alctnClndSelect?${queryParams}`,  "alctnClndSelect");
 
 })
 
-function fn(){
+function fn_selectDvsn(){
     var sDvsn = document.getElementById('S_DVSN');
-    var sDvnValue = sDvsn.options[sDvsn.selectedIndex].value;
-    alert(sDvnValue);
+        sDvnValue = sDvsn.options[sDvsn.selectedIndex].value;
+    //alert(sDvnValue);
 }
 
 /*************************************
@@ -47,13 +49,15 @@ function calendarFun(data) {
         selectable: true,
         datesSet: function(info) {
             // 사용자가 달을 변경할 때마다 호출됩니다.
-            var startDate = info.startStr; // 현재 범위의 시작일
-            var endDate = info.endStr;     // 현재 범위의 마지막 날
+            //var startDate = info.startStr; // 현재 범위의 시작일
+            //var endDate = info.endStr;     // 현재 범위의 마지막 날
+            var startDate = dateFormat(info.view.currentStart);
+            var endDate   = dateFormat(info.view.currentStart);
             //var sDvsn = document.getElementById('S_DVSN');
             //var sDvnValue = (sDvsn.option[sDvsn.selectedIndex].value)
             //fetchEvents(startDate, endDate, calendar); // 새로운 데이터를 가져와서 갱신
             // 행 데이터를 저장할 JSON 객체 생성
-            var rowData = { startDate: startDate, endDate : endDate};
+            var rowData = { startDate: startDate, endDate : endDate, S_DVSN : sDvnValue};
             
             // rowData를 URL 파라미터로 변환
             const queryParams = new URLSearchParams(rowData).toString();
@@ -88,7 +92,7 @@ function fetchEvents(url, calendar) {
     })
     .then(response => response.json())
     .then(data => {
-        add_menu(data);
+        add_menu02(data);
         // 기존 이벤트를 제거하고 새로운 이벤트로 업데이트
         calendar.removeAllEvents();
         calendar.addEventSource(data.map(mapDataToEvent));
@@ -120,8 +124,42 @@ function add_menu(json){
           newRow.insertCell('TRNSCDATE').innerText = currentItem['TRNSCDATE'];
           newRow.insertCell('STOCK_NAME').innerText = currentItem['STOCK_NAME'];
           newRow.insertCell('DVSN').innerText = currentItem['DVSN'];
-          console.log('---');
+          //console.log('---');
       }
       
       //document.querySelector('#sumTotal').innerHTML = sum;
+}
+
+function add_menu02(json){
+    const tbody = document.getElementById("tbody_00");
+    var row = "";
+   // 테이블의 기존 내용을 모두 지움
+        while(tbody.rows.length > 0){
+            tbody.deleteRow(0);
+        }
+      const parsedData = json;
+      for (let i = 0; i < parsedData.length; i++) {
+        const currentItem = parsedData[i];
+        row += '<tr>';
+        row += '<td>'+currentItem['DVSN']+'</td>';
+        row += '<td>'+currentItem['STOCK_NAME']+'</td>';
+        row += '<td>'+currentItem['TRNSCDATE']+'</td>';
+        row += '<td>'+currentItem['AMOUNT']+'</td>';
+        row += '<tr>';
+      }
+    tbody.innerHTML += row;
+}
+
+/*************************************
+ * 검색 함수
+ *************************************/
+function fn_search(){
+    var sDvsn     = document.getElementById('S_DVSN');
+        sDvnValue = sDvsn.options[sDvsn.selectedIndex].value;
+    // 행 데이터를 저장할 JSON 객체 생성
+    var rowData = { YMD: toDay("YYYY-MM"), S_DVSN : sDvnValue};
+    
+    // rowData를 URL 파라미터로 변환
+    const queryParams = new URLSearchParams(rowData).toString();
+    getFetch(`/alctnClnd/alctnClndSelect?${queryParams}`, "alctnClndSelect");        
 }

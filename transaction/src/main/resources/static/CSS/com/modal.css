@@ -1,90 +1,173 @@
-    /* 모달 배경 */
-    .modal-background {
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
+/* 모달 배경 */
+.modal-background {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* 모달 내용 */
+.modal-content {
+  background: white;
+  width: 350px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+}
+
+/* 모달 내용 */
+.modal-content01 {
+  background: white;
+  width: 800px;
+  height: 700px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 모달 내용 */
+.modal-content02 {
+  background: white;
+  width: 800px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 모달 제목 */
+.modal-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* 모달 텍스트 */
+.modal-text {
+  margin-bottom: 20px;
+}
+
+/* 모달 버튼 */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-buttons button {
+  padding: 8px 16px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-buttons button:hover {
+  background-color: #ddd;
+}
+
+.close-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.close-btn:hover {
+  background-color: #c0392b;
+}
+
+.confirm-btn {
+  background-color: #3498db;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #2980b9;
+}
+    
+    
+/*popup*/
+.popup_layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/*팝업 박스*/
+.popup_box {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    overflow: auto;
+    height: 350px;  
+    width: 500px;
+    transform: translate(-50%, -50%);
+    z-index: 1002;
+    box-sizing: border-box;
+    background: #fff;
+    box-shadow: 2px 5px 10px 0px rgba(0, 0, 0, 0.35);
+    -webkit-box-shadow: 2px 5px 10px 0px rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 2px 5px 10px 0px rgba(0, 0, 0, 0.35);
+}
+
+
+/*오버레이 뒷배경*/
+.popup_overlay {
+    position: fixed;
+    top: 0px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/*popup*/
+
+    /* Header Fixed at Top */
+    .header {
       position: fixed;
       top: 0;
       left: 0;
+      width: 100%;
+      height: 50px;
+      background: rgb(219, 219, 219);
+      color: white;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* 모달 내용 */
-    .modal-content {
-      background: white;
-      width: 400px;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    
-    }
-    
-    /* 모달 내용 */
-    .modal-content01 {
-      background: white;
-      width: 800px;
-      height: 700px;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* 모달 내용 */
-    .modal-content02 {
-      background: white;
-      width: 800px;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* 모달 제목 */
-    .modal-title {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-
-    /* 모달 텍스트 */
-    .modal-text {
-      margin-bottom: 20px;
-    }
-
-    /* 모달 버튼 */
-    .modal-buttons {
+     /* Footer Fixed at Bottom */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background: rgb(219, 219, 219);
+      color: white;
       display: flex;
-      justify-content: flex-end;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
     }
-
-    .modal-buttons button {
-      padding: 8px 16px;
-      margin-left: 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .modal-buttons button:hover {
-      background-color: #ddd;
-    }
-
-    .close-btn {
-      background-color: #e74c3c;
-      color: white;
-    }
-
-    .close-btn:hover {
-      background-color: #c0392b;
-    }
-
-    .confirm-btn {
-      background-color: #3498db;
-      color: white;
-    }
-
-    .confirm-btn:hover {
-      background-color: #2980b9;
+        /* Content Section */
+    .main {
+      margin-top: 60px; /* Same as header height */
+      padding: 20px;
+      background: #f4f4f9;
+      height : 100%;
+      font-weight: bold;
     }

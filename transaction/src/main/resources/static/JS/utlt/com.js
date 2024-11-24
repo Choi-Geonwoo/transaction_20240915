@@ -65,6 +65,35 @@ function getFetch(url, id) {
 }
 
 /**
+ * GET 방식으로 비동기 전송 Excel 다운로드
+ * @param url   : 호출 URL
+ * @param id    : 콜백용 ID
+ **/
+function getExcelFetch(url, fileName, id) {
+    fetch(url, { method: 'GET' })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network error: ${response.statusText}`);
+            }
+            return response.blob(); // Excel 다운로드 시 Blob 데이터로 처리
+        })
+        .then(blob => {
+            // Blob 데이터를 사용해 파일 다운로드
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName; // 다운로드 파일 이름
+            a.click();
+            window.URL.revokeObjectURL(url);
+            fn_call(id);
+        })
+        .catch(error => {
+            console.error('Fetch 에러:', error);
+        });
+}
+
+
+/**
  * POST 방식으로 비동기 전송
  * @param url       : 호출 URL
  * @param body      : 전송 데이터
@@ -102,7 +131,7 @@ function postFetch(url, body, id) {
  * @param str       : 체크할 문자열
  **/
 function isEmpty(str){
-  if(typeof str == "undefined" || str == null || str == "")
+  if(typeof str == "undefined" || str == null || str == "" || str == "null")
     return true;
   else
     return false ;

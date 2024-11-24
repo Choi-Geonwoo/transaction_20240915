@@ -31,4 +31,12 @@ public interface WeeklyAllocationMapper {
 	**/
 	public	List<Map<String, Object>> weeklyAllocationList(Map<String, Object> mapData);
 
+	/**
+	* @methodName    : WeeklyAllocationDownloadExcel(주간 배당 엑셀 다운로드 조회)
+	* @author        : Jihun Park
+	* @date          : 2024.09.15
+	* @return		 : 주식정보
+	*/
+	public List<Map<String, Object>> weeklyAllocationDownloadExcel(Map<String, Object> parameter);
+
 }

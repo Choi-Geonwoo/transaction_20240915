@@ -25,7 +25,7 @@ function register(formId) {
   });
  	//fetch API를 사용하여 POST 요청을 보냅니다
 	 //fetch002('/stckInfo/stckInfoInsert.do', "post", data); //url, method, body
-	 postFetch('/stckInfo/stckInfoInsert.do', rowData, 'insert');
+	 postFetch('/stckInfo/stckInfoInsert.do', data, 'insert');
   } catch (error) {
 	  alert(araa[cnt] + " 입력 후 등록 버튼을 사용해주세요.");
 	  console.log('escaped!');

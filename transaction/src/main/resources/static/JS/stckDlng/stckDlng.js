@@ -1,4 +1,39 @@
+/**
+ * 주식거래정보 데이터 등록
+ * @param formId     : 전성 FORM
+ **/
+function register(formId) {
+  // 폼 요소를 ID로 가져옵니다
+  const form = document.getElementById(formId);
+  
+    // 폼 데이터를 FormData 객체로 생성합니다
+  const formData = new FormData(form);
+  
+  // FormData를 JSON으로 변환합니다
+  const data = {};
+  const araa = ['구분', '매수여부', '거래일자', '주식명', '주식티커', '주식수', '배당주기', '배당금', '사용여부', '삭제여부'];
+  var cnt = 0;
+  try {
+      formData.forEach((value, key) => {
+          if(isEmpty(value)){
+            cnt == 0;
+            throw new Error();
+          }
+          cnt++;
+          data[key] = value;
+  });
+    //fetch API를 사용하여 POST 요청을 보냅니다
+     //fetch002('/stckInfo/stckInfoInsert.do', "post", data); //url, method, body
+     //console.log(JSON.stringify(data));
+     postFetch('/stckDlng/stckDlngInsert.do', data, 'insert');
+     
+  } catch (error) {
+      alert(araa[cnt] + " 입력 후 등록 버튼을 사용해주세요.");
+      console.log('escaped!');
+  }
+ //alert(JSON.stringify(data));
 
+}
 
 function chageLangSelect(){
     var langSelect = document.getElementById("STCNM_SELECT_BOX");
@@ -137,8 +172,8 @@ async function updateDividendCycle02() {
             const response = await fetch(`/getDividendCycle?STCNM=${selectedStock}`);
             
             if (response.ok) {
-                // JSON 형식의 응답 파싱
-                const data = await response.json();
+               // JSON 형식의 응답 파싱
+               const data = await response.json();
                console.log(data.DVDN);
                dvdncyc.value= data.DVDNCYC; //배당주기
                dvdn.value= data.DVDN; //배당금
@@ -300,13 +335,20 @@ function fn_call(data, id){
         }*/
         // newShowModal에 메시지만 전달
         newShowModal(data.list.msg, () => {
-              // 성공적으로 확인 버튼을 눌렀을 때 처리
-              if (data.list.msg.indexOf('성공') != -1) {
+            console.log("111111111111111111111111111111111111111");
                 history.go(0);  // 페이지 새로 고침
-              }
+        });
+    }else if("insert" == id){
+        newShowModal(data.list.msg, () => {
+                history.go(0);  // 페이지 새로 고침
         });
     }
 	
 }
 
+function callback(msg){
+            console.log("111111111111111111111111111111111111111 " + msg);
+                history.go(0);  // 페이지 새로 고침
+    
+}
 

@@ -57,7 +57,7 @@ public class MnthAllocationController {
      * @date          : 2024.09.15
      * @return
     */
-    @PostMapping("/mnthAllocation/allocationDetail.do")
+    @PostMapping("/mnthAllocation/mnthAllocationDetail.do")
     public ResponseEntity<Object> mnthAllocationDetail(@RequestBody Map<String, Object> map, Model model) {
         try {
             // 서비스 호출 및 데이터 처리

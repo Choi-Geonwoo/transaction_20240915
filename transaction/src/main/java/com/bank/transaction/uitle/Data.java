@@ -2,6 +2,7 @@ package com.bank.transaction.uitle;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Data {
     
@@ -34,5 +35,28 @@ public class Data {
 		}
         
         return retInt;
+    }
+    
+    public static String strTodayDateFormat(String format) {
+    	String retStr = null;// 현재 날짜/시간        
+        LocalDateTime now = LocalDateTime.now();
+    	switch (format) {
+		case "YYYY": {
+			retStr = String.valueOf(now.getYear()); 
+			break;
+		}
+		case "YYYY-MM": {
+			retStr = String.valueOf(now.getYear()) + "-" + String.valueOf(now.getMonthValue()); 
+			break;
+		}
+		case "YYYY-MM-DD": {
+			retStr = String.valueOf(now.getYear()) + "-" + String.valueOf(now.getMonthValue())+ "-" + String.valueOf(now.getDayOfYear());
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + format);
+		}
+    	
+    	return retStr;
     }
 }

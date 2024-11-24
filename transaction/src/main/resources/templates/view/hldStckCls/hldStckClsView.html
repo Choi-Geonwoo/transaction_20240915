@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
+    <title>보유 주식 종목</title>	
+    <script type="text/javascript" th:src="@{/JS/hldStckCls/hldStckCls.js}"></script>  
+</head>
+<body>
+    <h4>
+        <ul class="nav flex-column" th:replace="view/layout/menuBar.html"></ul>
+    </h4>
+    
+    <div class="container01"> 
+        <div class="div_title01">검색영역</div>
+            <div class="div_body01" style="position: relative;">
+             </div>
+        </div>
+    </div>
+    <div class="container01">    
+        <div class="div_title01">조회영역</div>          
+            <div class="div_body01" >
+                <div style="overflow-x: auto;">
+                    <table style="overflow-x: auto;">
+                        <colgroup>
+                             <col style="width: 3%;">
+                             <col style="width: 5%;">
+                             <col style="width: 7%;">
+                             <col style="width: 5%;">
+                             <col style="width: 8%;">
+                             
+                             <col style="width: 8%;">
+                             <col style="width: 11%">
+                             
+                             <col style="width: 25px;">
+                             <col style="width: 20px;">
+                             <col style="width: 20px;">
+                             <col style="width: 20px;">
+                             <col style="width: 20px;">
+                             <col style="width: 20px;">
+                             <col style="width: 20px;">
+                             <col style="width: 20px;">
+                             <col style="width: 20px;">
+                             <col style="width: 20px;">
+                             <col style="width: 20px;">
+                             <col style="width: 20px;">
+                        </colgroup>
+                    <thead >
+                        <tr>
+                            <th style="display: none;">순번</th>
+                            <th >주식명</th>
+                            <th >주식수</th>
+                            <th >배당주기</th>
+                            <th >매입금</th>
+                            
+                            <th >배당금</th>
+                            <th >일자</th>
+                            <th >구분</th>
+                            
+                            <th >01월</th>
+                            <th >02월</th>
+                            <th >03월</th>
+                            <th >04월</th>
+                            <th >05월</th>
+                            <th >06월</th>
+                            <th >07월</th>
+                            <th >08월</th>
+                            <th >09월</th>
+                            <th >10월</th>
+                            <th >11월</th>
+                            <th >12월</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="slist : ${list}">
+                            <td style="display: none;" ><input type="text" th:value="${slist.NO}"></td><!--순번-->
+                            <td >
+                                <input class="btn-button" type="button" th:value="${slist.STOCK_NAME}" th:data-stockname="${slist.STOCK_NAME}" onclick="fn_openPop(this);">
+                            </td><!--주식명-->
+                            <td >
+                                <input class="full-width-input" type="text" th:value="${slist.STOCK_QUANTITY}">
+                            </td><!--주식수-->
+                            <td >
+                                <input class="full-width-input " type="text" th:value="${slist.DIVIDEND_CYCLE}">
+                            </td><!--배당 주기-->
+                            <td >
+                                <input name="purchasePrice" class="full-width-input" type="text" th:value="${slist.PURCHASE_PRICE}">
+                            </td><!--매입금-->
+                            <td >
+                                <input class="full-width-input" type="text" th:value="${slist.DIVIDEND_AMOUNT}">
+                            </td><!--배당금-->
+                            <td >
+                                <input class="full-width-input" type="text" th:value="${#strings.substring(slist.RGSTDATE, 0, 10)}" readonly>
+                            </td><!--등록일자-->
+                            
+                            <td >
+                            <div role="group" >
+                                <button class="update-button" onclick="detailsUpdate(this)">수정</button>
+                                /
+                                <button class="delete-button" onclick="detailsDelete(this);">삭제</button>
+                            </div>
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'01')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''">
+                                <input type="hidden" th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'01')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'02')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''">
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'02')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'03')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''">
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'03')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'04')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''" >
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'04')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'05')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''" >
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'05')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'06')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''" >
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'06')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border"  th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'07')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''" >
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'07')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'08')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''" >
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'08')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'09')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''" >
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'09')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'10')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''">
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'10')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'11')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''">
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'11')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                            <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'12')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''">
+                                <input type="hidden"  th:value="${#strings.contains(slist.DIVIDEND_CYCLE,'12')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'O' : ''" >
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 레이이어 팝업 시작-->
+    <div class="popup_layer" id="popup_layer" style="display: none;">
+      <div class="popup_box">
+          <!--팝업 컨텐츠 영역-->
+          <div class="popup_cont">
+            <header class="header">
+              <h1 id="stockName">상세 보기 : </h1>
+            </header>
+            <main class="main">
+                <table>
+                        <tr>
+                            <td>주식 수</td>
+                            <td id="stockQuantity">주식 값</td>
+                        </tr>
+                        <tr>
+                            <td>매입 금</td>
+                            <td id="purchasePrice">거래금액</td>
+                        </tr>                        
+                        <tr>
+                           <td>매입금(합계)</td>
+                           <td id="purchasePriceSum">거래금액(합계)</td>
+                        </tr>
+                        </tr>                        
+                        <tr>
+                           <td>배당금(누적)</td>
+                           <td id="amount">거래금액(합계)</td>
+                        </tr>
+                </table>
+            </main>  
+    
+          </div>
+          <footer class="footer">
+          <!--팝업 버튼 영역-->
+          <div class="popup_btn" >
+              <input type="button" class="close-button" onclick="fn_closePop()" value="닫기"/>
+          </div>
+          </footer>
+      </div>
+    </div>
+    <!-- 레이이어 팝업 종료-->
+</body>
+</html>

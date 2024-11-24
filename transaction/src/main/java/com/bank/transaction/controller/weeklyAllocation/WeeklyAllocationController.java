@@ -4,12 +4,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bank.transaction.page.PaginationService;
+import com.bank.transaction.service.file.FileService;
 import com.bank.transaction.service.weeklyAllocation.WeeklyAllocationService;
+import com.bank.transaction.uitle.Data;
+import com.bank.transaction.uitle.Encode;
+
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +37,7 @@ import java.util.Map;
 * -----------------------------------------------------------
 * 2024.09.15        Jihun Park       최초 생성
 */
+@Slf4j
 @Controller
 public class WeeklyAllocationController {
 	
@@ -32,7 +45,11 @@ public class WeeklyAllocationController {
 	private WeeklyAllocationService weeklyAllocationService;
 
     // 페이징 처리
-    PaginationService paginationService = new PaginationService();
+	private PaginationService paginationService = new PaginationService();
+    
+    //엑셀 다운로드 용
+	@Autowired
+	private FileService fileService;
 
     
 	/**
@@ -111,4 +128,37 @@ public class WeeklyAllocationController {
 		model.addAttribute("byWeekList", weeklyAllocationSelect);
 		return "view/weeklyAllocation/weeklyAllocationView";
 	}
+	
+	
+	
+	@GetMapping("/weeklyAllocation/WeeklyAllocationDownloadExcel")
+	public ResponseEntity<byte[]> weeklyAllocationDownloadExcel(@RequestParam Map<String, Object> params) {
+	    try {
+	        // 1. 데이터 생성
+	        List<Map<String, Object>> transactionData = weeklyAllocationService.weeklyAllocationDownloadExcel(params);
+
+	        // 2. 엑셀 헤더 정의
+	        String[] headers = {"NO_", "TRNSCDATE", "STOCK_NAME", "AMOUNT", "DIVIDEND"};
+	        //String[] headers = {"순번", "배당일자", "주식명", "거래금액", "배당금"};
+	        for (String string : headers) {
+				log.debug("str " + string);
+			}
+	        // 3. 엑셀 파일 생성
+	        ByteArrayOutputStream excelOutput = fileService.excelDownload(transactionData, headers);
+	        String fileName = Encode.encodeFileName("주간거래내역_"+Data.strTodayDateFormat("YYYY-MM-DD")+".xlsx");
+	        // 4. HTTP 응답 설정 및 반환
+	        HttpHeaders responseHeaders = new HttpHeaders();
+	        responseHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	        responseHeaders.setContentDispositionFormData("attachment", fileName);
+
+	        return ResponseEntity.ok()
+	                .headers(responseHeaders)
+	                .body(excelOutput.toByteArray());
+
+	    } catch (Exception e) {
+	        log.error("엑셀 생성 실패: " + e.toString());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
+
 }

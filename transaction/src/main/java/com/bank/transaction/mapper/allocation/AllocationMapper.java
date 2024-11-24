@@ -43,4 +43,28 @@ public interface AllocationMapper {
 		* 2024.09.17        Jihun Park       최초 생성
 	    **/
 	    public Map<String, Object> allocationDetail(Map<String, Object> map);
+		/**
+		* @packageName    : com.bank.transaction.mapper.allocation(배당내역)
+		* @fileName       : allocationInsert.java(배당내역 상세 등록)
+		* @author         : Jihun Park
+		* @date           : 2024.09.17
+		* @description    :
+		* ===========================================================
+		* DATE              AUTHOR             NOTE
+		* -----------------------------------------------------------
+		* 2024.09.17        Jihun Park       최초 생성
+	    **/
+	    public int  allocationInsert(Map<String, Object> map);
+		/**
+		* @packageName    : com.bank.transaction.mapper.allocation(배당내역)
+		* @fileName       : tNoSelect.java(배당내역 상세 등록 일련번호)
+		* @author         : Jihun Park
+		* @date           : 2024.09.17
+		* @description    :
+		* ===========================================================
+		* DATE              AUTHOR             NOTE
+		* -----------------------------------------------------------
+		* 2024.09.17        Jihun Park       최초 생성
+	    **/
+		public String tNoSelect(Map<String, Object> map);
 }

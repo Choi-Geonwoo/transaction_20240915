@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
     <title>주식정보</title>		
-	<link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
 	<link rel="stylesheet" type="text/css" th:href="@{/CSS/weeklyAllocation/weeklyAllocation.css}">    
-    <script type="text/javascript" th:src="@{/JS/utlt/modal.js}"></script>	
-	<script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
+	<script type="text/javascript" th:src="@{/JS/weeklyAllocation/weeklyAllocation.js}"></script>  
 </head>
 <body>
 	<h4>
@@ -18,13 +16,14 @@
 	<div class="div_title01">검색영역</div>  
 	   <form class="form02"  th:action="@{/weeklyAllocation/WeeklyAllocationSelectPage.do}" method="get">      
 			<label for="기준일자">기준일자 :</label>
-			<input type="date" id="S_START_YMD" name="S_START_YMD" class="full-width-input02" th:value="${not #strings.isEmpty(S_START_YMD)} ? ${S_START_YMD} : ${#temporals.format(#temporals.createNow().minusDays(6), 'yyyy-MM-dd')}">
+			<input type="date" id="S_START_YMD" name="S_START_YMD" class="full-width-input02" th:value="${not #strings.isEmpty(parameter?.S_START_YMD)} ? ${parameter?.S_START_YMD} : ${#temporals.format(#temporals.createNow().minusDays(6), 'yyyy-MM-dd')}">
 				<span>~</span>
-			<input type="date" id="S_END_YMD" name="S_END_YMD" class="full-width-input02" th:value="${not #strings.isEmpty(S_END_YMD)} ? ${S_END_YMD} : ${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+			<input type="date" id="S_END_YMD" name="S_END_YMD" class="full-width-input02" th:value="${not #strings.isEmpty(parameter?.S_END_YMD)} ? ${parameter?.S_END_YMD} : ${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
 			<label for="주식명">주식명 :</label>
-			<input type="text" id="S_STCNM" name="S_STCNM" placeholder="주식명" class="full-width-input" th:value="${parameter?.S_STCNM}">
-			      <button  class="search-button">검색</button><!--					onclick="search()"-->
-		 </form>   
+			<input type="text" id="S_STCNM" name="S_STCNM" placeholder="주식명" class="full-width-input  w300" th:value="${parameter?.S_STCNM}">
+			<button  class="search-button">검색</button><!--					onclick="search()"-->
+		 </form>
+         <input type="button" value="엑셀 다운로드" onclick="fn_ExcelDownload()" class="update-button">
 	</div>
 <!--	<button onclick="downloadExcel()">엑셀다운로드</button>	
 	<button onclick="showModal('성공')">모달 열기</button>-->
@@ -63,13 +62,13 @@
 			     <!--맨 처음 페이지로 이동하는 버튼 -->
 			    <li class="page-item">
 			        <span th:if="${pageVo.startPage > 1}">
-			        <a class="page-link" th:href="@{'/weeklyAllocation/WeeklyAllocationSelectPage.do?page=1' +' '&S_START_YMD=' +${parameter?.S_START_YMD} + '&S_END_YMD=' +${parameter?.S_END_YMD} +				'&S_STCNM=' + ${parameter?.S_STCNM}}" th:text="'처음'"></a>
+			        <a class="page-link" th:href="@{'/weeklyAllocation/WeeklyAllocationSelectPage.do?page=1' + '&S_START_YMD=' +${parameter?.S_START_YMD} + '&S_END_YMD=' +${parameter?.S_END_YMD} +				'&S_STCNM=' + ${parameter?.S_STCNM}}" th:text="'처음'"></a>
 			        </span>
 			    </li>
 			     <!--이전 블록으로 이동하는 버튼 -->
 			    <li class="page-item">
 			        <span th:if="${pageVo.isPrev == true}">
-			        <a class="page-link" th:href="@{'/weeklyAllocation/WeeklyAllocationSelectPage.do?page=' + '${pageVo.startPage - 1} + '&S_START_YMD=' +${parameter?.S_START_YMD} + '&S_END_YMD=' +${parameter?.S_END_YMD} + 				'&S_STCNM=' + ${parameter?.S_STCNM}}" th:text="'이전'"></a>
+			        <a class="page-link" th:href="@{'/weeklyAllocation/WeeklyAllocationSelectPage.do?page=' + ${pageVo.startPage - 1} + '&S_START_YMD=' +${parameter?.S_START_YMD} + '&S_END_YMD=' +${parameter?.S_END_YMD} + 				'&S_STCNM=' + ${parameter?.S_STCNM}}" th:text="'이전'"></a>
 			        </span>
 			    </li>
 			     <!--시퀀스 보여주는 값을 변경. -->

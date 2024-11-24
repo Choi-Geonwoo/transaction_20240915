@@ -5,41 +5,61 @@
 <mapper namespace="com.bank.transaction.mapper.alctnClnd.AlctnClndMapper">
     
 <select id="alctnClndSelect" resultType="Map" parameterType="Map">
-    SELECT
-       /* SQL_ID : AlctnClndMapper.alctnClndSelect */
-        '배당내역'                               AS DVSN
-       ,STOCK_NAME
-       ,TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE
-       ,RTRIM(AMOUNT)                  AS AMOUNT
-    FROM
-        TRANSACTION
-    WHERE
-       1 = 1
-      <if test="(YMD!=null and !''.equals(YMD) and !'null'.equals(YMD))">
-       AND TO_CHAR(TRNSCDATE, 'YYYY-MM') = #{YMD}
-      </if>
-      <if test="(startDate!=null and !''.equals(startDate) and !'null'.equals(startDate))">
-       AND TO_CHAR(TRNSCDATE, 'YYYY-MM') BETWEEN #{startDate} AND  #{endDate} 
-      </if>
-      
-    UNION ALL
-    
-    SELECT /*주식거래내역*/
-        '주식거래'                                   AS DVSN
-        ,B.STCNM                                   AS STOCK_NAME    /*주식명*/
-        ,TO_CHAR(TO_DATE(A.DLNGYMD), 'YYYY-MM-DD') AS TRNSCDATE     /*거래일자*/
-        ,RTRIM((TO_NUMBER(A.STCKCNT) * TO_NUMBER(B.DVDN)) * DECODE(B.DVDNCYC, '월', 12, REGEXP_COUNT(B.DVDNCYC, ',')) )   AS AMOUNT    /* 거래금액     */
-    FROM STCKDLNGINFO A, STOCKINFORMATION B
-        WHERE B.TIKER = A.TIKER
-            AND A.USEYN    ='Y'
-            AND A.DELYN    ='N'
+    SELECT 
+         DVSN
+        ,STOCK_NAME
+        ,TIKER
+        ,TRNSCDATE
+        ,TRIM(CASE WHEN REGEXP_LIKE(TIKER, '[^0-9]') THEN '$' || TO_CHAR(AMOUNT , 'FM9990.99')
+                ELSE TO_CHAR(AMOUNT , 'L999,999,999,999')
+              END)                                                     AS AMOUNT /* 거래금액*/
+    FROM 
+    (
+        SELECT
+           /* SQL_ID : AlctnClndMapper.alctnClndSelect */
+            '배당내역'                               AS DVSN
+           ,STOCK_NAME
+           ,TIKER
+           ,TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE
+           ,RTRIM(AMOUNT)                  AS AMOUNT
+        FROM
+            TRANSACTION
+        WHERE
+           1 = 1
           <if test="(YMD!=null and !''.equals(YMD) and !'null'.equals(YMD))">
-            AND TO_CHAR(TO_DATE(A.DLNGYMD), 'YYYY-MM-DD') = #{YMD}
+           AND TO_CHAR(TRNSCDATE, 'YYYY-MM') = #{YMD}
           </if>
           <if test="(startDate!=null and !''.equals(startDate) and !'null'.equals(startDate))">
-            AND TO_CHAR(TO_DATE(A.DLNGYMD), 'YYYY-MM-DD') BETWEEN #{startDate} AND  #{endDate} 
+           AND TO_DATE(TRNSCDATE) 
+                        BETWEEN  TRUNC(TO_DATE(#{startDate}, 'YYYY-MM-DD'), 'MM') AND LAST_DAY(TO_DATE(#{endDate}, 'YYYY-MM-DD'))
           </if>
-     ORDER BY    TRNSCDATE
+          
+        UNION ALL
+        
+        SELECT /*주식거래내역*/
+            '주식거래'                                   AS DVSN
+            ,B.STCNM                                   AS STOCK_NAME    /*주식명*/
+            ,B.TIKER
+            ,TO_CHAR(TO_DATE(A.DLNGYMD), 'YYYY-MM-DD') AS TRNSCDATE     /*거래일자*/
+            ,RTRIM((TO_NUMBER(A.STCKCNT) * TO_NUMBER(B.DVDN)) * DECODE(B.DVDNCYC, '월', 12, REGEXP_COUNT(B.DVDNCYC, ',')) )   AS AMOUNT    /* 거래금액     */
+        FROM STCKDLNGINFO A, STOCKINFORMATION B
+            WHERE B.TIKER = A.TIKER
+                AND A.USEYN    ='Y'
+                AND A.DELYN    ='N'
+              <if test="(YMD!=null and !''.equals(YMD) and !'null'.equals(YMD))">
+                AND TO_CHAR(TO_DATE(A.DLNGYMD), 'YYYY-MM-DD') = #{YMD}
+              </if>
+              <if test="(startDate!=null and !''.equals(startDate) and !'null'.equals(startDate))">
+                 AND TO_DATE(A.DLNGYMD) 
+                        BETWEEN  TRUNC(TO_DATE(#{startDate}, 'YYYY-MM-DD'), 'MM') AND LAST_DAY(TO_DATE(#{endDate}, 'YYYY-MM-DD'))
+              </if>
+         ORDER BY    TRNSCDATE
+    )
+    WHERE 
+         1=1
+   <if test="(S_DVSN!=null and !''.equals(S_DVSN) and !'전체'.equals(S_DVSN))">
+     AND DVSN = #{S_DVSN}
+   </if>
 </select>
 
 </mapper>

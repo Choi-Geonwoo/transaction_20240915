@@ -1,5 +1,6 @@
 package com.bank.transaction.service.weeklyAllocation;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,17 @@ public class WeeklyAllocationServiceImpl implements WeeklyAllocationService {
 	public List<Map<String, Object>> weeklyAllocationList(Map<String, Object> mapData) {
 		// TODO Auto-generated method stub
 		return weeklyAllocationMapper.weeklyAllocationList(mapData);
+	}
+	
+	/**
+	* @methodName    : WeeklyAllocationDownloadExcel(주간 배당 엑셀 다운로드 조회)
+	* @author        : Jihun Park
+	* @date          : 2024.09.15
+	* @return		 : 주식정보
+	*/
+	@Override
+	public List<Map<String, Object>> weeklyAllocationDownloadExcel(Map<String, Object> parameter) {
+		return weeklyAllocationMapper.weeklyAllocationDownloadExcel(parameter);
 	}
 
 }

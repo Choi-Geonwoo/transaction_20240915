@@ -71,7 +71,7 @@ public class StckDlngServiceImpl implements StckDlngService {
 	    int cnt = 0;
 	    cnt = stckDlngMapper.stckDlngInsert(mapData);
 	    log.info("===> stckDlngInsert");
-	    log.info("===> value : : : " + cnt);
+	    log.info("===> value : : : " + mapData.toString());
 	    Map<String, Object> retMap = new HashMap<String, Object>();
 	    if(cnt != 0 ) {
             retMap.put("msg", "성공했습니다");

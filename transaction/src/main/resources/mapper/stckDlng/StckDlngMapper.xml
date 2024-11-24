@@ -6,175 +6,176 @@
 
 <!-- 주식 거래 정보 조회-->
 <select id = "stckDlngSelect"  resultType="Map" parameterType="Map" >
-     			SELECT		/* SQL_ID : StckDlngMapper.stckDlngSelect(주식 거래 정보 조회) */
-	                *
-	            FROM
-	                (
-		                SELECT
-		                    *
-		                FROM
-                    	(
-	                    	SELECT 
-									  ROW_
-									, NO_
-									, TB.TURN 			/*순번*/
-									, TB.BYNGYN 			/*매수여부*/
-									, TB.CMPR 			/*구분*/
-									, TB.DLNGYMD		/*거래일자*/
-									, TB.TIKER 							/*주식_티커*/
-									, TB.STCKCNT 						/*주식수*/
-									, TB.USEYN 							/*사용여부*/
-									, TB.DELYN 							/*삭제여부*/
-									, TB.REGYMD 							/*등록일자*/
-									, TB.MDFCNYMD 						/*수정일자*/
-									, TB.DVDN							/*배당금     */
-									, TB.DVDNCYC							/*배당_주기   */
-									, TB.STCNM							/*주식명*/
-									, TRIM(CASE 
-									  WHEN REGEXP_LIKE(TB.DLNGAMT, '^[0-9]+$') THEN TO_CHAR(TB.DLNGAMT , 'L999,999,999')
-									        ELSE TO_CHAR(TB.DLNGAMT , 'L999,999,999.999')
-							    	  END) AS DLNGAMT	/* 거래금액*/
-							    	, totalPages  
-								FROM (
-										SELECT 
-											 ROW_NUMBER() OVER (ORDER BY TO_DATE(A.DLNGYMD), B.STCNM) AS ROW_
-											, ROW_NUMBER() OVER (ORDER BY A.USEYN DESC, A.DELYN,  (CASE WHEN REGEXP_LIKE(A.TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), STCNM) AS NO_
-											, A.TURN 			/*순번*/
-											, A.BYNGYN 			/*매수여부*/
-											, A.CMPR 			/*구분*/
-											, TO_DATE(A.DLNGYMD) AS DLNGYMD		/*거래일자*/
-											, A.TIKER 							/*주식_티커*/
-											, A.STCKCNT 						/*주식수*/
-											, A.USEYN 							/*사용여부*/
-											, A.DELYN 							/*삭제여부*/
-											, A.REGYMD 							/*등록일자*/
-											, A.MDFCNYMD 						/*수정일자*/
-											, B.DVDN							/*배당금     */
-											, B.DVDNCYC							/*배당_주기   */
-											, B.STCNM							/*주식명*/
-											, ((TO_NUMBER(A.STCKCNT) * TO_NUMBER(B.DVDN)) * DECODE(B.DVDNCYC, '월', 12, REGEXP_COUNT(B.DVDNCYC, ',')) )	AS DLNGAMT	/* 거래금액     */
-                        					,COUNT(*) OVER() AS totalPages /*페이징 처리용 총 건수*/
-										FROM STCKDLNGINFO A, STOCKINFORMATION B
-											WHERE B.TIKER = A.TIKER
-											    AND A.USEYN    ='Y'
-											    AND A.DELYN    ='N'
-									 		 <if test="(S_CMPR!=null) and (!S_CMPR.equals('')) and (!S_CMPR.equals('null'))">
-												AND A.CMPR      = #{S_CMPR}    /*구분*/
-											 </if>
-									 		 <if test="(S_BYNGYN!=null) and (!''.equals(S_BYNGYN)) and (!'null'.equals(S_BYNGYN))">
+                 SELECT        /* SQL_ID : StckDlngMapper.stckDlngSelect(주식 거래 정보 조회) */
+                    *
+                FROM
+                    (
+                        SELECT
+                            *
+                        FROM
+                        (
+                            SELECT 
+                                      ROW_
+                                    , NO_
+                                    , TB.TURN                             /*순번*/
+                                    , TB.BYNGYN                         /*매수여부*/
+                                    , TB.CMPR                             /*구분*/
+                                    , TB.DLNGYMD                        /*거래일자*/
+                                    , TB.TIKER                             /*주식_티커*/
+                                    , TB.STCKCNT                         /*주식수*/
+                                    , TB.USEYN                             /*사용여부*/
+                                    , TB.DELYN                             /*삭제여부*/
+                                    , TB.REGYMD                             /*등록일자*/
+                                    , TB.MDFCNYMD                         /*수정일자*/
+                                    , TB.DVDN                            /*배당금     */
+                                    , TB.DVDNCYC                            /*배당_주기   */
+                                    , TB.STCNM                            /*주식명*/
+                                    , TRIM(CASE 
+                                      WHEN REGEXP_LIKE(TB.TIKER, '[^0-9]') THEN '$'||TO_CHAR(TB.DLNGAMT , 'FM9990.99')
+                                            ELSE TO_CHAR(TB.DLNGAMT , 'L999,999,999,999')
+                                      END) AS DLNGAMT   /* 거래금액*/
+                                    , totalPages  
+                                FROM (
+                                        SELECT 
+                                             ROW_NUMBER() OVER (ORDER BY TO_DATE(A.DLNGYMD), B.STCNM) AS ROW_
+                                            , ROW_NUMBER() OVER (ORDER BY A.USEYN DESC, A.DELYN,  (CASE WHEN REGEXP_LIKE(A.TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), STCNM) AS NO_
+                                            , A.TURN             /*순번*/
+                                            , A.BYNGYN             /*매수여부*/
+                                            , A.CMPR             /*구분*/
+                                            , TO_DATE(A.DLNGYMD) AS DLNGYMD        /*거래일자*/
+                                            , A.TIKER                             /*주식_티커*/
+                                            , A.STCKCNT                         /*주식수*/
+                                            , A.USEYN                             /*사용여부*/
+                                            , A.DELYN                             /*삭제여부*/
+                                            , A.REGYMD                             /*등록일자*/
+                                            , A.MDFCNYMD                         /*수정일자*/
+                                            , B.DVDN                            /*배당금     */
+                                            , B.DVDNCYC                            /*배당_주기   */
+                                            , B.STCNM                            /*주식명*/
+                                            , ((TO_NUMBER(A.STCKCNT) * TO_NUMBER(B.DVDN)) * DECODE(B.DVDNCYC, '월', 12, REGEXP_COUNT(B.DVDNCYC, ',')) )    AS DLNGAMT    /* 거래금액     */
+                                            ,COUNT(*) OVER() AS totalPages /*페이징 처리용 총 건수*/
+                                        FROM STCKDLNGINFO A, STOCKINFORMATION B
+                                            WHERE B.TIKER = A.TIKER
+                                                AND A.USEYN    ='Y'
+                                                AND A.DELYN    ='N'
+                                              <if test="(S_CMPR!=null) and (!S_CMPR.equals('')) and (!S_CMPR.equals('null'))">
+                                                AND A.CMPR      = #{S_CMPR}    /*구분*/
+                                             </if>
+                                              <if test="(S_BYNGYN!=null) and (!''.equals(S_BYNGYN)) and (!'null'.equals(S_BYNGYN))">
                                                 AND A.BYNGYN    = #{S_BYNGYN}  /*매수여부*/
-											</if>
-									 		<if test="(S_STCNM!=null) and (!''.equals(S_STCNM)) and (!'null'.equals(S_STCNM))">
+                                            </if>
+                                             <if test="(S_STCNM!=null) and (!''.equals(S_STCNM)) and (!'null'.equals(S_STCNM))">
                                                 AND B.STCNM LIKE '%'|| #{S_STCNM} ||'%'    /*주식명*/
-											 </if>
-									 		 <if test="(S_DVDNCYC!=null) and (!''.equals(S_DVDNCYC)) and (!'null'.equals(S_DVDNCYC))">
+                                             </if>
+                                              <if test="(S_DVDNCYC!=null) and (!''.equals(S_DVDNCYC)) and (!'null'.equals(S_DVDNCYC))">
                                                 AND B.DVDNCYC    = #{S_DVDNCYC}    /*배당_주기   */
-											 </if>
-											 <if test="(!'null'.equals(S_START_YMD)) and (!'null'.equals(S_END_YMD))">
+                                             </if>
+                                             <if test="(!'null'.equals(S_START_YMD)) and (!'null'.equals(S_END_YMD))">
 
-											 <choose>
-										            <when test="(S_START_YMD != null) and (!''.equals(S_START_YMD)) and (S_END_YMD != null) and (!''.equals(S_END_YMD))"> 
-										                AND A.DLNGYMD BETWEEN REGEXP_REPLACE(#{S_START_YMD}, '[[:punct:]]') AND REGEXP_REPLACE(#{S_END_YMD}, '[[:punct:]]')
-										            </when>
-										            <when test="(S_START_YMD != null) and (!''.equals(S_START_YMD))"> 
-										                AND A.DLNGYMD  <![CDATA[ >= ]]> REGEXP_REPLACE(#{S_START_YMD}, '[[:punct:]]') 
-										            </when>
-										            <when test="(S_END_YMD != null) and (!''.equals(S_END_YMD))"> 
-										                AND A.DLNGYMD  <![CDATA[ <= ]]> REGEXP_REPLACE(#{S_END_YMD}, '[[:punct:]]') 
-										            </when>
-											</choose>
-											 </if>
-								) TB
-							)
+                                             <choose>
+                                                    <when test="(S_START_YMD != null) and (!''.equals(S_START_YMD)) and (S_END_YMD != null) and (!''.equals(S_END_YMD))"> 
+                                                        AND A.DLNGYMD BETWEEN REGEXP_REPLACE(#{S_START_YMD}, '[[:punct:]]') AND REGEXP_REPLACE(#{S_END_YMD}, '[[:punct:]]')
+                                                    </when>
+                                                    <when test="(S_START_YMD != null) and (!''.equals(S_START_YMD))"> 
+                                                        AND A.DLNGYMD  <![CDATA[ >= ]]> REGEXP_REPLACE(#{S_START_YMD}, '[[:punct:]]') 
+                                                    </when>
+                                                    <when test="(S_END_YMD != null) and (!''.equals(S_END_YMD))"> 
+                                                        AND A.DLNGYMD  <![CDATA[ <= ]]> REGEXP_REPLACE(#{S_END_YMD}, '[[:punct:]]') 
+                                                    </when>
+                                            </choose>
+                                             </if>
+                                        ORDER BY DLNGYMD
+                                ) TB
+                            )
                 WHERE
                     NO_  <![CDATA[ <=  ]]>  (#{page} * #{rowCount})
                        )
-                WHERE (((#{page}-1) * #{rowCount}) + 1) <![CDATA[  <=	]]>   NO_
+                WHERE (((#{page}-1) * #{rowCount}) + 1) <![CDATA[  <=    ]]>   NO_
 </select>
 
 <!-- 주식 거래 정보 등록-->
 <insert id = "stckDlngInsert" parameterType="Map" >
-	INSERT /* SQL_ID : StckDlngMapper.stckDlngInsert(주식 거래 정보 등록) */
-		INTO STCKDLNGINFO
-			(
-				  TURN 			/*순번*/
-				, BYNGYN 		/*매수여부*/
-				, CMPR 			/*구분*/
-				, DLNGYMD 		/*거래일자*/
-				, TIKER 		/*주식_티커*/
-				, STCKCNT 		/*주식수*/
-				, USEYN 		/*사용여부*/
-				, DELYN 		/*삭제여부*/
-				, REGYMD 		/*등록일자*/
-				, MDFCNYMD 		/*수정일자*/
-			)
-		VALUES (
-				  (
-				  SELECT 
-				 		(TO_CHAR(SYSDATE, 'YYMMDD')||LPAD(NVL(MAX(SUBSTR(TURN, 7))+1,0),4,0))
-				 	FROM STCKDLNGINFO WHERE TURN LIKE TO_CHAR(SYSDATE , 'YYMMDD') || '%'
-				  )  	/*순번*/
-				, #{BYNGYN} 	/*매수여부*/
-				, #{CMPR} 		/*구분*/
-				, REGEXP_REPLACE(#{DLNGYMD}, '[[:punct:]]') 	/*거래일자*/
-				, #{STCNM_SELECT_BOX}		/*주식_티커*/
-				, #{STCKCNT} 	/*주식수*/
-				, #{USEYN} 		/*사용여부*/
-				, #{DELYN} 		/*삭제여부*/
-				, SYSDATE 		/*등록일자*/
-				, SYSDATE 		/*수정일자*/
-				)
+    INSERT /* SQL_ID : StckDlngMapper.stckDlngInsert(주식 거래 정보 등록) */
+        INTO STCKDLNGINFO
+            (
+                  TURN             /*순번*/
+                , BYNGYN         /*매수여부*/
+                , CMPR             /*구분*/
+                , DLNGYMD         /*거래일자*/
+                , TIKER         /*주식_티커*/
+                , STCKCNT         /*주식수*/
+                , USEYN         /*사용여부*/
+                , DELYN         /*삭제여부*/
+                , REGYMD         /*등록일자*/
+                , MDFCNYMD         /*수정일자*/
+            )
+        VALUES (
+                  (
+                  SELECT 
+                         (TO_CHAR(SYSDATE, 'YYMMDD')||LPAD(NVL(MAX(SUBSTR(TURN, 7))+1,0),4,0))
+                     FROM STCKDLNGINFO WHERE TURN LIKE TO_CHAR(SYSDATE , 'YYMMDD') || '%'
+                  )      /*순번*/
+                , #{BYNGYN}     /*매수여부*/
+                , #{CMPR}         /*구분*/
+                , REGEXP_REPLACE(#{DLNGYMD}, '[[:punct:]]')     /*거래일자*/
+                , #{STCNM_SELECT_BOX}        /*주식_티커*/
+                , #{STCKCNT}     /*주식수*/
+                , #{USEYN}         /*사용여부*/
+                , #{DELYN}         /*삭제여부*/
+                , SYSDATE         /*등록일자*/
+                , SYSDATE         /*수정일자*/
+                )
 </insert>
 
 <!-- 주식 거래 정보 수정-->
 <update id="stckDlngUpdate" parameterType="Map" >
-	UPDATE  /* SQL_ID : StckDlngMapper.stckDlngUpdate(주식 거래 정보 수정) */ STCKDLNGINFO
-		SET  	  BYNGYN 	= #{S_BYNGYN}	                                /*매수여부*/
-				, CMPR 		= #{U_CMPR}		                                /*구분*/
-				, DLNGYMD 	= REGEXP_REPLACE(#{U_DLNGYMD}, '[[:punct:]]')	/*거래일자*/
-				, TIKER 	= #{U_STCNM_SELECT_BOX}	                        /*주식_티커*/
-				, STCKCNT 	= #{U_STCKCNT}	                                /*주식수*/
-				, USEYN 	= #{USE_YN}	                                    /*사용여부*/
-				, DELYN 	= #{DEL_YN}		                                /*삭제여부*/
-				, MDFCNYMD  = SYSDATE		                                /*수정일자*/
-	WHERE TURN = #{U_TURN }
+    UPDATE  /* SQL_ID : StckDlngMapper.stckDlngUpdate(주식 거래 정보 수정) */ STCKDLNGINFO
+        SET        BYNGYN     = #{S_BYNGYN}                                    /*매수여부*/
+                , CMPR         = #{U_CMPR}                                        /*구분*/
+                , DLNGYMD     = REGEXP_REPLACE(#{U_DLNGYMD}, '[[:punct:]]')    /*거래일자*/
+                , TIKER     = #{U_STCNM_SELECT_BOX}                            /*주식_티커*/
+                , STCKCNT     = #{U_STCKCNT}                                    /*주식수*/
+                , USEYN     = #{USE_YN}                                        /*사용여부*/
+                , DELYN     = #{DEL_YN}                                        /*삭제여부*/
+                , MDFCNYMD  = SYSDATE                                        /*수정일자*/
+    WHERE TURN = #{U_TURN }
 </update>
 
 <!-- 주식 정보 조회-->
 <select id = "stckInfoInq"  resultType="Map">
-	SELECT /* SQL_ID : StckDlngMapper.stckInfoInq(주식 정보 조회) */
-					 TURN		/*순번       */
-					,TIKER		/*주식_티커   */
-					,STCNM		/*주식명     */
-					,DVDNCYC	/*배당_주기   */
-					,DVDN		/*배당금     */
-					,USEYN		/*사용여부    */
-					,DELYN		/*삭제여부    */
-					,REGYMD		/*등록일자    */
-					,MDFCNYMD	/*수정일자    */
-	FROM
-		STOCKINFORMATION
-	WHERE 
-		USEYN = 'Y'
-	AND DELYN = 'N'
-		ORDER BY USEYN DESC, DELYN,  (CASE WHEN REGEXP_LIKE(TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), STCNM
+    SELECT /* SQL_ID : StckDlngMapper.stckInfoInq(주식 정보 조회) */
+                     TURN        /*순번       */
+                    ,TIKER        /*주식_티커   */
+                    ,STCNM        /*주식명     */
+                    ,DVDNCYC    /*배당_주기   */
+                    ,DVDN        /*배당금     */
+                    ,USEYN        /*사용여부    */
+                    ,DELYN        /*삭제여부    */
+                    ,REGYMD        /*등록일자    */
+                    ,MDFCNYMD    /*수정일자    */
+    FROM
+        STOCKINFORMATION
+    WHERE 
+        USEYN = 'Y'
+    AND DELYN = 'N'
+        ORDER BY USEYN DESC, DELYN,  (CASE WHEN REGEXP_LIKE(TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), STCNM
 </select>
 
 
 <!-- 주식 거래 정보 조회-->
 <select id = "getDividendCycleByStockName"  resultType="Map" parameterType="String" >
-	SELECT /* SQL_ID : StckDlngMapper.getDividendCycleByStockName(주식 정보 조회) */
-					 TURN		/*순번       */
-					,TIKER		/*주식_티커   */
-					,STCNM		/*주식명     */
-					,DVDNCYC	/*배당_주기   */
-					,DVDN		/*배당금     */
-	FROM
-		STOCKINFORMATION
-	WHERE 	1=1 
-		AND TIKER  = #{TIKER}
-		AND USEYN = 'Y'
-		AND DELYN = 'N'
+    SELECT /* SQL_ID : StckDlngMapper.getDividendCycleByStockName(주식 정보 조회) */
+                     TURN        /*순번       */
+                    ,TIKER        /*주식_티커   */
+                    ,STCNM        /*주식명     */
+                    ,DVDNCYC    /*배당_주기   */
+                    ,DVDN        /*배당금     */
+    FROM
+        STOCKINFORMATION
+    WHERE     1=1 
+        AND TIKER  = #{TIKER}
+        AND USEYN = 'Y'
+        AND DELYN = 'N'
 </select>
 
 </mapper>

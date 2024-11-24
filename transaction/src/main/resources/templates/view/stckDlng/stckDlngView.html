@@ -23,17 +23,29 @@
         <div class="container01"> 
          <div class="div_title01">등록영역</div>  
           <div class="div_body01">
-            <form class="form02" id="stckInfoForm" th:action="@{/stckDlng/stckDlngInsert.do}" method="post"><!-- th:action="@{/stckInfo/stckInfoInsert.do}" method="post"-->
-                    <table>            
+            <!--<form class="form02" id="stckInfoForm" th:action="@{/stckDlng/stckDlngInsert.do}" method="post">--><!-- th:action="@{/stckInfo/stckInfoInsert.do}" method="post"-->
+            <form class="form02" id="stckInfoForm"  method="post"><!-- th:action="@{/stckInfo/stckInfoInsert.do}" method="post"-->
+                    <table>                
+                        <colgroup>
+                          <col style="width: 5%">
+                          <col style="width: 5%">
+                          <col style="width: 5%">
+                          <col style="width: 5%">
+                          <col style="width: 5%">
+                          <col style="width: 5%">
+                          <col style="width: 5%">
+                          <col style="width: 5%">
+                          <col style="width: 5%">
+                        </colgroup>
                         <thead>
                             <tr>                
                                 <th>구분     </th>
                                 <th>매수여부  </th>
-                                <th>거래일자  </th>                            
-                                <th>주식명   </th>            
+                                <th>거래일자  </th> 
+                                <th>주식명   </th>
                                 <th>주식티커  </th>
                                 <th>주식수    </th>
-                                <th>배당주기  </th>                    
+                                <th>배당주기  </th>
                                 <th>배당금    </th>
                                 <th>        </th>
                             </tr>                
@@ -51,7 +63,7 @@
                                     <input type="checkbox"   id="BYNGYN"   name="BYNGYN" class="full-width-input"     checked>
                                 </td>
                                 <td>                    <!--거래일자 -->
-                                    <input type="date"       id="DLNGYMD"   name="DLNGYMD" class="full-width-input">    
+                                    <input type="date"       id="DLNGYMD"   name="DLNGYMD" class="full-width-input" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">    
                                 </td>        
                                 <td>                    <!--주식명 -->
                                     <!--<input type="text" placeholder="주식명"        id="STCNM"   name="STCNM">    -->
@@ -64,7 +76,7 @@
                                 </td>
                                 <td>                    <!--주식티커 -->
                                     <!--<input type="text"       id="TIKER"   name="TIKER">-->    
-                                    <select id="TIKER_SELECT_BOX"  name="TIKER_SELECT_BOX" class="full-width-input" disabled>
+                                    <select id="TIKER_SELECT_BOX"  name="TIKER_SELECT_BOX" class="full-width-input" readOnly>
                                         <option value="">선택</option>
                                         <th:block th:if="${!#lists.isEmpty(stckInfoInq)}">
                                             <option th:each="stckList : ${stckInfoInq}" th:value="${stckList.TIKER}" th:text="${stckList.TIKER}">
@@ -77,7 +89,9 @@
                                 <td>                    <!--배당주기 -->
                                     <!--<input type="text"     id="DVDNCYC"   name="DVDNCYC">-->    
                                     <!--<input type="text" placeholder="주식명"        id="STCNM"   name="STCNM">    -->
-                                    <select id="DVDNCYC_SELECT_BOX"  name="DVDNCYC_SELECT_BOX" class="full-width-input" disabled>
+                                    <select id="DVDNCYC_SELECT_BOX"  name="DVDNCYC_SELECT_BOX" class="full-width-input"
+                                    onFocus='this.initialSelect = this.selectedIndex;'
+                                    onChange='this.selectedIndex = this.initialSelect;' >
                                         <option value="">선택</option>
                                         <th:block th:if="${!#lists.isEmpty(stckInfoInq)}">
                                             <option th:each="stckList : ${stckInfoInq}" th:value="${stckList.DVDNCYC}" th:text="${stckList.DVDNCYC}">
@@ -85,17 +99,17 @@
                                     </select>
                                 </td>                    
                                 <td>                    <!--배당금 -->
-                                <select id="DVDN_SELECT_BOX"  name="DVDN_SELECT_BOX" class="full-width-input" disabled>
+                                <select id="DVDN_SELECT_BOX"  name="DVDN_SELECT_BOX" class="full-width-input" readOnly>
                                     <option value="">선택</option>
                                     <th:block th:if="${!#lists.isEmpty(stckInfoInq)}">
                                         <option th:each="stckList : ${stckInfoInq}" th:value="${stckList.DVDN}" th:text="${stckList.DVDN}">
                                     </th:block>
                                 </select>
                                 </td>                
-                                    <input type="hidden" value="Y" id="USEYN" name="USEYN"> <!--사용여부-->            
-                                    <input type="hidden" value="N"id="DELYN"  name="DELYN"> <!--삭제여부-->
+                                    <input type="hidden" value="Y" id="USEYN"  name="USEYN"> <!--사용여부-->            
+                                    <input type="hidden" value="N" id="DELYN"  name="DELYN"> <!--삭제여부-->
                                 <td>                    <!--onclick="register()"-->
-                                    <input class="insert-button" type="submit"  value="등록"> 
+                                    <input class="insert-button w30" onclick="register('stckInfoForm')" value="등록"> 
                                 </td>
                             </tr>
                         </tbody>
@@ -128,8 +142,8 @@
                   <input type="text" id="S_STCNM" name="S_STCNM" placeholder="주식명" class="full-width-input01" th:value="${parameter?.S_STCNM}">
                   
             <label for="배당주기">배당주기</label>
-                  <input type="text"  name="S_DVDNCYC" placeholder="배당주기" class="full-width-input01">
-                  <button  class="search-button">검색</button><!--                    onclick="search()"-->
+            <input type="text"  name="S_DVDNCYC" placeholder="배당주기" class="full-width-input01" >
+            <button  class="search-button">검색</button><!--                    onclick="search()"-->
            </div>
          </form>   
      </div>
@@ -217,21 +231,21 @@
                 </td>
                 <td> <!-- 배당주기      -->
                     <input type="text" class="full-width-input" id="U_DVDNCYC" name="U_DVDNCYC"
-                        th:value="${stckDlng.DVDNCYC}" disabled />
+                        th:value="${stckDlng.DVDNCYC}" readOnly />
                 </td>
                 <td> <!-- 배당금          -->
                     <input type="text" class="full-width-input" id="U_DVDN" name="U_DVDN" th:value="${stckDlng.DVDN}"
-                        disabled />
+                        readOnly />
                     </th>
                 <td> <!-- 1년치 배당      -->
                     <input type="text" class="full-width-input" id="U_DLNGAMT" name="U_DLNGAMT"
-                        th:value="${stckDlng.DLNGAMT}" disabled />
+                        th:value="${stckDlng.DLNGAMT}" readOnly />
                 </td>
                 <td>
                     <input type="button" value="수정" onclick="rowUpdateClicked01('#stckDlngSelect', this, 'N', 'Y')"
                         class="    update-button">
                     /
-                    <input type="button" value="삭제" onclick="rowUpdateClicked01('#stckDlngSelect', this, 'Y')"
+                    <input type="button" value="삭제" onclick="rowUpdateClicked01('#stckDlngSelect', this, 'Y', 'N')"
                         class="    delete-button">
                 </td>
                 <!--<td th:text="${stckDlng.REGYMD}">  등록일자      

@@ -34,11 +34,17 @@
               color: white;
               background-color: #04AA6D;
             }
-    </style>
+    </style>                
+        <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
+        <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">    
+        <script type="text/javascript" th:src="@{/JS/utlt/modal.js}"></script>  
+        <script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
+        <script type="text/javascript" th:src="@{/JS/utlt/data.js}"></script>  
 </head>
 <body>
     <ul class="ul_01">
-      <li class="li_01"><a href="/">주식정보</a></li>
+      <li class="li_01"><a href="/">홈</a></li>
+      <li class="li_01"><a href="/stckInfo/stckInfoView">주식정보</a></li>
       <li class="li_01"><a href="/stckDlng/stckDlngView">                주식거래정보</a></li>	  
 	  <li class="li_01"><a href="/allocation/allocationView">            배당내역   </a></li>
 	  <li class="li_01"><a href="/weeklyAllocation/weeklyAllocationView">주간배당내역</a></li>
