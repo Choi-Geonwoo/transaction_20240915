@@ -160,39 +160,39 @@ function fn_updateModal(data){
           <div class="div_body01">
               <table>
                 <tr>
-                  <td>
+                  <td class="minW70">
                       주식명 
                   </td>
                   <td>
-                      <input type="text"  class="full-width-input" value="${data.STOCK_NAME}">
+                      <input type="text"  class="full-width-input10" value="${data.STOCK_NAME}">
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td  class="minW70">
                       거래 일자
                   </td>
                   <td>
-                      <input type="date"  class="full-width-input09_data" value="${data.TRNSCDATE}">
+                      <input type="date"  class="full-width-input02_data w90_" value="${data.TRNSCDATE}">
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td  class="minW70"> 
                       배당금
                   </td>
                   <td>
-                      <input type="text"   class="full-width-input" value="${data.DIVIDEND}">
+                      <input type="text"   class="full-width-input10" value="${data.DIVIDEND}">
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td  class="minW70">
                       거래 금액
                   </td>
                   <td>
-                      <input type="text"  class="full-width-input" value="${data.AMOUNT}">
+                      <input type="text"  class="full-width-input10" value="${data.AMOUNT}">
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td  class="minW70">
                       파일명
                   </td>
                   <td>
@@ -200,11 +200,11 @@ function fn_updateModal(data){
                   </td>
                 </tr>
                 <tr >
-                  <td>
+                  <td  class="minW70">
                       이미지
                   </td>
                   <td>
-                      <img id="image1" style="height: 330px; width:90%;">
+                      <img id="image1" style="min-height : 300px; max-height : 300px; width : 100%;">
                   </td>
                 </tr>
                 <tr>
@@ -262,7 +262,7 @@ function fn_insertModal(data){
           <div class="div_body01">
               <table>
                 <tr>
-                  <td>
+                  <td  class="minW70">
                       주식명 
                   </td>
                   <td>
@@ -270,31 +270,31 @@ function fn_insertModal(data){
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td  class="minW70"> 
                       거래 일자
                   </td>
                   <td>
-                      <input type="date"  class="full-width-input09_data" id="I_TRNSCDATE">
+                      <input type="date"  class="full-width-input02_data w90_" id="I_TRNSCDATE">
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td  class="minW70">
                       배당금
                   </td>
                   <td>
-                      <input type="text"   class="full-width-input" id="I_DIVIDEND">
+                      <input type="text"   class="full-width-input10" id="I_DIVIDEND">
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td  class="minW70">
                       거래 금액
                   </td>
                   <td>
-                      <input type="text"  class="full-width-input" id="I_AMOUNT" >
+                      <input type="text"  class="full-width-input10" id="I_AMOUNT" >
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td  class="minW70">
                       파일명
                   </td>
                   <td>
@@ -302,11 +302,11 @@ function fn_insertModal(data){
                   </td>
                 </tr>
                 <tr >
-                  <td>
+                  <td  class="minW70">
                       이미지
                   </td>
                   <td>
-                      <img id="I_IMG" style="height: 330px; width:90%;">
+                      <img id="I_IMG" style="min-height : 300px; max-height : 300px; width : 100%;">
                   </td>
                 </tr>
                 <tr>
@@ -400,7 +400,7 @@ var reader = new FileReader();
                     })
                     .then(data => {
                             if(-1 != data.retNo){
-                              alert(data.list.msg+"되었습니다.");
+                              alert(data.msg+"되었습니다.");
                               location.reload();
                             }else{
                               alert("오류가 발생되었습니다.");
@@ -416,4 +416,5 @@ var reader = new FileReader();
     
     
 }
+
 

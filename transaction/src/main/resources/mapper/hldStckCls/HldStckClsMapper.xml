@@ -78,4 +78,18 @@
                  ]]>
 </select>
 
+
+<update id="hldStckClsUpdate" parameterType="Map" >
+       UPDATE   /* HldStckClsMapper.hldStckClsUpdate : 주식 수정 */
+                 STOCKPORTFOLIO
+         SET 
+                 STOCK_NAME= #{U_STOCK_NAME}
+                ,STOCK_QUANTITY=#{U_STOCK_QUANTITY} 
+                ,DIVIDEND_CYCLE=#{U_DIVIDEND_CYCLE} 
+                /*,PURCHASE_PRICE=#{purchasePrice}*/
+                ,DIVIDEND_AMOUNT=#{U_DIVIDEND_AMOUNT}
+                ,RGSTDATE=sysdate
+        WHERE NO = #{U_NO}
+</update>
+
 </mapper>

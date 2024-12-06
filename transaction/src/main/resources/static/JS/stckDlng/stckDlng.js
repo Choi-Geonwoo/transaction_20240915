@@ -335,7 +335,6 @@ function fn_call(data, id){
         }*/
         // newShowModal에 메시지만 전달
         newShowModal(data.list.msg, () => {
-            console.log("111111111111111111111111111111111111111");
                 history.go(0);  // 페이지 새로 고침
         });
     }else if("insert" == id){
@@ -347,7 +346,6 @@ function fn_call(data, id){
 }
 
 function callback(msg){
-            console.log("111111111111111111111111111111111111111 " + msg);
                 history.go(0);  // 페이지 새로 고침
     
 }

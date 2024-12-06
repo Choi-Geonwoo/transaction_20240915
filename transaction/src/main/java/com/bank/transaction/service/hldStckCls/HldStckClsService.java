@@ -39,5 +39,12 @@ public interface HldStckClsService {
 	* 2024.09.18        Jihun Park       최초 생성
 	**/
 	public Map<String, Object> hldStckClsDetail(Map<String, Object>  map);
-
+	/**
+	 * 
+	* @methodName    : hldStckClsUpdate(주식 정보 수정)
+	* @author        : Jihun Park
+	* @date          : 2024.09.15
+	* @return
+	*/
+    public Map<String, Object>  hldStckClsUpdate(Map map);
 }

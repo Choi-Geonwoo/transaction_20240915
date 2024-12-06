@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.bank.transaction.file.dto.FileDTO;
+
 /**
 * @packageName    : com.bank.transaction.mapper.hldStckCls(보유 주식 종목)
 * @fileName       : HldStckClsMapper.java(보유 주식 종목 관련)
@@ -43,5 +45,13 @@ public interface HldStckClsMapper {
 	* 2024.09.18        Jihun Park       최초 생성
 	**/
 	public Map<String, Object> hldStckClsDetail(String stockName);
+
+	/**
+	* @methodName    : hldStckClsUpdate(주식 정보 수정)
+	* @author        : Jihun Park
+	* @date          : 2024.09.15
+	* @return
+	*/
+    public int  hldStckClsUpdate(Map map);
 
 }

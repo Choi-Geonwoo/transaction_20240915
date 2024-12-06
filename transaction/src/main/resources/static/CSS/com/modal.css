@@ -25,10 +25,10 @@
 /* 모달 내용 */
 .modal-content01 {
   background: white;
-  width: 800px;
-  height: 700px;
-  padding: 20px;
-  border-radius: 8px;
+  width: 600px;
+  height: 680px;
+  padding: 15px;
+  border-radius: 7px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 

@@ -118,7 +118,7 @@
 			          <td ><input class="full-width-input" type="checkbox" th:value="${sSelect.USEYN}" th:checked="${sSelect.USEYN == 'Y'}"></td>
 			          <td ><input class="full-width-input" type="checkbox" th:value="${sSelect.DELYN}" th:checked="${sSelect.DELYN == 'Y'}"></td>                              
 			          <td style="display: none;"><input type="hidden" th:value="${sSelect.TURN}"></td><!--순번-->               
-			          <td  ><input type="button" value="수정" onclick="rowUpdateClicked('#stckInfoSelect', this)"></td>
+			          <td  ><input type="button" class="update-button" value="수정" onclick="rowUpdateClicked('#stckInfoSelect', this)"></td>
 			          <td th:text="${sSelect.REGYMD}">               등록일자</td>               
 			          <td th:text="${sSelect.MDFCNYMD}">               수정일자</td>
 			      </tr>

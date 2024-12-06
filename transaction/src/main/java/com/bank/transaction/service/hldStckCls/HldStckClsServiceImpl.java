@@ -1,5 +1,6 @@
 package com.bank.transaction.service.hldStckCls;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,27 @@ public class HldStckClsServiceImpl implements HldStckClsService {
 		log.debug("#############################");
 		String stockName = String.valueOf(map.get("stockName"));
 		return hldStckClsMapper.hldStckClsDetail(stockName);
+	}
+
+    /**
+    * @methodName    : hldStckClsUpdate(보유 주식 수정)
+    * @author        : Jihun Park
+    * @date          : 2024.09.15
+    * @return
+    */  
+	@Override
+	public Map<String, Object> hldStckClsUpdate(Map map) {
+        int cnt = 0;
+        cnt = hldStckClsMapper.hldStckClsUpdate(map);
+        //log.info("===> stckDlngUpdate");
+        //log.info("===> value : : : " + cnt);
+        Map<String, Object> retMap = new HashMap<String, Object>();
+        if(cnt != 0 ) {
+            retMap.put("msg", "성공했습니다");
+        }else {
+            retMap.put("msg", "실패했습니다");
+        }
+            return retMap;
 	}
 
 }

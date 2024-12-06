@@ -43,3 +43,24 @@ function fn_call(data){
     }
     
 }
+
+// 수정
+function detailsUpdate(data) {
+    const tableRow = data.closest("tr");
+    const cells = tableRow.querySelectorAll("td");
+    const no               = cells[0].querySelector('input').value;
+    const STOCK_NAME       = cells[1].querySelector('input').value;
+    const STOCK_QUANTITY   = cells[2].querySelector('input').value;
+    const DIVIDEND_CYCLE   = cells[3].querySelector('input').value;
+    const DIVIDEND_AMOUNT  = cells[4].querySelector('input').value;
+    //const PURCHASE_PRICE   = cells[5].querySelector('input').value; 배당금은 배당 실제 받은 경우로 사용
+    const rowData = {
+                         U_NO              : no
+                        ,U_STOCK_NAME      : STOCK_NAME
+                        ,U_STOCK_QUANTITY  : STOCK_QUANTITY 
+                        ,U_DIVIDEND_CYCLE  : DIVIDEND_CYCLE 
+                        ,U_DIVIDEND_AMOUNT : DIVIDEND_AMOUNT 
+                        //,U_PURCHASE_PRICE  : PURCHASE_PRICE 
+                    };
+    console.log(`1.` + JSON.stringify(rowData));
+}

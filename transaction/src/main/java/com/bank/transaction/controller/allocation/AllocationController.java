@@ -95,6 +95,7 @@ public class AllocationController {
             // JSON 객체 생성
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("list", mapData);
+            jsonObject.put("msg", "성공");
 
             // 성공 응답 반환
             return ResponseEntity.ok(jsonObject.toString());
