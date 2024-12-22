@@ -62,4 +62,26 @@
    </if>
 </select>
 
+
+
+<select id="stckClndSelect" resultType="Map" parameterType="Map">
+    SELECT 
+         TRNSCDATE
+        ,SUM(AMOUNT) AS AMOUNT /* 거래금액*/
+    FROM 
+    (
+        SELECT
+           /* SQL_ID : AlctnClndMapper.stckClndSelect */
+          TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE
+          ,RTRIM(AMOUNT)                  AS AMOUNT
+        FROM
+            TRANSACTION
+        WHERE 1 = 1
+          AND TO_DATE(TRNSCDATE)  BETWEEN  TRUNC(TO_DATE(#{startDate}, 'YYYY-MM-DD'), 'MM') AND LAST_DAY(TO_DATE(#{endDate}, 'YYYY-MM-DD'))
+    )
+    WHERE 
+         1=1
+    GROUP BY TRNSCDATE
+</select>
+
 </mapper>

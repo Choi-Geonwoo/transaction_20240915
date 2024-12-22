@@ -333,14 +333,19 @@ function fn_call(data, id){
         if(data.list.msg.indexOf('성공') != -1){
             history.go(0);
         }*/
-        // newShowModal에 메시지만 전달
-        newShowModal(data.list.msg, () => {
-                history.go(0);  // 페이지 새로 고침
-        });
+        //// newShowModal에 메시지만 전달
+        //newShowModal(data.list.msg, () => {
+        //        history.go(0);  // 페이지 새로 고침
+        //});
+        alert(data.list.msg);
+        history.go(0);  // 페이지 새로 고침
     }else if("insert" == id){
-        newShowModal(data.list.msg, () => {
-                history.go(0);  // 페이지 새로 고침
-        });
+        //newShowModal(data.list.msg, () => {
+        //        history.go(0);  // 페이지 새로 고침
+        //});
+        
+        alert(data.list.msg);
+        history.go(0);  // 페이지 새로 고침
     }
 	
 }
@@ -348,5 +353,33 @@ function fn_call(data, id){
 function callback(msg){
                 history.go(0);  // 페이지 새로 고침
     
+}
+
+function fn_formCheck(){
+    var checkBox = document.getElementById("formCheck");
+    const cells = document.querySelectorAll('.tdHdng'); // 클래스가 col2인 모든 td 선택
+    
+    if(checkBox.checked){
+        //alert("체크");
+        //document.getElementById("U_TURN").style.display ='none'; 
+        //document.getElementById("S_TRUN").style.display ='none'; 
+        cells.forEach(cell => {
+            //cell.style.display = 'none'; // 숨기기
+            cell.classList.remove("block01"); // 클래스 추가/제거 토글
+            cell.classList.add("none01"); // 클래스 추가/제거 토글
+        });
+    }else{
+        //alert("미체크");
+        //document.getElementById("U_TURN").style.display ='block'; 
+        //document.getElementById("S_TRUN").style.display ='block'; 
+        cells.forEach(cell => {
+            //cell.style.display = 'block'; // 숨기기
+            //cell.classList.add("block01"); // 클래스 추가/제거 토글
+            cell.classList.remove("none01"); // 클래스 추가/제거 토글
+        });
+    }
+    //document.getElementById("sampleDiv").style.display ='none';     
+
+    //document.getElementById("sampleDiv").style.display ='block';
 }
 

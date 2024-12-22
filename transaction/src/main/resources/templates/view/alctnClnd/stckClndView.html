@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
+    <title>테스트</title>	
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">        
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/alctnClnd/stckClnd.css}">    
+    <script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>  
+    <script type="text/javascript" th:src="@{/JS/alctnClnd/stckClnd.js}"></script>  
+</head>
+<body>
+    <h4>
+        <ul class="nav flex-column" th:replace="view/layout/menuBar.html"></ul>
+    </h4>
+    
+    <div class="container01"> 
+        <div class="div_title01">검색영역</div>
+            <div class="div_body01" style="position: relative;">
+             </div>
+        </div>
+    </div>
+    <div class="container01">    
+        <div class="div_title01">조회영역</div>          
+            <div class="div_body01">
+                <div class="div_body02">
+                    <div class="calendar-container">
+                              <div class="calendar-header">
+                              <input type="button" onclick="fn_prevBtn('year')" value="이전">
+                              <h2 id="currentMonth"></h2>                          
+                              <input type="button" onclick="fn_nextBtn('year')" value="다음">
+                              </div>
+                              <div class="calendar-days">
+                                  <div class="day01"></div>
+                                  <div class="day01"></div>
+                                  <div class="day01"></div>
+                              </div>
+                              <div class="calendar-dates" id="calendarDates"></div>
+                              <div class="calendar-header"></div>
+                          </div>
+                          
+                          <div class="calendar-container01">
+                              <div class="calendar-header">
+                                  <input type="button" onclick="fn_prevBtn('month')" value="이전">
+                                  <h2 id="currentMonth01"></h2>                          
+                                  <input type="button" onclick="fn_nextBtn('month')" value="다음">
+                              </div>
+                              <div class="calendar-days01">
+                                  <div class="day01 font_red">일</div>
+                                  <div class="day01">월</div>
+                                  <div class="day01">화</div>
+                                  <div class="day01">수</div>
+                                  <div class="day01">목</div>
+                                  <div class="day01">금</div>
+                                  <div class="day01 font_blue">토</div>
+                              </div>
+                              <div class="calendar-dates01" id="calendarDates01"></div>
+                              <div class="calendar-header"></div>
+                          </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

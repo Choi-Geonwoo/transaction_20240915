@@ -88,6 +88,28 @@ function mnthDetail(trnscdate, month){
 
 
 /**
+ * 상세 조회
+ * @param trnscdate     : 년도
+ * @param month         : 월
+ **/    
+function mnthDetail01(trnscdate, month){
+    //document.getElementById("popup_layer").style.display = "block";
+    //TRNSCDATE
+    // 행 데이터를 저장할 JSON 객체 생성
+    var rowData = {};
+    rowData["trnscdate"]  = trnscdate + month + "";
+    //console.log("Row Data: ", JSON.stringify(rowData));
+    //fetch API를 사용하여 POST 요청을 보냅니다
+    //fetch002('/mnthAllocation/allocationDetail.do', "post", rowData); //url, method, body
+    postFetch('/mnthAllocation/mnthAllocationDetail.do', rowData, 'list01');
+}
+
+//팝업 닫기
+function fn_closePop() {
+    document.getElementById("popup_layer").style.display = "none";
+}
+
+/**
  * 콜백함수
  * @param data     : 리턴값
  **/    
@@ -178,6 +200,51 @@ function fn_call(data, id){
         
         // 모달에 클릭 이벤트를 추가합니다.
         modal.addEventListener('click', handleButtonClick01);
+        
+        }else if("list01" == id){
+            
+             const tbody = document.getElementById("tody01");
+             const divTitle = document.getElementById("div_title01");
+             var trnscDate="";
+             // JSON 데이터 처리
+             //console.log("응답 데이터:", data);
+             if (!data.list && !Array.isArray(data.list)) {
+                 alert("데이터가 없습니다.");
+                 return;
+             }
+             // 테이블의 기존 내용을 모두 지움
+             while(tbody.rows.length > 0){
+               tbody.deleteRow(0);
+             }
+             // 테이블 행을 담을 변수를 초기화합니다.
+             let tableRows = '';
+             //console.log(data.list);
+             data.list.forEach((item, index) => {
+                 //console.log(`결과 :" ${item}`);
+                 tableRows += `<tr>`
+                 tableRows += `<td>${item.TRNSCDATE}</td>`;       //날짜
+                 if(!isEmpty(item.STOCK_NAME)){
+                     tableRows += `<td>${item.STOCK_NAME}</td>`;    //주식명
+                 }else{
+                     tableRows += `<td></td>`;        //배당금
+                 }       
+                 if(!isEmpty(item.DIVIDEND)){
+                     tableRows += `<td>${item.DIVIDEND}</td>`;        //배당금
+                 }else{
+                     tableRows += `<td></td>`;        //배당금
+                 }
+                 tableRows += `<td>${item.AMOUNT}</td>`;          //거래금액
+                 tableRows += `</tr>`;
+                 if(!isEmpty(item.TRNSCDATE) && "합계" != item.TRNSCDATE){
+                    trnscDate = item.TRNSCDATE;
+                 }
+                 //
+                 console.log("어떤게 나오나"+trnscDate);
+             });
+             tbody.innerHTML += tableRows;
+             console.log("어떤게 나오나"+trnscDate);
+             divTitle.innerHTML = "년도 : " + trnscDate.substr(0, 7);
+             document.getElementById("popup_layer").style.display = "block";
         }
 
 }

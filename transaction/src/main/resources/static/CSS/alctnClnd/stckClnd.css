@@ -1,0 +1,75 @@
+.div_body02{
+    display: flex;
+}
+
+.calendar-container{
+    width: 500px;
+    height: 530px;
+    margin: 30px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+.calendar-container01{
+    width: 500px;
+    height: 530px;
+    margin: 30px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+.calendar-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.calendar-days01{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.day01{
+    padding: 5px;
+}
+.calendar-dates{
+    height: 400px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0.5px;
+}
+
+.calendar-dates01{
+    height: 400px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 0.5px;
+}
+
+.date{
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid #E4C1FFFF;
+    min-height: 50px;
+}
+
+.empty{
+    border: 0px;
+}
+
+.date:hover {
+    background-color: aliceblue;
+}
+
+.font_red{
+    color: red;
+}
+
+.font_blue{
+    color: blue;
+}

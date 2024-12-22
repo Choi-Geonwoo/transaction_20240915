@@ -144,6 +144,7 @@
             <label for="배당주기">배당주기</label>
             <input type="text"  name="S_DVDNCYC" placeholder="배당주기" class="full-width-input01" >
             <button  class="search-button">검색</button><!--                    onclick="search()"-->
+            <input type="checkbox" id="formCheck" onclick="fn_formCheck();"><label for="formCheck">숨기기</label>
            </div>
          </form>   
      </div>
@@ -159,7 +160,7 @@
     <div class="div_body01">
     <table id='stckDlngSelect'>
           <colgroup>
-            <col style="width: 2%">
+            <col class="tdHdng" style="width: 2%">
             <col style="width: 5%">
             <col style="width: 4%">
             <col style="width: 2%">
@@ -168,30 +169,30 @@
             <col style="width: 2%">
             <col style="width: 3%">
             <col style="width: 5%">
-            <col style="width: 6%">
-            <col style="width: 5%">
+            <col class="tdHdng" style="width: 4%">
+            <col class="tdHdng" style="width: 5%">
           </colgroup>
         <thead>
             <tr>
-                <th name="U_TURN">순번</th>
+                <th class="tdHdng" name="U_TURN">순번</th>
                 <th name="U_CMPR">구분</th>
                 <th name="S_BYNGYN">매수여부</th>
                 <th name="U_DLNGYMD">거래일자</th>
                 <th name="U_STCNM_SELECT_BOX">주식명</th>
                 <th name="U_STCKCNT">수량</th>
                 <th name="U_DVDNCYC">배당주기</th>
-                <th name="U_DVDN">배당금</th>
+                <th name="U_DVDN"   >배당금</th>
                 <th name="U_DLNGAMT">1년치<br>배당(예상)</th>
-                <th >구분</th>
+                <th class="tdHdng">구분</th>
                 <!--<th>등록일자</th>-->
-                <th>수정일자</th>
+                <th class="tdHdng">수정일자</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="stckDlng : ${stckDlngSelect}">
-                <td> <!-- 순번 -->
+                <td class="tdHdng"> <!-- 순번 -->
                     <input type="hidden" class="full-width-input" name="U_TURN" th:value="${stckDlng.TURN}"
-                        th:text="${stckDlng.NO_}">
+                        th:text="${stckDlng.ROW_}">
                 </td>
                 <td> <!-- 구분          -->
                     <!--<input type="text" th:value="${sSelect.CMPR}"/>-->
@@ -241,16 +242,18 @@
                     <input type="text" class="full-width-input" id="U_DLNGAMT" name="U_DLNGAMT"
                         th:value="${stckDlng.DLNGAMT}" readOnly />
                 </td>
-                <td>
+                <td class="tdHdng">
                     <input type="button" value="수정" onclick="rowUpdateClicked01('#stckDlngSelect', this, 'N', 'Y')"
-                        class="    update-button">
+                        class="    update-button"/>
                     /
                     <input type="button" value="삭제" onclick="rowUpdateClicked01('#stckDlngSelect', this, 'Y', 'N')"
-                        class="    delete-button">
+                        class="    delete-button"/>
                 </td>
                 <!--<td th:text="${stckDlng.REGYMD}">  등록일자      
                 </td>-->
-                <td th:text="${stckDlng.MDFCNYMD}"> <!-- 수정일자      -->
+                <td class="tdHdng"> <!-- 수정일자      -->
+                    <input type="text" class="full-width-input" 
+                                            th:value="${stckDlng.MDFCNYMD}" readOnly />
                 </td>
             </tr>
         </tbody>

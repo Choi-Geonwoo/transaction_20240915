@@ -18,17 +18,17 @@
                                       ROW_
                                     , NO_
                                     , TB.TURN                             /*순번*/
-                                    , TB.BYNGYN                         /*매수여부*/
+                                    , TB.BYNGYN                           /*매수여부*/
                                     , TB.CMPR                             /*구분*/
-                                    , TB.DLNGYMD                        /*거래일자*/
-                                    , TB.TIKER                             /*주식_티커*/
-                                    , TB.STCKCNT                         /*주식수*/
-                                    , TB.USEYN                             /*사용여부*/
-                                    , TB.DELYN                             /*삭제여부*/
-                                    , TB.REGYMD                             /*등록일자*/
+                                    , TB.DLNGYMD                          /*거래일자*/
+                                    , TB.TIKER                            /*주식_티커*/
+                                    , TB.STCKCNT                          /*주식수*/
+                                    , TB.USEYN                            /*사용여부*/
+                                    , TB.DELYN                            /*삭제여부*/
+                                    , TB.REGYMD                           /*등록일자*/
                                     , TB.MDFCNYMD                         /*수정일자*/
-                                    , TB.DVDN                            /*배당금     */
-                                    , TB.DVDNCYC                            /*배당_주기   */
+                                    , TB.DVDN                             /*배당금     */
+                                    , TB.DVDNCYC                          /*배당_주기   */
                                     , TB.STCNM                            /*주식명*/
                                     , TRIM(CASE 
                                       WHEN REGEXP_LIKE(TB.TIKER, '[^0-9]') THEN '$'||TO_CHAR(TB.DLNGAMT , 'FM9990.99')
@@ -39,25 +39,29 @@
                                         SELECT 
                                              ROW_NUMBER() OVER (ORDER BY TO_DATE(A.DLNGYMD), B.STCNM) AS ROW_
                                             , ROW_NUMBER() OVER (ORDER BY A.USEYN DESC, A.DELYN,  (CASE WHEN REGEXP_LIKE(A.TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), STCNM) AS NO_
-                                            , A.TURN             /*순번*/
-                                            , A.BYNGYN             /*매수여부*/
-                                            , A.CMPR             /*구분*/
-                                            , TO_DATE(A.DLNGYMD) AS DLNGYMD        /*거래일자*/
-                                            , A.TIKER                             /*주식_티커*/
-                                            , A.STCKCNT                         /*주식수*/
-                                            , A.USEYN                             /*사용여부*/
-                                            , A.DELYN                             /*삭제여부*/
-                                            , A.REGYMD                             /*등록일자*/
-                                            , A.MDFCNYMD                         /*수정일자*/
-                                            , B.DVDN                            /*배당금     */
-                                            , B.DVDNCYC                            /*배당_주기   */
-                                            , B.STCNM                            /*주식명*/
-                                            , ((TO_NUMBER(A.STCKCNT) * TO_NUMBER(B.DVDN)) * DECODE(B.DVDNCYC, '월', 12, REGEXP_COUNT(B.DVDNCYC, ',')) )    AS DLNGAMT    /* 거래금액     */
+                                            , A.TURN                                /*순번*/
+                                            , A.BYNGYN                              /*매수여부*/
+                                            , A.CMPR                                /*구분*/
+                                            , TO_DATE(A.DLNGYMD) AS DLNGYMD         /*거래일자*/
+                                            , A.TIKER                               /*주식_티커*/
+                                            , A.STCKCNT                             /*주식수*/
+                                            , A.USEYN                               /*사용여부*/
+                                            , A.DELYN                               /*삭제여부*/
+                                            , A.REGYMD                              /*등록일자*/
+                                            , A.MDFCNYMD                            /*수정일자*/
+                                            , NVL(C.DIVIDEND,B.DVDN)   AS DVDN      /*배당금     */
+                                            , B.DVDNCYC                             /*배당_주기   */
+                                            , B.STCNM                               /*주식명*/
+                                            , ((TO_NUMBER(A.STCKCNT) * TO_NUMBER(NVL(C.DIVIDEND,B.DVDN))) * DECODE(B.DVDNCYC, '월', 12, REGEXP_COUNT(NVL(C.DIVIDEND,B.DVDN), ',')) )    AS DLNGAMT    /* 거래금액     */
                                             ,COUNT(*) OVER() AS totalPages /*페이징 처리용 총 건수*/
-                                        FROM STCKDLNGINFO A, STOCKINFORMATION B
-                                            WHERE B.TIKER = A.TIKER
+                                        FROM STCKDLNGINFO     A
+                                           , STOCKINFORMATION B
+                                           , TRANSACTION      C
+                                            WHERE B.TIKER      = A.TIKER
                                                 AND A.USEYN    ='Y'
                                                 AND A.DELYN    ='N'
+                                                AND A.TIKER    = C.TIKER(+)
+                                                AND A.DLNGYMD  =  C.TRNSCDATE(+)
                                               <if test="(S_CMPR!=null) and (!S_CMPR.equals('')) and (!S_CMPR.equals('null'))">
                                                 AND A.CMPR      = #{S_CMPR}    /*구분*/
                                              </if>
@@ -138,7 +142,7 @@
                 , USEYN     = #{USE_YN}                                        /*사용여부*/
                 , DELYN     = #{DEL_YN}                                        /*삭제여부*/
                 , MDFCNYMD  = SYSDATE                                        /*수정일자*/
-    WHERE TURN = #{U_TURN }
+    WHERE TURN = #{U_TURN}
 </update>
 
 <!-- 주식 정보 조회-->
@@ -165,17 +169,35 @@
 <!-- 주식 거래 정보 조회-->
 <select id = "getDividendCycleByStockName"  resultType="Map" parameterType="String" >
     SELECT /* SQL_ID : StckDlngMapper.getDividendCycleByStockName(주식 정보 조회) */
-                     TURN        /*순번       */
-                    ,TIKER        /*주식_티커   */
-                    ,STCNM        /*주식명     */
-                    ,DVDNCYC    /*배당_주기   */
-                    ,DVDN        /*배당금     */
+         A.TURN         /*순번       */
+        ,A.TIKER        /*주식_티커   */
+        ,A.STCNM        /*주식명     */
+        ,A.DVDNCYC      /*배당_주기   */
+        ,NVL(B.DIVIDEND, A.DVDN) DVDN        /*배당금     */
     FROM
-        STOCKINFORMATION
-    WHERE     1=1 
-        AND TIKER  = #{TIKER}
-        AND USEYN = 'Y'
-        AND DELYN = 'N'
+        STOCKINFORMATION A
+       ,(
+       SELECT
+        *
+       FROM 
+        (
+            SELECT 
+                TIKER
+               ,DIVIDEND
+               ,TRNSCDATE
+            FROM 
+                TRANSACTION
+            WHERE TIKER  = #{TIKER}
+            ORDER BY TRNSCDATE DESC
+        )
+       WHERE ROWNUM = 1
+       )      B
+    WHERE   1=1 
+        AND A.TIKER  = #{TIKER}
+        AND A.TIKER  = B.TIKER(+)
+        AND A.USEYN  = 'Y'
+        AND A.DELYN  = 'N'
+
 </select>
 
 </mapper>

@@ -55,18 +55,18 @@
 			  <tbody class="text-center">
 			    <tr  th:each="mSelect : ${mSelect}">    
                     <!--년도--><td  th:text="${mSelect.TRNSCDATE}"></td>
-                    <!--1월--> <td   th:text="${mSelect.JANUARY}" th:classappend="${mSelect.JANUARY   eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '01')"></td>
-                    <!--2월--> <td  th:text="${mSelect.FEBRUARY}" th:classappend="${mSelect.FEBRUARY  eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '02')"></td>
-                    <!--3월--> <td  th:text="${mSelect.MARCH}"    th:classappend="${mSelect.MARCH     eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '03')"></td>
-                    <!--4월--> <td  th:text="${mSelect.APRIL}"    th:classappend="${mSelect.APRIL     eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '04')"></td>
-                    <!--5월--> <td  th:text="${mSelect.MAY}"      th:classappend="${mSelect.MAY       eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '05')"></td>
-                    <!--6월--> <td  th:text="${mSelect.JUNE}"     th:classappend="${mSelect.JUNE      eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '06')" ></td>
-                    <!--7월--> <td  th:text="${mSelect.JULY}"     th:classappend="${mSelect.JULY      eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '07')"></td>
-                    <!--8월--> <td  th:text="${mSelect.AUGUST}"   th:classappend="${mSelect.AUGUST    eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '08')"></td>
-                    <!--9월--> <td  th:text="${mSelect.SEPTEMBER}"th:classappend="${mSelect.SEPTEMBER eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '09')"></td>
-                    <!--10월--><td  th:text="${mSelect.OCTOBER}"  th:classappend="${mSelect.OCTOBER   eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '10')"></td>
-                    <!--11월--><td  th:text="${mSelect.NOVEMBER}" th:classappend="${mSelect.NOVEMBER  eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '11')"></td>
-                    <!--12월--><td  th:text="${mSelect.DECEMBER}" th:classappend="${mSelect.DECEMBER  eq 0} ? container-disable : container-able" th:onclick="mnthDetail( [[${mSelect.TRNSCDATE}]], '12')"></td>
+                    <!--1월--> <td   th:text="${mSelect.JANUARY}" th:classappend="${mSelect.JANUARY   eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '01')"></td>
+                    <!--2월--> <td  th:text="${mSelect.FEBRUARY}" th:classappend="${mSelect.FEBRUARY  eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '02')"></td>
+                    <!--3월--> <td  th:text="${mSelect.MARCH}"    th:classappend="${mSelect.MARCH     eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '03')"></td>
+                    <!--4월--> <td  th:text="${mSelect.APRIL}"    th:classappend="${mSelect.APRIL     eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '04')"></td>
+                    <!--5월--> <td  th:text="${mSelect.MAY}"      th:classappend="${mSelect.MAY       eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '05')"></td>
+                    <!--6월--> <td  th:text="${mSelect.JUNE}"     th:classappend="${mSelect.JUNE      eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '06')" ></td>
+                    <!--7월--> <td  th:text="${mSelect.JULY}"     th:classappend="${mSelect.JULY      eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '07')"></td>
+                    <!--8월--> <td  th:text="${mSelect.AUGUST}"   th:classappend="${mSelect.AUGUST    eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '08')"></td>
+                    <!--9월--> <td  th:text="${mSelect.SEPTEMBER}"th:classappend="${mSelect.SEPTEMBER eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '09')"></td>
+                    <!--10월--><td  th:text="${mSelect.OCTOBER}"  th:classappend="${mSelect.OCTOBER   eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '10')"></td>
+                    <!--11월--><td  th:text="${mSelect.NOVEMBER}" th:classappend="${mSelect.NOVEMBER  eq 0 or mSelect.TRNSCDATE  == '합계'} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '11')"></td>
+                    <!--12월--><td  th:text="${mSelect.DECEMBER}" th:classappend="${mSelect.DECEMBER  eq 0} ? container-disable : container-able" th:onclick="mnthDetail01( [[${mSelect.TRNSCDATE}]], '12')"></td>
                     <!--합계--> <td th:text="${mSelect.ALL_SUM}"  ></td>
 			    </tr>
 			  </tbody>
@@ -81,5 +81,35 @@
 	  <canvas id="bar_chart"></canvas>
 	</div>
 	<!-- 바차트 종료-->
+    
+    
+  <!-- 레이이어 팝업 시작-->
+  <div class="popup_layer" id="popup_layer" style="display: none;">
+    <div class="popup_box01 modal-content02">
+        <div class="container01 w95_"> 
+            <div class="div_title01" id="div_title01"></div>       
+            <div class="div_body01">
+                <table>
+                    <thead class="text-center">
+                        <tr>
+                            <th >년도</th>
+                            <th >주식명</th>
+                            <th >배당금</th>
+                            <th >거래금액</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center" style="height: 200px;" id="tody01">
+                        
+                    </tbody>
+                </table>
+                <!--팝업 버튼 영역-->
+                <div class="popup_btn">
+                    <input style="float: right;" type="button" class="close-button" onclick="fn_closePop()" value="닫기"/>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- 레이이어 팝업 종료-->
 </body>
 </html>
