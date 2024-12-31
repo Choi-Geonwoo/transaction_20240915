@@ -53,8 +53,12 @@ public class HldStckClsServiceImpl implements HldStckClsService {
 	@Override
 	public Map<String, Object> hldStckClsUpdate(Map map) {
         int cnt = 0;
-        cnt = hldStckClsMapper.hldStckClsUpdate(map);
-        //log.info("===> stckDlngUpdate");
+        if("".equals(String.valueOf(map.get("U_NO")))){
+        	cnt = hldStckClsMapper.hldStckClsInsert(map);
+        }else {
+        	cnt = hldStckClsMapper.hldStckClsUpdate(map);
+        }
+        //log.info("===> hldStckClsUpdate " + map);
         //log.info("===> value : : : " + cnt);
         Map<String, Object> retMap = new HashMap<String, Object>();
         if(cnt != 0 ) {

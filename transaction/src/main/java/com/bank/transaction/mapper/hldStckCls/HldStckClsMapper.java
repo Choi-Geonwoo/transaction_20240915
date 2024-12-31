@@ -54,4 +54,12 @@ public interface HldStckClsMapper {
 	*/
     public int  hldStckClsUpdate(Map map);
 
+	/**
+	* @methodName    : hldStckClsInsert(주식 정보 등록)
+	* @author        : Jihun Park
+	* @date          : 2024.09.15
+	* @return
+	*/
+    public int  hldStckClsInsert(Map map);
+
 }

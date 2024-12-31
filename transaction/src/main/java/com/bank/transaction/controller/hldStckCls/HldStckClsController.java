@@ -1,13 +1,18 @@
 package com.bank.transaction.controller.hldStckCls;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bank.transaction.service.hldStckCls.HldStckClsService;
@@ -56,4 +61,25 @@ public class HldStckClsController {
         mapList = hldStckClsService.hldStckClsDetail(map);
         return ResponseEntity.ok(mapList);
     }   
+
+    
+    /**
+     * @methodName    : hldStckClsUpdate(주식 수정 )
+     * @author        : Jihun Park
+     * @date          : 2024.09.15
+     * @return
+    */
+    @PostMapping("/hldStckCls/hldStckClsUpdate.do" )
+    public ResponseEntity<Object> hldStckClsUpdate(@RequestBody Map<String, Object> map, Model model){
+        
+        // 서비스 호출 및 데이터 처리
+    	Map<String, Object> mapData = hldStckClsService.hldStckClsUpdate(map);
+        
+        // JSON 객체 생성
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("list", mapData);
+
+        // 성공 응답 반환
+        return ResponseEntity.ok(jsonObject.toString());
+    }
 }

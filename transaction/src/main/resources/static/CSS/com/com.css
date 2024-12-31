@@ -278,8 +278,8 @@ th {
 
 
 .btn-button {
-    background-color:#FF1C8A; /* 버튼 배경색 */
-    color: rgb(255, 255, 255); /* 글자 색 */
+    background-color:#FFB1E8; /* 버튼 배경색 */
+    color: black; /* 글자 색 */
     width: 100%;
     border: none; /* 테두리 제거 */
     padding: 5px 10px; /* 내부 여백 */

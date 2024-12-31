@@ -99,8 +99,8 @@ function allocationBarChart(value, p_month){
   var stockNames = value.map(stock => stock.STOCK_NAME);
   var dataValue = "";
     const datasets = stockNames.map((stockName, index) => {
-        console.log(months.map(month => value[index][month]));
-        console.log();
+        //console.log(months.map(month => value[index][month]));
+        //console.log();
         if(!isEmpty(p_month)){
            dataValue = months.map(month => value[index][month]).filter(dataPoint => dataPoint !== 0 && dataPoint !== undefined)
         }else{

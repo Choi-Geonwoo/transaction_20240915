@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
     <title>보유 주식 종목</title>	
+
+     <!-- 엑셀 다운로드 용 SheetJS 라이브러리 추가 -->
+     <!-- Sheet JS -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
+     <!-- FileSaver 사용 -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+
     <script type="text/javascript" th:src="@{/JS/hldStckCls/hldStckCls.js}"></script>  
 </head>
 <body>
@@ -14,6 +21,7 @@
     <div class="container01"> 
         <div class="div_title01">검색영역</div>
             <div class="div_body01" style="position: relative;">
+                <input type="button" value="엑셀 다운로드" onclick="fn_exportExcel('거래내역_', 'myTable2')" class="update-button">
              </div>
         </div>
     </div>
@@ -21,7 +29,7 @@
         <div class="div_title01">조회영역</div>          
             <div class="div_body01" >
                 <div style="overflow-x: auto;">
-                    <table style="overflow-x: auto;">
+                    <table style="overflow-x: auto;" id="myTable2">
                         <colgroup>
                              <col style="width: 3%;">
                              <col style="width: 5%;">
@@ -29,8 +37,8 @@
                              <col style="width: 5%;">
                              <col style="width: 8%;">
                              
-                             <col style="width: 8%;">
-                             <col style="width: 11%">
+                             <col style="width: 6%;">
+                             <col style="width: 8%">
                              
                              <col style="width: 25px;">
                              <col style="width: 20px;">
@@ -73,9 +81,9 @@
                     </thead>
                     <tbody>
                         <tr th:each="slist : ${list}">
-                            <td style="display: none;" ><input type="text" th:value="${slist.NO}"></td><!--순번-->
+                            <td style="display: none;" ><input type="text" th:value="${slist.NO}" ></td><!--순번-->
                             <td >
-                                <input class="btn-button" type="button" th:value="${slist.STOCK_NAME}" th:data-stockname="${slist.STOCK_NAME}" onclick="fn_openPop(this);">
+                                <input class="btn-button" type="button" th:value="${slist.STOCK_NAME}" th:data-sNo="${slist.NO}" th:data-stockname="${slist.STOCK_NAME}" onclick="fn_openPop(this);">
                             </td><!--주식명-->
                             <td >
                                 <input class="full-width-input" type="text" th:value="${slist.STOCK_QUANTITY}">
@@ -145,44 +153,45 @@
     </div>
     
     <!-- 레이이어 팝업 시작-->
-    <div class="popup_layer" id="popup_layer" style="display: none;">
-      <div class="popup_box">
-          <!--팝업 컨텐츠 영역-->
-          <div class="popup_cont">
-            <header class="header">
-              <h1 id="stockName">상세 보기 : </h1>
-            </header>
-            <main class="main">
-                <table>
-                        <tr>
-                            <td>주식 수</td>
-                            <td id="stockQuantity">주식 값</td>
-                        </tr>
-                        <tr>
-                            <td>매입 금</td>
-                            <td id="purchasePrice">거래금액</td>
-                        </tr>                        
-                        <tr>
-                           <td>매입금(합계)</td>
-                           <td id="purchasePriceSum">거래금액(합계)</td>
-                        </tr>
-                        </tr>                        
-                        <tr>
-                           <td>배당금(누적)</td>
-                           <td id="amount">거래금액(합계)</td>
-                        </tr>
-                </table>
-            </main>  
-    
+    <div class="popup_layer001" id="popup_layer" style="display: none;">
+          <div class="popup_box001">
+              <!--팝업 컨텐츠 영역-->
+              <div class="popup_cont001">
+                <header class="header001">
+                  <h1 id="stockName">상세 보기 : </h1>                    
+                  <span class="close001" onclick="fn_closePop()">&times;</span>
+                </header>
+                <main class="main001">
+                    <table>
+                            <tr>
+                                <td>주식 수</td>
+                                <td id="stockQuantity">주식 값</td>
+                            </tr>
+                            <tr>
+                                <td>매입 금</td>
+                                <td id="purchasePrice">거래금액</td>
+                            </tr>                        
+                            <tr>
+                               <td>매입금(합계)</td>
+                               <td id="purchasePriceSum">거래금액(합계)</td>
+                            </tr>
+                            </tr>                        
+                            <tr>
+                               <td>배당금(누적)</td>
+                               <td id="amount">거래금액(합계)</td>
+                            </tr>
+                    </table>
+                </main>  
+        
+              </div>
+              <footer class="footer001">
+              <!--팝업 버튼 영역-->
+              <div class="popup_btn001" >
+                  <input type="button" class="close-button001" onclick="fn_closePop()" value="닫기"/>
+              </div>
+              </footer>
           </div>
-          <footer class="footer">
-          <!--팝업 버튼 영역-->
-          <div class="popup_btn" >
-              <input type="button" class="close-button" onclick="fn_closePop()" value="닫기"/>
-          </div>
-          </footer>
-      </div>
-    </div>
+        </div>
     <!-- 레이이어 팝업 종료-->
 </body>
 </html>

@@ -56,7 +56,7 @@ function getFetch(url, id) {
     })
     .then(data => {
         data.id = id;
-        console.log(data); // Spring Boot에서 온 JSON 데이터를 출력
+        //console.log(data); // Spring Boot에서 온 JSON 데이터를 출력
         fn_call(data);
     })
     .catch(error => {
@@ -117,7 +117,7 @@ function postFetch(url, body, id) {
         return response.json(); // JSON 데이터 파싱
     })
     .then(data => {
-
+        console.log();
         fn_call(data, id);
     })
     .catch(error => {
@@ -182,3 +182,73 @@ function fn_chartColor(index){
 ];
 return chartColor[index];
 }
+
+
+
+
+
+
+
+
+
+
+
+function fn_exportExcel(fileName, table_id) {
+  const wb = XLSX.utils.book_new();
+  console.log("ret : " + table_id);
+  const newWorksheet = excelHandler.getWorksheet(table_id);
+  XLSX.utils.book_append_sheet(wb, newWorksheet, excelHandler.getSheetName());
+
+  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+  saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), excelHandler.getExcelFileName(fileName));
+}
+
+function s2ab(s) {
+  const buf = new ArrayBuffer(s.length); // s를 arrayBuffer로 변환
+  const view = new Uint8Array(buf); // uint8array 생성
+  for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; // 옥텟으로 변환
+  return buf;
+}
+
+
+/**
+     * 엑셀 다운로드 
+     * @param str       : 체크할 문자열
+ **/
+const excelHandler = {
+  getExcelFileName: function (fileName) {
+    return fileName + toDay() + '.xlsx'; // 파일명
+  },
+  getSheetName: function () {
+    return '주식 거래 내역'; // 시트명
+  },
+  getExcelData: function (table_id) {
+    const table = document.getElementById(table_id);
+    const rows = table.querySelectorAll('tbody tr');
+    const headerRow = table.querySelectorAll('thead th');
+    // if 조건 추가: 헤더 텍스트가 빈 문자열이 아닐 경우만 데이터를 추가
+    const data = [
+        Array.from(headerRow)
+            .filter(th => th.textContent.trim() !== '구분') // 조건 추가
+            .map(th => th.textContent.trim())
+    ];
+
+    rows.forEach(row => {
+      const rowData = [];
+      const cells = row.querySelectorAll('td input');
+
+      cells.forEach(cell => {
+        rowData.push(cell.value);
+      });
+
+      data.push(rowData);
+    });
+
+    console.log("1. >>>>> " + JSON.stringify(data));
+    return data;
+  },
+  getWorksheet: function (table_id) {
+    console.log("ret : " + table_id);
+    return XLSX.utils.aoa_to_sheet(this.getExcelData(table_id));
+  }
+};

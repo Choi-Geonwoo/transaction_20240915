@@ -2,6 +2,11 @@
 function fn_openPop(data) {
     // data-stockName 속성을 통해 Thymeleaf 변수를 가져옵니다
     var stockName = data.getAttribute('data-stockName');
+    var sNo      = data.getAttribute('data-sno');
+    if(isEmpty(sNo)){
+        alert("데이터가 없습니다. ");
+        return;
+    }
     var parsedData;
     // 파라미터를 담을 객체 생성
     const params = {
@@ -23,10 +28,10 @@ function fn_closePop() {
  * 콜백함수
  * @param data     : 리턴값
  **/
-function fn_call(data){
+function fn_call(data, id){
     if("detail" == data.id){
         //alert(JSON.stringify(data));
-        console.log(JSON.stringify(data));
+        //console.log(JSON.stringify(data));
         document.getElementById("stockName").innerText          = data.STOCK_NAME; // 종목명
         document.getElementById("stockQuantity").innerText      = data.STOCK_QUANTITY; // 주식수
         document.getElementById("purchasePrice").innerText      = data.PURCHASE_PRICE; // 매입금액
@@ -40,6 +45,9 @@ function fn_call(data){
             stock_quantity:"367"
          */
         document.getElementById("popup_layer").style.display = "block";
+    }else if("update" == id){
+        alert(data.list.msg);
+        history.go(0);  // 페이지 새로 고침
     }
     
 }
@@ -52,15 +60,18 @@ function detailsUpdate(data) {
     const STOCK_NAME       = cells[1].querySelector('input').value;
     const STOCK_QUANTITY   = cells[2].querySelector('input').value;
     const DIVIDEND_CYCLE   = cells[3].querySelector('input').value;
-    const DIVIDEND_AMOUNT  = cells[4].querySelector('input').value;
-    //const PURCHASE_PRICE   = cells[5].querySelector('input').value; 배당금은 배당 실제 받은 경우로 사용
+    const PURCHASE_PRICE   = cells[4].querySelector('input').value;
+    //const PURCHASE_PRICE   = cells[5].querySelector('input').value; 
     const rowData = {
                          U_NO              : no
                         ,U_STOCK_NAME      : STOCK_NAME
                         ,U_STOCK_QUANTITY  : STOCK_QUANTITY 
                         ,U_DIVIDEND_CYCLE  : DIVIDEND_CYCLE 
-                        ,U_DIVIDEND_AMOUNT : DIVIDEND_AMOUNT 
+                        ,U_PURCHASE_PRICE : PURCHASE_PRICE 
+                        ,U_CLSCD           : 'N'
                         //,U_PURCHASE_PRICE  : PURCHASE_PRICE 
                     };
-    console.log(`1.` + JSON.stringify(rowData));
+    //console.log(`1.` + JSON.stringify(rowData));
+    postFetch(`/hldStckCls/hldStckClsUpdate.do`, rowData, "update");
 }
+

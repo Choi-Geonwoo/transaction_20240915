@@ -27,21 +27,24 @@ public class LogConfig {
 
 	    long startAt = System.currentTimeMillis();
 
-	    log.info("-----------> \nREQUEST : {}\n({}) = {}", 
-	        pjp.getSignature().getDeclaringTypeName(),
-	        pjp.getSignature().getName(), 
-	        params);
+	    if(pjp.getSignature().getName().indexOf("file") == -1){
+	    	log.info("1. -----------> \nREQUEST : {}\n({}) = {}", 
+	    	        pjp.getSignature().getDeclaringTypeName(),
+	    	        pjp.getSignature().getName(), 
+	    	        params);
+	    }
 
 	    Object result = pjp.proceed();
 
 	    long endAt = System.currentTimeMillis();
 
-	    log.info("-----------> \nRESPONSE : {}\n({}) = {} ({}ms)", 
-	        pjp.getSignature().getDeclaringTypeName(),
-	        pjp.getSignature().getName(), 
-	        result, 
-	        endAt - startAt);
-
+	    if(pjp.getSignature().getName().indexOf("file") == -1){
+		    log.info("2. -----------> \nRESPONSE : {}\n({}) = {} ({}ms)", 
+		        pjp.getSignature().getDeclaringTypeName(),
+		        pjp.getSignature().getName(), 
+		        result, 
+		        endAt - startAt);
+	    }
 	    return result;
 	}
 	  

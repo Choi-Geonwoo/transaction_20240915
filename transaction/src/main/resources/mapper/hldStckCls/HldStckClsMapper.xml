@@ -4,92 +4,110 @@
 <mapper namespace="com.bank.transaction.mapper.hldStckCls.HldStckClsMapper">
 
 <select id = "selectHldStckClsList"  resultType="Map" parameterType="Map">
-                SELECT
-                        /* HldStckClsMapper.selectHldStckClsList */
-                        A.NO,
-                        /* A.STOCK_NAME, */
-                        C.CLSFC_NM AS STOCK_NAME,
-                        A.STOCK_QUANTITY,
-                        A.DIVIDEND_CYCLE,
-                        A.PURCHASE_PRICE,
-                        NVL(B.DIVIDEND, A.DIVIDEND_AMOUNT) AS DIVIDEND_AMOUNT,
-                        A.CLSCD,
-                        A.RGSTDATE
-                FROM
-                        STOCKPORTFOLIO A
-                        , (
-                                SELECT * FROM 
-                                                (
-                                                        SELECT
-                                                        ROW_NUMBER() OVER(PARTITION BY STOCK_NAME ORDER BY TRNSCDATE DESC) AS RNK,
-                                                                STOCK_NAME,
-                                                                AMOUNT,
-                                                                DIVIDEND
-                                                        FROM
-                                                                TRANSACTION
-                                                ) W 
-                                                        WHERE RNK = 1
-                        ) B
-                        , CLSFC C
-                WHERE
-                        A.CLSCD != 'N'
-                        AND A.STOCK_NAME  = B.STOCK_NAME(+) 
-                        AND A.CLSFC_CD = C.CLSFC_CD(+)
-                        AND C.USE_YN ='Y'
-                        AND C.SECTION_CD = 'BANK_001'
-                <if test='stockName != null and stockName != "" '>
-                        AND C.CLSFC_NM = #{stockName}
-                </if>
-                <if test='dividendCycle != null and dividendCycle != "" '>
-                        AND (A.DIVIDEND_CYCLE like #{dividendCycle} || '%'
-                        OR A.DIVIDEND_CYCLE = '월'
-                        )
-                </if>
-                ORDER BY (CASE WHEN REGEXP_LIKE(C.CLSFC_CD, '^[0-9]+$') THEN 2 ELSE 1 END), C.CLSFC_NM
+    SELECT
+        /* HldStckClsMapper.selectHldStckClsList */
+        B.NO                                          /*순번*/
+       ,NVL(B.STOCK_NAME,A.STCNM ) AS STOCK_NAME      /*주식명*/
+       ,NVL(B.STOCK_QUANTITY, 0)   AS STOCK_QUANTITY  /*주식보유수*/
+       ,A.DVDNCYC                  AS DIVIDEND_CYCLE  /*배당주기*/
+       ,NVL(B.PURCHASE_PRICE,0)    AS PURCHASE_PRICE  /*매입금*/
+       ,NVL(C.DIVIDEND, A.DVDN)    AS DIVIDEND_AMOUNT /*배당금*/
+       ,B.REGYMD                   AS RGSTDATE        /*등록일자*/
+       ,B.MDFCNYMD                                    /*수정일자*/
+    FROM
+        STOCKINFORMATION       A /*주식정보*/
+    LEFT JOIN STC_RGST_DTLS    B /*주식 등록 내역*/
+     ON (   A.TIKER = B.TIKER
+        AND B.DELYN = 'N' )
+    LEFT JOIN (
+                    SELECT * FROM 
+                     (
+                             SELECT
+                                     ROW_NUMBER() OVER(PARTITION BY TIKER ORDER BY TRNSCDATE DESC) AS RNK,
+                                     TIKER,
+                                     AMOUNT,
+                                     DIVIDEND
+                             FROM
+                                     TRANSACTION
+                     ) W 
+                             WHERE RNK = 1
+                ) C
+     ON (A.TIKER = C.TIKER)
+    WHERE 1=1
+      AND A.DELYN  = 'N'
+      AND A.USEYN  = 'Y'
+                    <if test='stockName != null and stockName != "" '>
+                            AND A.STCNM = #{stockName}
+                    </if>
+                    <if test='dividendCycle != null and dividendCycle != "" '>
+                            AND (A.DVDNCYC like #{dividendCycle} || '%'
+                              OR A.DVDNCYC = '월'
+                            )
+                    </if>
+    ORDER BY (CASE WHEN REGEXP_LIKE(A.TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), A.STCNM
 </select>
 
 
 
 <!-- 주식 상세 조회-->
 <select id = "hldStckClsDetail"  resultType="Map" parameterType="Map" >
-              <![CDATA[  SELECT /* HldStckClsMapper.hldStckClsDetail : 주식 상세 조회 */
-                        C.CLSFC_NM AS STOCK_NAME , --주식명
-                        A.STOCK_QUANTITY, --주식보유수
-                        A.PURCHASE_PRICE, --매입금
-                        A.STOCK_QUANTITY * A.PURCHASE_PRICE AS PURCHASE_PRICE_SUM, --매입금(합계)
-                        SUM(NVL(B.AMOUNT, 0)) AS AMOUNT --배당금(누적)
+              <![CDATA[  
+                SELECT /* HldStckClsMapper.hldStckClsDetail : 주식 상세 조회 */
+                        A.STOCK_NAME AS STOCK_NAME ,               /*주식명*/
+                        A.STOCK_QUANTITY,                          /*주식보유수*/
+                        A.PURCHASE_PRICE,                          /*매입금 */
+                        A.STOCK_QUANTITY * A.PURCHASE_PRICE AS PURCHASE_PRICE_SUM, /*매입금(합계)*/
+                        SUM(NVL(B.AMOUNT, 0)) AS AMOUNT                            /*배당금(누적)*/
                 FROM
-                          STOCKPORTFOLIO  A
-                        , TRANSACTION B
-                        , CLSFC C
-                WHERE 
-                        A.STOCK_NAME  = B.STOCK_NAME(+) 
-                        AND A.STOCK_QUANTITY  >  0
-                        AND A.STOCK_NAME  <> '테스트'
-                        AND A.CLSFC_CD = C.CLSFC_CD(+)
-                        AND C.CLSFC_NM = #{stockName}
-                        AND C.USE_YN ='Y'
-                        AND C.SECTION_CD = 'BANK_001'
+                     STC_RGST_DTLS  A
+                   , TRANSACTION B
+                WHERE 1=1
+                  AND A.TIKER           = B.TIKER(+) 
+                  AND A.STOCK_QUANTITY  >  0
+                  AND A.STOCK_NAME      = #{stockName}
                 GROUP BY
-                        C.CLSFC_NM ,
+                        A.STOCK_NAME ,
                         A.STOCK_QUANTITY,
                         A.PURCHASE_PRICE
-                ORDER BY C.CLSFC_NM 
                  ]]>
 </select>
 
 
 <update id="hldStckClsUpdate" parameterType="Map" >
        UPDATE   /* HldStckClsMapper.hldStckClsUpdate : 주식 수정 */
-                 STOCKPORTFOLIO
+                 STC_RGST_DTLS
          SET 
-                 STOCK_NAME= #{U_STOCK_NAME}
-                ,STOCK_QUANTITY=#{U_STOCK_QUANTITY} 
-                ,DIVIDEND_CYCLE=#{U_DIVIDEND_CYCLE} 
-                /*,PURCHASE_PRICE=#{purchasePrice}*/
-                ,DIVIDEND_AMOUNT=#{U_DIVIDEND_AMOUNT}
-                ,RGSTDATE=sysdate
+                 STOCK_NAME       =#{U_STOCK_NAME}       /*주식명*/
+                ,STOCK_QUANTITY   =#{U_STOCK_QUANTITY}   /*주식보유수*/
+                ,PURCHASE_PRICE   =#{U_PURCHASE_PRICE}   /*매입금*/
+                ,DELYN            =#{U_CLSCD}
+                ,MDFCNYMD         =sysdate
         WHERE NO = #{U_NO}
 </update>
 
+
+<insert id="hldStckClsInsert" parameterType="Map" >
+    INSERT /* HldStckClsMapper.hldStckClsInsert*/
+        INTO STC_RGST_DTLS
+        (
+             NO
+            ,TIKER
+            ,STOCK_NAME
+            ,STOCK_QUANTITY 
+            ,PURCHASE_PRICE 
+            ,DELYN 
+            ,REGYMD
+            ,MDFCNYMD
+         )
+    VALUES(
+        TRIM((SELECT TO_CHAR(MAX(TO_NUMBER(NO))+1, '0000000000000000000') FROM STC_RGST_DTLS))
+        ,(SELECT MAX(TIKER) FROM STOCKINFORMATION WHERE STCNM  = #{U_STOCK_NAME}) /* 티커 */
+        ,#{U_STOCK_NAME}         /*주식명*/
+        ,#{U_STOCK_QUANTITY}     /*주식 보유 수*/
+        ,#{U_PURCHASE_PRICE}       /*매입금*/
+        ,'N'
+        ,sysdate
+        ,sysdate
+       )
+</insert>
 </mapper>
