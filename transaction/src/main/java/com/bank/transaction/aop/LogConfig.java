@@ -24,25 +24,32 @@ public class LogConfig {
 	public Object logging(ProceedingJoinPoint pjp) throws Throwable {
 
 	    String params = getRequestParams();
-
+	    int paLength = 100;
+	    if(!"".equals(params)) {
+	    		paLength = (params.toString().length() > 200 ? 200 : params.toString().length());
+	    }
 	    long startAt = System.currentTimeMillis();
 
 	    if(pjp.getSignature().getName().indexOf("file") == -1){
 	    	log.info("1. -----------> \nREQUEST : {}\n({}) = {}", 
 	    	        pjp.getSignature().getDeclaringTypeName(),
 	    	        pjp.getSignature().getName(), 
-	    	        params);
+			        String.valueOf(params).subSequence(0, paLength)+"..."
+	    	        );
 	    }
 
 	    Object result = pjp.proceed();
 
 	    long endAt = System.currentTimeMillis();
-
+	    int strLength = 100;
+	    if(!"".equals(result)) {
+	    	strLength = (result.toString().length() > 200 ? 200 : result.toString().length());
+	    }
 	    if(pjp.getSignature().getName().indexOf("file") == -1){
 		    log.info("2. -----------> \nRESPONSE : {}\n({}) = {} ({}ms)", 
 		        pjp.getSignature().getDeclaringTypeName(),
 		        pjp.getSignature().getName(), 
-		        result, 
+		        String.valueOf(result).subSequence(0, strLength)+"...", 
 		        endAt - startAt);
 	    }
 	    return result;

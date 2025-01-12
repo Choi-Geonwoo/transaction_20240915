@@ -164,7 +164,7 @@ function fn_updateModal(data){
                       주식명 
                   </td>
                   <td>
-                      <input type="text"  class="full-width-input10" value="${data.STOCK_NAME}">
+                      <input type="text"  class="full-width-input10" value="${data.STOCK_NAME}" readonly>
                   </td>
                 </tr>
                 <tr>
@@ -399,11 +399,12 @@ var reader = new FileReader();
                         return response.json(); // 응답 데이터를 파싱하고 반환
                     })
                     .then(data => {
+                        console.log(">>>>>>>>>>>>>>>>>>>>>>>> "+JSON.stringify(data));
                             if(-1 != data.retNo){
-                              alert(data.msg+"되었습니다.");
+                              alert(data.msg);
                               location.reload();
                             }else{
-                              alert("오류가 발생되었습니다.");
+                              alert(data.msg);
                               location.reload();
                             }
                           })

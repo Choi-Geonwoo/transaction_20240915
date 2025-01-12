@@ -98,24 +98,30 @@ public class AllocationServiceImpl implements AllocationService {
 		FileDTO fDto = new FileDTO();
 		Map<String, Object> retMap = new HashMap<>();
 		try {
+			if(0 > allocationMapper.allocationListcnt(map)) {
+				retMap.put("sttCd", "F");
+			    retMap.put("msg", "중복 등록되었습니다.");
+				return retMap;
+			}
 			tNo = allocationMapper.tNoSelect(map);
 		    fDto.setTNo(tNo);
 		    fDto.setFName(String.valueOf(map.get("FILENAME")));
 		    fDto.setContents(files.getBytes());
 		    map.put("no", tNo);
 		    allocationMapper.allocationInsert(map);
-		    log.info("1.  : : : " + fDto.getFName() + " | " + fDto.getFNo() + " | " + fDto.getTNo() + " | " + files.length());
+		    //log.info("1.  : : : " + fDto.getFName() + " | " + fDto.getFNo() + " | " + fDto.getTNo() + " | " + files.length());
 		    fDto.setContents(files.getBytes());
-		        // ??´??¸??? ?????? ??????
 		    fileService.fileInsert(fDto);
 			// TODO Auto-generated method stub
+			retMap.put("sttCd", "S");
 		    retMap.put("msg", "성공했습니다.");
 		} catch (Exception e) {
 			log.error("error" + e.toString());
+			retMap.put("sttCd", "F");
 			// TODO: handle exception
 		    retMap.put("msg", "오류가 발생하였습니다.");
 		}
-		return null;
+		return retMap;
 	}
 
 }

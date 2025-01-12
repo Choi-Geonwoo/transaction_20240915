@@ -30,10 +30,7 @@
                                     , TB.DVDN                             /*배당금     */
                                     , TB.DVDNCYC                          /*배당_주기   */
                                     , TB.STCNM                            /*주식명*/
-                                    , TRIM(CASE 
-                                      WHEN REGEXP_LIKE(TB.TIKER, '[^0-9]') THEN '$'||TO_CHAR(TB.DLNGAMT , 'FM9990.99')
-                                            ELSE TO_CHAR(TB.DLNGAMT , 'L999,999,999,999')
-                                      END) AS DLNGAMT   /* 거래금액*/
+                                    , TB.DLNGAMT                          /* 거래금액*/
                                     , totalPages  
                                 FROM (
                                         SELECT 
@@ -52,7 +49,7 @@
                                             , NVL(C.DIVIDEND,B.DVDN)   AS DVDN      /*배당금     */
                                             , B.DVDNCYC                             /*배당_주기   */
                                             , B.STCNM                               /*주식명*/
-                                            , ((TO_NUMBER(A.STCKCNT) * TO_NUMBER(NVL(C.DIVIDEND,B.DVDN))) * DECODE(B.DVDNCYC, '월', 12, REGEXP_COUNT(NVL(C.DIVIDEND,B.DVDN), ',')) )    AS DLNGAMT    /* 거래금액     */
+                                            , ((TO_NUMBER(A.STCKCNT) * TO_NUMBER(NVL(C.DIVIDEND,B.DVDN))) * DECODE(B.DVDNCYC, '월', 12, REGEXP_COUNT(NVL(B.DVDNCYC,0), ',')) )    AS DLNGAMT    /* 거래금액     */
                                             ,COUNT(*) OVER() AS totalPages /*페이징 처리용 총 건수*/
                                         FROM STCKDLNGINFO     A
                                            , STOCKINFORMATION B

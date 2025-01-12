@@ -95,7 +95,7 @@ public class AllocationController {
             // JSON 객체 생성
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("list", mapData);
-            jsonObject.put("msg", "성공");
+            jsonObject.put("msg", mapData.get("msg"));
 
             // 성공 응답 반환
             return ResponseEntity.ok(jsonObject.toString());
@@ -103,7 +103,7 @@ public class AllocationController {
             // 예외 처리
             JSONObject errorResponse = new JSONObject();
             errorResponse.put("error", "데이터를 처리하는 중 오류가 발생했습니다.");
-            errorResponse.put("message", e.getMessage());
+            errorResponse.put("msg", e.getMessage());
 
             // 에러 응답 반환
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse.toString());

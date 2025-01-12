@@ -92,4 +92,14 @@
     select /* SQL_ID : AllocationMapper.tNoSelect*/ TRANSACTION_SEQ.NEXTVAL from dual
 </select>
 
+
+<select id="allocationListcnt" parameterType="Map" resultType="int">
+    SELECT 
+    /* SQL_ID : AllocationMapper.allocationListcnt*/
+    COUNT(*) AS CNT
+      FROM TRANSACTION
+     WHERE TIKER = #{CMPR}
+       AND TO_CHAR(TRNSCDATE, 'YYYYMM') =  TO_CHAR(TO_DATE(#{TRNSCDATE}), 'YYYYMM') 
+</select>
+
 </mapper>

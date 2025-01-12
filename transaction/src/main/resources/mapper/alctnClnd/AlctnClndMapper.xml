@@ -10,9 +10,7 @@
         ,STOCK_NAME
         ,TIKER
         ,TRNSCDATE
-        ,TRIM(CASE WHEN REGEXP_LIKE(TIKER, '[^0-9]') THEN '$' || TO_CHAR(AMOUNT , 'FM9990.99')
-                ELSE TO_CHAR(AMOUNT , 'L999,999,999,999')
-              END)                                                     AS AMOUNT /* 거래금액*/
+        ,TRIM(TO_CHAR(AMOUNT , 'FM9990.99'))                                                     AS AMOUNT /* 거래금액*/
     FROM 
     (
         SELECT
