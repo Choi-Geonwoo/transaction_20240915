@@ -48,7 +48,7 @@ public class AllocationController {
 		data.put("year", String.valueOf(Data.todayDateFormat("year")));
 		data.put("month", String.valueOf(Data.todayDateFormat("month")));
 		model.addAttribute("aSelect", allocationService.allocationSelect(data));
-        model.addAttribute("parameter", data);
+	        model.addAttribute("parameter", data);
 		//return "index";
 		return "view/allocation/allocationView";
 	}

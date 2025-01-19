@@ -55,7 +55,6 @@
 /* DIV 테두리 */
 
 
-
 /*********** 테이블 *********************/
 table {
     width: 100%;
@@ -141,6 +140,13 @@ th {
     font-weight: bold;
     padding: 10px;
     border-radius: 5px;
+}
+
+.full-width-input03_data {
+    /* Add your styles here */
+    color: #333;
+    font-weight: bold;
+    padding: 5px;
 }
 
 .full-width-input09_data {
@@ -344,6 +350,10 @@ th {
 }
 
 
+.w100_{
+    width: 100%;;
+}
+
 .w90_{
     width: 90%;;
 }
@@ -511,3 +521,35 @@ th {
 }
 /*********************************************/
 
+/****************** 패딩 **********************/
+.padding_100{
+    padding : 100px;
+}
+.padding_90{
+    padding : 90px;
+}
+.padding_80{
+    padding : 80px;
+}
+.padding_70{
+    padding : 70px;
+}
+.padding_60{
+    padding : 60px;
+}
+.padding_50{
+    padding : 50px;
+}
+.padding_40{
+    padding : 40px;
+}
+.padding_30{
+    padding : 30px;
+}
+.padding_20{
+    padding : 20px;
+}
+.padding_10{
+    padding : 10px;
+}
+/*********************************************/

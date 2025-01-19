@@ -252,3 +252,11 @@ const excelHandler = {
     return XLSX.utils.aoa_to_sheet(this.getExcelData(table_id));
   }
 };
+
+
+
+
+//팝업 닫기
+function fn_closePop() {
+    document.getElementById("popup_layer").style.display = "none";
+}

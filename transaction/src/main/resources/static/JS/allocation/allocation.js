@@ -1,3 +1,27 @@
+document.addEventListener('DOMContentLoaded', function() {
+    
+});
+
+// 위의 옵션 추가 코드
+    function fn_selectBox(selectBox, options, STOCK_NAME){
+        options.forEach(item => {
+            if (item.USEYN === "Y") { // USEYN 값이 'Y'인 경우에만 추가
+                const option = document.createElement('option');
+                option.value = item.TIKER; // 값 설정
+                option.textContent = item.STCNM; // 텍스트 설정
+                
+                // 옵션을 select 박스에 추가
+                selectBox.appendChild(option);
+                
+                // 기본 선택 조건 확인
+                if (item.STCNM === STOCK_NAME) {
+                    option.selected = true; // 조건에 맞는 경우 selected 추가
+                    console.log("11111111111111111111111111111111111111111");
+                }
+            }
+        });
+    }
+    
 /*************************************
  * 조회용 함수
  *************************************/
@@ -41,6 +65,52 @@ function fn_call(data){
         fn_updateModal(data)
     }else if("stckInfoInq" == data.id){
         fn_insertModal(data);
+    }else if("allocationDetail001" == data.id){
+        //console.log("Row Data: ", JSON.stringify(data));
+        // select 박스 참조 (동적으로 생성했거나 이미 존재하는 경우)
+        const selectBox = document.getElementById('u_stockName');
+        const options = data.selectBox; 
+        fn_selectBox(selectBox, options, data.STOCK_NAME);
+        // 옵션 추가
+        /*options.forEach(item => {
+            if (item.USEYN === "Y") { // USEYN 값이 'Y'인 경우에만 추가
+                const option = document.createElement('option');
+                option.value = item.TIKER; // 값 설정
+                option.textContent = item.STCNM; // 텍스트 설정
+                
+                // 옵션을 select 박스에 추가
+                selectBox.appendChild(option);
+                
+                // 기본 선택 조건 확인
+                if (item.STCNM === data.STOCK_NAME) {
+                    option.selected = true; 
+                }
+            }
+        });*/
+
+
+        //document.getElementById("u_stockName").value = data.STOCK_NAME;
+        document.getElementById("u_trnscdate").value = data.TRNSCDATE;
+        document.getElementById("u_dividend").value = data.DIVIDEND;
+        document.getElementById("u_amont").value = data.AMOUNT;
+        document.getElementById("t_stockName").innerText        = "상세 보기 : "+data.STOCK_NAME; // 종목명
+        
+        var jsonData = JSON.stringify(data);
+        //# JSON 데이터 파싱
+        var parsedData = JSON.parse(jsonData);
+        var fileName = "";
+        if(!isEmpty(parsedData.fileList)){
+            fileName = parsedData.fileList.fname;
+        }
+        
+        if(!isEmpty(parsedData.fileList)){
+        // 이미지 출력
+        fu_img(parsedData.fileList.reContents);
+        }
+        
+        document.getElementById("I_FILE").innerText = fileName;
+        
+        document.getElementById("popup_layer").style.display = "block";
     }
     
 }
@@ -367,10 +437,36 @@ function allocationInsert(){
   }
   //fetch API를 사용하여 POST 요청을 보냅니다
   //postFetch('/allocation/allocationInsert.do', data, 'insert');
-  //console.log("주식 티커, 거래일자, 배당금, 파일명 ", {cmr}, {inputTrnscdate}, {inputDiviend}, {fileName});
-  imgFile(selectedFile, data, '/allocation/allocationInsert.do');
+  console.log("주식 티커, 거래일자, 배당금, 파일명 ", {cmr}, {inputTrnscdate}, {inputDiviend}, {fileName});
+  //imgFile(selectedFile, data, '/allocation/allocationInsert.do');
 }
 
+
+// 모달창 등록 이벤트
+function allocationInsert01(){
+  const imageFileInput = document.getElementById('I_FILE');             //파일 이미지 전송
+  var selectedFile = imageFileInput.files[0];  
+  var fileName;
+  const inputAmount = document.getElementById('u_amont').value;        //거래금액
+  const inputDiviend = document.getElementById('u_dividend').value;     //배당금
+  const inputTrnscdate = document.querySelector('input[type="date"]');  //거래일자
+  var cmr = (CMPR.options[CMPR.selectedIndex].value);    //주식티커
+  if(!isEmpty(imageFileInput.files[0])){
+    fileName = imageFileInput.files[0].name;
+  }
+  
+  let data = {
+              CMPR      : cmr,                   // 주식티커
+              TRNSCDATE : inputTrnscdate.value,  //거래일자
+              AMOUNT    : inputAmount,           // 거래 금액
+              FILENAME  : fileName,              // 파일명
+              DIVIDEND  : inputDiviend           // 배당금
+  }
+  //fetch API를 사용하여 POST 요청을 보냅니다
+  //postFetch('/allocation/allocationInsert.do', data, 'insert');
+  console.log("주식 티커, 거래일자, 배당금, 파일명 ", {cmr}, {inputTrnscdate}, {inputDiviend}, {fileName});
+  //imgFile(selectedFile, data, '/allocation/allocationInsert.do');
+}
 // 이미지 포함 전송
 function imgFile(selectedFile, data, url){
     // 폼 데이터로 보내줘야 함
@@ -419,3 +515,18 @@ var reader = new FileReader();
 }
 
 
+/*************************************
+ * 팝업 띄우기
+ *************************************/
+function fn_openPop(stockName,trnscdate, month){
+    //alert("stockName :::" + stockName + "\ntrnscdate ::: " + trnscdate+"\nmonth ::: " + month);
+    // 행 데이터를 저장할 JSON 객체 생성
+    var rowData = {};
+    rowData["stockName"]  = stockName;
+    rowData["trnscdate"]  = trnscdate + month + "01";
+    //rowData["month"]  = month;
+    //console.log("Row Data: ", JSON.stringify(rowData));
+    //fetch002();
+    //fetch API를 사용하여 POST 요청을 보냅니다
+    fetch003('/allocation/allocationDetail.do', "post", rowData, "allocationDetail001"); //url, method, body
+}

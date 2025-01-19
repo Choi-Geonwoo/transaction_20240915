@@ -267,7 +267,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+
+/* 헤더 스타일 */
+.header002 {
+    background: #00BFFF;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
     font-weight: bold;
 }
 
@@ -308,12 +321,28 @@
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 15px;
     transition: background-color 0.3s;
 }
 
 .close-button001:hover {
     background-color: #c0392b;
+}
+
+
+.update-button001 {
+    background-color: #45a049;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s;
+}
+
+.update-button001:hover {
+    background-color: #45a049;
 }
 
 /****** 20241231 ********/

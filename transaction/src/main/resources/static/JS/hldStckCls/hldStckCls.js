@@ -18,10 +18,6 @@ function fn_openPop(data) {
     getFetch(`/hldStckCls/hldStckClsDetail?${queryParams}`, 'detail');
 }
 
-//팝업 닫기
-function fn_closePop() {
-    document.getElementById("popup_layer").style.display = "none";
-}
 
 
 /**

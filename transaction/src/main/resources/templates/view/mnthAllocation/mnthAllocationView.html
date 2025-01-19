@@ -32,7 +32,7 @@
 	
 	<div class="container01">	
 		<div class="div_title01">조회영역</div>  
-		<div class="div_body01">
+		<div class="div_body01 padding_10">
 			<table class="type09 table-bordered container" th:if="${!#lists.isEmpty(mSelect)}" >
 			  <thead class="text-center">
 			    <tr >        
@@ -77,7 +77,7 @@
 	
 	<!-- 바차트 시작-->
 	<br>
-	<div  th:if="${!#lists.isEmpty(	mSelect)}" class="container">
+	<div  th:if="${!#lists.isEmpty(	mSelect)}" class="container padding_30">
 	  <canvas id="bar_chart"></canvas>
 	</div>
 	<!-- 바차트 종료-->
