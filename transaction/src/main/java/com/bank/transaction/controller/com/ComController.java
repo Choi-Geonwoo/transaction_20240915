@@ -33,15 +33,15 @@ import lombok.extern.slf4j.Slf4j;
 public class ComController {
     @Autowired
     private ComService comService;
-	/**
-	* @methodName    : stckInfoView(주식정보등록)
-	* @author        : Jihun Park
-	* @date          : 2024.09.16
-	* @return		 : 주식정보
-	*/
+    /**
+    * @methodName    : stckInfoView(주식정보등록)
+    * @author        : Jihun Park
+    * @date          : 2024.09.16
+    * @return         : 주식정보
+    */
     @GetMapping("/com/stckInfoInq.do" )
     public ResponseEntity<List<Map<String, Object>>> selectStckInfo(){
-    	List<Map<String, Object>> listMapData = comService.stckInfoInq();
+        List<Map<String, Object>> listMapData = comService.stckInfoInq();
         return ResponseEntity.ok().header("Content-Type", "application/json").body(listMapData);
     }
 }

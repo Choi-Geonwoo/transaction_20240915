@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- com.bank.transaction.mapper.stckInfo(주식정보) -->
+<mapper namespace="com.bank.transaction.mapper.dshb.DshbMapper">
+
+<select id="selectSum01" resultType="Map">
+        SELECT /*SQL_ID :  DshbMapper.selectSum01 : 홈 총 투자 금액, 누적 배당금 */
+           ( SELECT 
+                    TO_CHAR(SUM(STOCK_QUANTITY * PURCHASE_PRICE), 'FM999,999,999,999.999') 
+               FROM 
+                    STOCKPORTFOLIO 
+              WHERE CLSCD  = 'Y'
+            )                      AS SUM01
+          ,( SELECT 
+                    TO_CHAR(sum(AMOUNT), 'FM999,999,999,999.999') 
+               FROM 
+                    TRANSACTION
+            )                      AS SUM02
+        FROM DUAL
+</select>
+
+<select id="selectSum02" resultType="Map">
+       SELECT /*SQL_ID :  DETAILSMAPPER.SELECTSUM02 : 홈 투자종목, 월별 배당금(상위 5개) */
+                 TB01.STOCK_NAME
+                ,TB02.STOCK_QUANTITY
+                ,TO_CHAR(SUM(TB01.AMOUNT), 'FM999,999,999,999.999')+0 AS EACH_MONEY
+        FROM TRANSACTION    TB01
+           , STOCKPORTFOLIO TB02
+        WHERE TB01.STOCK_NAME = TB02.STOCK_NAME
+            AND TB02.CLSCD  = 'Y'
+        GROUP BY TB01.STOCK_NAME 
+                ,TB02.STOCK_QUANTITY
+        ORDER BY TO_CHAR(SUM(TB01.AMOUNT), 'FM999,999,999,999.999')+0 DESC
+</select>
+
+
+<select id="selectSum04" resultType="Map">
+    SELECT /*SQL_ID :  DETAILSMAPPER.SELECTSUM04 : 배당금 추세*/
+        TO_CHAR(TRNSCDATE, 'YYYY')                                 AS TRNSCDATE
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '01' , AMOUNT, '0') ) AS JANUARY
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '02' , AMOUNT, '0') ) AS FEBRUARY
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '03' , AMOUNT, '0') ) AS MARCH
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '04' , AMOUNT, '0') ) AS APRIL
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '05' , AMOUNT, '0') ) AS MAY
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '06' , AMOUNT, '0') ) AS JUNE
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '07' , AMOUNT, '0') ) AS JULY
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '08' , AMOUNT, '0') ) AS AUGUST
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '09' , AMOUNT, '0') ) AS SEPTEMBER
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '10' , AMOUNT, '0') ) AS OCTOBER
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '11' , AMOUNT, '0') ) AS NOVEMBER
+       ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '12' , AMOUNT, '0') ) AS DECEMBER
+    FROM
+        TRANSACTION
+    WHERE 1=1
+     AND TO_CHAR(TRNSCDATE, 'YYYY') >= TO_CHAR(SYSDATE, 'YYYY')-1
+    GROUP BY TO_CHAR(TRNSCDATE, 'YYYY')
+</select>
+
+</mapper>

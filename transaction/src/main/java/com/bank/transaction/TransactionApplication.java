@@ -9,8 +9,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @SpringBootApplication
 @EnableAspectJAutoProxy // 추가
 public class TransactionApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(TransactionApplication.class, args);
-		
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TransactionApplication.class, args);
+        
+    }
 }

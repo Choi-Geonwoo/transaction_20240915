@@ -104,7 +104,7 @@ public class AllocationServiceImpl implements AllocationService {
         FileDTO fDto = new FileDTO();
         Map<String, Object> retMap = new HashMap<>();
         try {
-            if(0 > allocationMapper.allocationListcnt(map)) {
+            if(0 != allocationMapper.allocationListcnt(map)) {
                 retMap.put("sttCd", "F");
                 retMap.put("msg", "중복 등록되었습니다.");
                 return retMap;

@@ -41,40 +41,40 @@ public class StckInfoController {
     // 페이징 처리
     PaginationService paginationService = new PaginationService();
 
-	/**
-	* @methodName    : stckInfoView(주식정보화면)
-	* @author        : Jihun Park
-	* @date          : 2024.09.15
-	* @return		 : 주식정보
-	*/
+    /**
+    * @methodName    : stckInfoView(주식정보화면)
+    * @author        : Jihun Park
+    * @date          : 2024.09.15
+    * @return         : 주식정보
+    */
 /****
-	@GetMapping("/stckInfo/stckInfoView")
-	public String stckInfoView(Model model) {
-		Map<String, Object> mapData = new HashMap<>();
-		List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(mapData);
-		//log.info("========================= > stckInfoView");
-		//log.info("========================= > value " + stckInfoSelect);
+    @GetMapping("/stckInfo/stckInfoView")
+    public String stckInfoView(Model model) {
+        Map<String, Object> mapData = new HashMap<>();
+        List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(mapData);
+        //log.info("========================= > stckInfoView");
+        //log.info("========================= > value " + stckInfoSelect);
         model.addAttribute("stckInfoSelect", stckInfoSelect);
-		//return "index";
-		return "view/stckInfo/stckInfoView";
-	}
+        //return "index";
+        return "view/stckInfo/stckInfoView";
+    }
 *****/
-	/**
-	* @methodName    : stckInfoView(주식정보화면)
-	* @author        : Jihun Park
-	* @date          : 2024.09.15
-	* @return		 : 주식정보
-	*/
-	@GetMapping("/stckInfo/stckInfoView")
-	public String stckInfoViewPage(Model model
-		     ,@RequestParam(value = "page", defaultValue = "1") final int page) {
-		/*페이징 처리용 */
-		Map<String, Object> mapData = new HashMap<>();
+    /**
+    * @methodName    : stckInfoView(주식정보화면)
+    * @author        : Jihun Park
+    * @date          : 2024.09.15
+    * @return         : 주식정보
+    */
+    @GetMapping("/stckInfo/stckInfoView")
+    public String stckInfoViewPage(Model model
+             ,@RequestParam(value = "page", defaultValue = "1") final int page) {
+        /*페이징 처리용 */
+        Map<String, Object> mapData = new HashMap<>();
         mapData.put("page", page);
         mapData.put("rowCount", 10);
-		/*페이징 처리용 */
+        /*페이징 처리용 */
         // (주식정보)
-		List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(mapData);
+        List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(mapData);
 
         /* ### 페이징 처리 ### */
         int currentPage = page; // 현재 페이지
@@ -92,16 +92,16 @@ public class StckInfoController {
         model.addAttribute("page", page);
         model.addAttribute("pageVo", paginationMap);
         /* ### 페이징 처리 ### */
-		//return "index";
-		return "view/stckInfo/stckInfoView";
-	}
+        //return "index";
+        return "view/stckInfo/stckInfoView";
+    }
 
-	/**
-	* @methodName    : stckInfoView(주식정보등록)
-	* @author        : Jihun Park
-	* @date          : 2024.09.16
-	* @return		 : 주식정보
-	*/
+    /**
+    * @methodName    : stckInfoView(주식정보등록)
+    * @author        : Jihun Park
+    * @date          : 2024.09.16
+    * @return         : 주식정보
+    */
     @PostMapping("/stckInfo/stckInfoInsert.do" )
     public ResponseEntity<Object> stckInfoInsert(@RequestBody Map<String, Object> map, Model model){
         Map<String, Object> mapData = stckInfoService.stckInfoInsert(map);
@@ -132,43 +132,43 @@ public class StckInfoController {
         return ResponseEntity.ok(jsonObject.toString());
     }
 
-	/**
-	* @methodName    : stckInfoView(주식정보조회)
-	* @author        : Jihun Park
-	* @date          : 2024.09.16
-	* @return		 : 주식정보
-	*/
+    /**
+    * @methodName    : stckInfoView(주식정보조회)
+    * @author        : Jihun Park
+    * @date          : 2024.09.16
+    * @return         : 주식정보
+    */
 /********
     @GetMapping("/stckInfo/stckInfoSelect.do")
     public String stckInfoSelect(@RequestParam Map<String, Object> parameter, Model model){
-		log.info("========================= > stckInfoSelect");
-		log.info("========================= > value " + parameter.toString());
-		List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(parameter);
+        log.info("========================= > stckInfoSelect");
+        log.info("========================= > value " + parameter.toString());
+        List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(parameter);
         model.addAttribute("stckInfoSelect", stckInfoSelect);
         model.addAttribute("parameter", parameter);
-		//return "index";
-		return "view/stckInfo/stckInfoView";
+        //return "index";
+        return "view/stckInfo/stckInfoView";
     }
 ********/
 
-	/**
-	* @methodName    : stckInfoView(주식정보조회)
-	* @author        : Jihun Park
-	* @date          : 2024.09.16
-	* @return		 : 주식정보
-	*/
+    /**
+    * @methodName    : stckInfoView(주식정보조회)
+    * @author        : Jihun Park
+    * @date          : 2024.09.16
+    * @return         : 주식정보
+    */
     @GetMapping("/stckInfo/stckInfoViewPageSelect.do")
     public String stckInfoViewPageSelect(@RequestParam Map<String, Object> parameter
-    		, @RequestParam(value = "page", defaultValue = "1") final int page
-		    , Model model){
-		//log.info("========================= > stckInfoSelect");
-		//log.info("========================= > value " + parameter.toString());
-		/*페이징 처리용 */
-    	parameter.put("page", page);
+            , @RequestParam(value = "page", defaultValue = "1") final int page
+            , Model model){
+        //log.info("========================= > stckInfoSelect");
+        //log.info("========================= > value " + parameter.toString());
+        /*페이징 처리용 */
+        parameter.put("page", page);
         parameter.put("rowCount", 10);
-		/*페이징 처리용 */
-		List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(parameter);
-		
+        /*페이징 처리용 */
+        List<Map<String, Object>> stckInfoSelect = stckInfoService.stckInfoSelect(parameter);
+        
         /* ### 페이징 처리 ### */
         int currentPage = page; // 현재 페이지
         int totalCount = 0; // 총 게시물 개수
@@ -191,7 +191,7 @@ public class StckInfoController {
         model.addAttribute("pageVo", paginationMap);
         /* ### 페이징 처리 ### */
         
-		//return "index";
-		return "view/stckInfo/stckInfoView";
+        //return "index";
+        return "view/stckInfo/stckInfoView";
     }
 }

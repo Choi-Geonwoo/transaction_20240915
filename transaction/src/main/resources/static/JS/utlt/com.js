@@ -137,6 +137,7 @@ function isEmpty(str){
     return false ;
 }
 
+/* 차트 컬러 */
 function fn_chartColor(index){
     const chartColor = [
          "rgba(18, 203, 87, 0.6)"
@@ -184,13 +185,12 @@ return chartColor[index];
 }
 
 
-
-
-
-
-
-
-
+// 랜덤 색상 생성 함수
+function getRandomColor(opacity) {
+    return `rgba(${Math.floor(Math.random() * 255)}, 
+                  ${Math.floor(Math.random() * 255)}, 
+                  ${Math.floor(Math.random() * 255)}, ${opacity})`;
+}
 
 
 function fn_exportExcel(fileName, table_id) {

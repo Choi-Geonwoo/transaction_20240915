@@ -24,10 +24,10 @@ public class HldStckClsServiceImpl implements HldStckClsService {
     * @date          : 2024.09.15
     * @return
     */    
-	@Override
-	public List<Map<String, Object>> selectHldStckClsList(Map map) {
-		return hldStckClsMapper.selectHldStckClsList(map);
-	}
+    @Override
+    public List<Map<String, Object>> selectHldStckClsList(Map map) {
+        return hldStckClsMapper.selectHldStckClsList(map);
+    }
     
     /**
     * @methodName    : hldStckClsDetail(보유 주식 상세 조회)
@@ -35,14 +35,14 @@ public class HldStckClsServiceImpl implements HldStckClsService {
     * @date          : 2024.09.15
     * @return
     */    
-	@Override
-	public Map<String, Object> hldStckClsDetail(Map<String, Object>  map) {
-		log.debug("#############################");
-		log.debug("#############################");
-		log.debug("#############################");
-		String stockName = String.valueOf(map.get("stockName"));
-		return hldStckClsMapper.hldStckClsDetail(stockName);
-	}
+    @Override
+    public Map<String, Object> hldStckClsDetail(Map<String, Object>  map) {
+        log.debug("#############################");
+        log.debug("#############################");
+        log.debug("#############################");
+        String stockName = String.valueOf(map.get("stockName"));
+        return hldStckClsMapper.hldStckClsDetail(stockName);
+    }
 
     /**
     * @methodName    : hldStckClsUpdate(보유 주식 수정)
@@ -50,13 +50,13 @@ public class HldStckClsServiceImpl implements HldStckClsService {
     * @date          : 2024.09.15
     * @return
     */  
-	@Override
-	public Map<String, Object> hldStckClsUpdate(Map map) {
+    @Override
+    public Map<String, Object> hldStckClsUpdate(Map map) {
         int cnt = 0;
         if("".equals(String.valueOf(map.get("U_NO")))){
-        	cnt = hldStckClsMapper.hldStckClsInsert(map);
+            cnt = hldStckClsMapper.hldStckClsInsert(map);
         }else {
-        	cnt = hldStckClsMapper.hldStckClsUpdate(map);
+            cnt = hldStckClsMapper.hldStckClsUpdate(map);
         }
         //log.info("===> hldStckClsUpdate " + map);
         //log.info("===> value : : : " + cnt);
@@ -67,6 +67,6 @@ public class HldStckClsServiceImpl implements HldStckClsService {
             retMap.put("msg", "실패했습니다");
         }
             return retMap;
-	}
+    }
 
 }

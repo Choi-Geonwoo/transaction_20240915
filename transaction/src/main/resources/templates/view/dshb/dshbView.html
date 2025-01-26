@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"  >
+    <title>홈(대시보드)</title>	
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/modal.css}">        
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/com/com.css}">    
+    <script type="text/javascript" th:src="@{/JS/utlt/modal.js}"></script>    
+    <script type="text/javascript" th:src="@{/JS/utlt/com.js}"></script>      
+    <!--차트-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    
+    <script type="text/javascript" th:src="@{/JS/dshb/dshb.js}"></script>  
+    <script th:inline="javascript">
+      window.onload = function(){
+        const data = /*[[${sumList}]]*/;
+        if(!isEmpty(data)) dshbChart(data);
+      }
+    
+    </script>
+</head>
+<body>
+    <h4>
+        <ul class="nav flex-column" th:replace="view/layout/menuBar.html"></ul>
+    </h4>
+    
+    <div class="container01"> 
+        <div class="div_title01">검색영역</div>
+            <div class="div_body01" style="position: relative;">
+             </div>
+        </div>
+    </div>
+    <div class="container01">    
+        <div class="div_title01">조회영역</div>          
+            <div class="div_body01">
+                <div class="dshb_container">
+                    <header>
+                        <h1>투자 대시보드</h1>
+                    </header>
+                    <section class="dshb_summary">
+                        <div class="dshb_card">
+                            <h2>총 자산</h2>
+                            <p th:text="${'$ ' + sumList[0].SUM01}">$96,143.48</p>
+                        </div>
+                        <div class="dshb_card">
+                            <h2>누적 배당금</h2>
+                            <p th:text="${'$ ' + sumList[0].SUM02}">$4,226.6</p>
+                        </div>
+                    </section>
+                    
+                    <section class="dshb_charts">
+                        <div class="dshb_chart pie-chart">
+                            <h2>투자 종목</h2>
+                            <div class="dshb_pie-chart-placeholder" >
+                                <canvas id="chart02"></canvas>
+                            </div>
+                        </div>
+                        <div class="dshb_chart bar-chart">
+                            <h2>개별 배당금</h2>
+                            <div class="dshb_bar-chart-placeholder">                            
+                                <canvas id="chart03"></canvas>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="dshb_trend">
+                        <h2>배당금 추세</h2>
+                        <div class="dshb_trend-placeholder">
+                           <canvas id="chart04" style="width: 1500px;"></canvas>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

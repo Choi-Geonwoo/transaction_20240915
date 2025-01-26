@@ -28,14 +28,14 @@ public class MnthAllocationServiceImpl implements MnthAllocationService {
     @Autowired
     private MnthAllocationMapper mnthAllocationMapper;
     
-	@Override
-	public List<Map<String, Object>> mnthAllocationSelect(Map<String, Object> map) {
-		return mnthAllocationMapper.mnthAllocationSelect(map);
-	}
+    @Override
+    public List<Map<String, Object>> mnthAllocationSelect(Map<String, Object> map) {
+        return mnthAllocationMapper.mnthAllocationSelect(map);
+    }
 
-	@Override
-	public List<Map<String, Object>> mnthAllocationDetail(Map<String, Object> map) {
-		return mnthAllocationMapper.mnthAllocationDetail(map);
-	}
+    @Override
+    public List<Map<String, Object>> mnthAllocationDetail(Map<String, Object> map) {
+        return mnthAllocationMapper.mnthAllocationDetail(map);
+    }
 
 }

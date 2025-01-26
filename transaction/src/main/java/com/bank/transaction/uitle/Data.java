@@ -13,50 +13,50 @@ public class Data {
         int retInt = 0;
         // 년, 월(문자열, 숫자), 일(월 기준, 년 기준), 요일(문자열, 숫자), 시, 분, 초 구하기
         switch (format) {
-		case "year": {
-        	//int year = now.getYear();  // 연도
-        	retInt = now.getYear();  // 연도
-        	break;
-		}
-		case "month": {
-        	//String month = now.getMonth().toString();  // 월(문자열) 
-	        //int monthValue = now.getMonthValue();  // 월(숫자)    
-        	retInt = now.getMonthValue();  // 월(숫자)  
-        	break;
-		}
-		case "day": {
-	        //int dayOfMonth = now.getDayOfMonth();  // 일(월 기준)        
-	        //int dayOfYear = now.getDayOfYear();  // 일(년 기준)      
-        	retInt = now.getDayOfYear();  // 일(년 기준)      
-        	break;
-		}
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + format);
-		}
+        case "year": {
+            //int year = now.getYear();  // 연도
+            retInt = now.getYear();  // 연도
+            break;
+        }
+        case "month": {
+            //String month = now.getMonth().toString();  // 월(문자열) 
+            //int monthValue = now.getMonthValue();  // 월(숫자)    
+            retInt = now.getMonthValue();  // 월(숫자)  
+            break;
+        }
+        case "day": {
+            //int dayOfMonth = now.getDayOfMonth();  // 일(월 기준)        
+            //int dayOfYear = now.getDayOfYear();  // 일(년 기준)      
+            retInt = now.getDayOfYear();  // 일(년 기준)      
+            break;
+        }
+        default:
+            throw new IllegalArgumentException("Unexpected value: " + format);
+        }
         
         return retInt;
     }
     
     public static String strTodayDateFormat(String format) {
-    	String retStr = null;// 현재 날짜/시간        
+        String retStr = null;// 현재 날짜/시간        
         LocalDateTime now = LocalDateTime.now();
-    	switch (format) {
-		case "YYYY": {
-			retStr = String.valueOf(now.getYear()); 
-			break;
-		}
-		case "YYYY-MM": {
-			retStr = String.valueOf(now.getYear()) + "-" + String.valueOf(now.getMonthValue()); 
-			break;
-		}
-		case "YYYY-MM-DD": {
-			retStr = String.valueOf(now.getYear()) + "-" + String.valueOf(now.getMonthValue())+ "-" + String.valueOf(now.getDayOfYear());
-			break;
-		}
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + format);
-		}
-    	
-    	return retStr;
+        switch (format) {
+        case "YYYY": {
+            retStr = String.valueOf(now.getYear()); 
+            break;
+        }
+        case "YYYY-MM": {
+            retStr = String.valueOf(now.getYear()) + "-" + String.valueOf(now.getMonthValue()); 
+            break;
+        }
+        case "YYYY-MM-DD": {
+            retStr = String.valueOf(now.getYear()) + "-" + String.valueOf(now.getMonthValue())+ "-" + String.valueOf(now.getDayOfYear());
+            break;
+        }
+        default:
+            throw new IllegalArgumentException("Unexpected value: " + format);
+        }
+        
+        return retStr;
     }
 }

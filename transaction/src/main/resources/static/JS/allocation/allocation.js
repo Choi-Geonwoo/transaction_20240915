@@ -1,50 +1,27 @@
-document.addEventListener('DOMContentLoaded', function() {
-    
-});
-
 // 위의 옵션 추가 코드
-    function fn_selectBox(selectBox, options, STOCK_NAME){
-        options.forEach(item => {
-            if (item.USEYN === "Y") { // USEYN 값이 'Y'인 경우에만 추가
-                const option = document.createElement('option');
-                option.value = item.TIKER; // 값 설정
-                option.textContent = item.STCNM; // 텍스트 설정
-                
-                // 옵션을 select 박스에 추가
-                selectBox.appendChild(option);
-                
-                // 기본 선택 조건 확인
-                if (item.STCNM === STOCK_NAME) {
-                    option.selected = true; // 조건에 맞는 경우 selected 추가
-                    console.log("11111111111111111111111111111111111111111");
-                }
+function fn_selectBox(selectBox, options, STOCK_NAME){
+    options.forEach(item => {
+        if (item.USEYN === "Y") { // USEYN 값이 'Y'인 경우에만 추가
+            const option = document.createElement('option');
+            option.value = item.TIKER; // 값 설정
+            option.textContent = item.STCNM; // 텍스트 설정
+            
+            // 옵션을 select 박스에 추가
+            selectBox.appendChild(option);
+            
+            // 기본 선택 조건 확인
+            if (item.STCNM === STOCK_NAME) {
+                option.selected = true; // 조건에 맞는 경우 selected 추가
             }
-        });
-    }
+        }
+    });
+}
     
 /*************************************
  * 조회용 함수
  *************************************/
 /**
- * 콜백함수
- * @param data     : 리턴값
- **/
-function sendCountyOffice(stockName,trnscdate, month){
-	//alert("stockName :::" + stockName + "\ntrnscdate ::: " + trnscdate+"\nmonth ::: " + month);
-	// 행 데이터를 저장할 JSON 객체 생성
-	var rowData = {};
-	rowData["stockName"]  = stockName;
-	rowData["trnscdate"]  = trnscdate + month + "01";
-	//rowData["month"]  = month;
-	//console.log("Row Data: ", JSON.stringify(rowData));
-    //fetch002();
- 	//fetch API를 사용하여 POST 요청을 보냅니다
-    fetch003('/allocation/allocationDetail.do', "post", rowData, "allocationDetail"); //url, method, body
-}
-
-
-/**
- * 콜백함수
+ * 전송 함수
  * @param data     : 리턴값
  **/
 function fn_inputModalCall(){
@@ -55,15 +32,12 @@ function fn_inputModalCall(){
 /*************************************
  * 콜백 함수
  *************************************/
-
 /**
  * 콜백함수
  * @param data     : 리턴값
  **/
 function fn_call(data){
-    if("allocationDetail" == data.id){
-        fn_updateModal(data)
-    }else if("stckInfoInq" == data.id){
+    if("stckInfoInq" == data.id){
         fn_insertModal(data);
     }else if("allocationDetail001" == data.id){
         //console.log("Row Data: ", JSON.stringify(data));
@@ -71,29 +45,11 @@ function fn_call(data){
         const selectBox = document.getElementById('u_stockName');
         const options = data.selectBox; 
         fn_selectBox(selectBox, options, data.STOCK_NAME);
-        // 옵션 추가
-        /*options.forEach(item => {
-            if (item.USEYN === "Y") { // USEYN 값이 'Y'인 경우에만 추가
-                const option = document.createElement('option');
-                option.value = item.TIKER; // 값 설정
-                option.textContent = item.STCNM; // 텍스트 설정
-                
-                // 옵션을 select 박스에 추가
-                selectBox.appendChild(option);
-                
-                // 기본 선택 조건 확인
-                if (item.STCNM === data.STOCK_NAME) {
-                    option.selected = true; 
-                }
-            }
-        });*/
-
-
         //document.getElementById("u_stockName").value = data.STOCK_NAME;
-        document.getElementById("u_trnscdate").value = data.TRNSCDATE;
-        document.getElementById("u_dividend").value = data.DIVIDEND;
-        document.getElementById("u_amont").value = data.AMOUNT;
-        document.getElementById("t_stockName").innerText        = "상세 보기 : "+data.STOCK_NAME; // 종목명
+        document.getElementById("u_trnscdate").value   = data.TRNSCDATE;
+        document.getElementById("u_dividend").value    = data.DIVIDEND;
+        document.getElementById("u_amont").value       = data.AMOUNT;
+        document.getElementById("t_stockName").innerText = "상세 보기 : "+data.STOCK_NAME; // 종목명
         
         var jsonData = JSON.stringify(data);
         //# JSON 데이터 파싱
@@ -104,11 +60,26 @@ function fn_call(data){
         }
         
         if(!isEmpty(parsedData.fileList)){
-        // 이미지 출력
-        fu_img(parsedData.fileList.reContents);
+            // 이미지 출력
+            fu_img(parsedData.fileList.reContents);
         }
         
         document.getElementById("I_FILE").innerText = fileName;
+        
+        document.getElementById("popup_layer").style.display = "block";
+    }else if("allocationDetailInput" == data.id){
+        //console.log("Row Data: ", JSON.stringify(data));
+        // select 박스 참조 (동적으로 생성했거나 이미 존재하는 경우)
+        const selectBox = document.getElementById('u_stockName');
+        const options = data; 
+        fn_selectBox(selectBox, options, data.STOCK_NAME);
+        //document.getElementById("u_stockName").value = data.STOCK_NAME;
+        document.getElementById("u_trnscdate").value   = null;
+        document.getElementById("u_dividend").value    = null;
+        document.getElementById("u_amont").value       = null;
+        document.getElementById("t_stockName").innerText = "신규 등록"; // 종목명
+        document.getElementById("I_FILE").innerText = null;
+        document.getElementById("I_IMG").value = null;
         
         document.getElementById("popup_layer").style.display = "block";
     }
@@ -132,16 +103,15 @@ const removeModal01 = () => {
   document.body.removeChild(modal);
 };
 
-
 /**
  * 이미지 출력
  * @param imgData     : 이미지 Blob
  **/
 function fu_img(imgData){
         // 이미지를 표시할 <img> 요소 가져오기
-        var imageElement1 = document.getElementById("image1");
+        var imageElement1 = document.getElementById("I_IMG");
         // 이미지
-        let image1 = document.getElementById('image1');
+        let image1 = document.getElementById('I_IMG');
         var byteData =  JSON.parse(imgData);
         // 바이트 데이터를 Blob으로 변환
         var blobData = new Blob([new Uint8Array(byteData)], { type: 'image/jpeg' });
@@ -203,330 +173,199 @@ function allocationBarChart(value, p_month){
       }
      });
 }
+
 /*************************************
  * 모달 함수
  *************************************/
-/**
- * 주식 수정 모달
- * @param data     : 주식 정보
- **/
-function fn_updateModal(data){
-   //console.log();
-   //console.log("Row Data: ", JSON.stringify(data));
-    var jsonData = JSON.stringify(data);
-   //# JSON 데이터 파싱
-    var parsedData = JSON.parse(jsonData);
-    var fileName = "";
-    if(!isEmpty(parsedData.fileList)){
-        fileName = parsedData.fileList.fname;
-    }
-    //console.log("Row Data: " + parsedData.fileList.reContents);
-  const modal = document.createElement('div');
-  modal.classList.add('modal-background');
-  modal.innerHTML = `
-    <div class="modal-content01">
-      <div class="container01"> 
-        <div class="div_title01">주식명 : ${data.STOCK_NAME}   </div> 
-          <div class="div_body01">
-              <table>
-                <tr>
-                  <td class="minW70">
-                      주식명 
-                  </td>
-                  <td>
-                      <input type="text"  class="full-width-input10" value="${data.STOCK_NAME}" readonly>
-                  </td>
-                </tr>
-                <tr>
-                  <td  class="minW70">
-                      거래 일자
-                  </td>
-                  <td>
-                      <input type="date"  class="full-width-input02_data w90_" value="${data.TRNSCDATE}">
-                  </td>
-                </tr>
-                <tr>
-                  <td  class="minW70"> 
-                      배당금
-                  </td>
-                  <td>
-                      <input type="text"   class="full-width-input10" value="${data.DIVIDEND}">
-                  </td>
-                </tr>
-                <tr>
-                  <td  class="minW70">
-                      거래 금액
-                  </td>
-                  <td>
-                      <input type="text"  class="full-width-input10" value="${data.AMOUNT}">
-                  </td>
-                </tr>
-                <tr>
-                  <td  class="minW70">
-                      파일명
-                  </td>
-                  <td>
-                      <input type="text" class="full-width-input" value="${fileName}">
-                  </td>
-                </tr>
-                <tr >
-                  <td  class="minW70">
-                      이미지
-                  </td>
-                  <td>
-                      <img id="image1" style="min-height : 300px; max-height : 300px; width : 100%;">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                  </td>
-                  <td>
-                    <button class="delete-button">취소</button>
-                    <button class="update-button">저장</button>
-                  </td>
-                </tr>
-              </table>
-          </div>
-      </div>
-    </div>
-  `;
-  
-  document.body.appendChild(modal);
-  
-  // Pass the callback to the handleButtonClick function
-  modal.addEventListener('click', handleButtonClick01);
-    
-    if(!isEmpty(parsedData.fileList)){
-    // 이미지 출력
-    fu_img(parsedData.fileList.reContents);
-    }
-}
-
-/**
- * 주식 등록 모달
- * @param data     : 주식명 정보
- **/
-function fn_insertModal(data){
-   //console.log();
-   //console.log("Row Data: ", JSON.stringify(data));
-   var div = `<select name="CMPR" id="CMPR" class="full-width-input">`;
-/*                                    <select name="CMPR" id="CMPR" class="full-width-input">
-                                      <option value="1">연금저축</option>                            
-                                      <option value="2">퇴직연금</option>                          
-                                      <option value="3">일반계좌</option>
-                                    </select>*/
-    // JSON이나 멤버 변수를 갖는 객체에 대한 반복문
-    for(let key in data) {
-        console.log(key + ' | ' + data[key]);
-        if("id" == key) continue;
-        div += `<option value=${data[key].TIKER}>${data[key].STCNM}</option>`;
-    }
-    div += `</select>`;
-    //console.log("Row Data: " + parsedData.fileList.reContents);
-  const modal = document.createElement('div');
-  modal.classList.add('modal-background');
-  modal.innerHTML = `
-    <div class="modal-content01">
-      <div class="container01"> 
-        <div class="div_title01">신규 등록 </div>       
-          <div class="div_body01">
-              <table>
-                <tr>
-                  <td  class="minW70">
-                      주식명 
-                  </td>
-                  <td>
-                      ${div}
-                  </td>
-                </tr>
-                <tr>
-                  <td  class="minW70"> 
-                      거래 일자
-                  </td>
-                  <td>
-                      <input type="date"  class="full-width-input02_data w90_" id="I_TRNSCDATE">
-                  </td>
-                </tr>
-                <tr>
-                  <td  class="minW70">
-                      배당금
-                  </td>
-                  <td>
-                      <input type="text"   class="full-width-input10" id="I_DIVIDEND">
-                  </td>
-                </tr>
-                <tr>
-                  <td  class="minW70">
-                      거래 금액
-                  </td>
-                  <td>
-                      <input type="text"  class="full-width-input10" id="I_AMOUNT" >
-                  </td>
-                </tr>
-                <tr>
-                  <td  class="minW70">
-                      파일명
-                  </td>
-                  <td>
-                      <input type="file" class="form-control" id="I_FILE" name="I_FILE"  accept="image/*" onchange="readURL(this, 'I_IMG');"  ><!--onchange="toBase64(event);"-->
-                  </td>
-                </tr>
-                <tr >
-                  <td  class="minW70">
-                      이미지
-                  </td>
-                  <td>
-                      <img id="I_IMG" style="min-height : 300px; max-height : 300px; width : 100%;">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                  </td>
-                  <td>
-                    <button class="delete-button">취소</button>
-                    <button class="update-button" onclick="allocationInsert();">저장</button>
-                  </td>
-                </tr>
-              </table>
-          </div>
-      </div>
-    </div>
-  `;
-  
-  document.body.appendChild(modal);
-  
-  // Pass the callback to the handleButtonClick function
-  modal.addEventListener('click', handleButtonClick01);
-}
-
-
 // 파일업로드 사용시 이미지 미리보기용
-  function readURL(input, img) {
-   //console.log("결과"+input.files[0].name)
-  if (input.files && input.files[0]) {
+function readURL(input, img) {
+  if (input.files && input.files.length > 0) {
+    var file = input.files[0];
+    
+    // 파일 확장자 체크 (예: 이미지 파일만 허용)
+    var validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+    if (!validImageTypes.includes(file.type)) {
+      alert("이미지 파일만 업로드 가능합니다.");
+      input.value = "";  // 잘못된 파일 리셋
+      return;
+    }
+
     var reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById(img).src = e.target.result;
+
+    reader.onload = function (e) {
+      var imgElement = document.getElementById(img);
+      if (imgElement) {
+        imgElement.src = e.target.result;
+      } else {
+        console.error("이미지 요소를 찾을 수 없습니다: " + img);
+      }
     };
-    reader.readAsDataURL(input.files[0]);
-    document.getElementById(img).style.display = '';
-    //document.getElementById("col-sm-11").style.display ='block';  
+
+    reader.onerror = function () {
+      console.error("파일을 읽는 도중 오류가 발생했습니다.");
+    };
+
+    reader.readAsDataURL(file);
   } else {
+    console.warn("파일이 선택되지 않았거나 잘못된 입력입니다.");
   }
 }
 
-// 모달창 등록 이벤트
-function allocationInsert(){
-  const imageFileInput = document.getElementById('I_FILE');             //파일 이미지 전송
-  var selectedFile = imageFileInput.files[0];  
-  var fileName;
-  const inputAmount = document.getElementById('I_AMOUNT').value;        //거래금액
-  const inputDiviend = document.getElementById('I_DIVIDEND').value;     //배당금
-  const inputTrnscdate = document.querySelector('input[type="date"]');  //거래일자
-  var cmr = (CMPR.options[CMPR.selectedIndex].value);    //주식티커
-  if(!isEmpty(imageFileInput.files[0])){
-    fileName = imageFileInput.files[0].name;
+
+function imgFile(selectedFile, data, url) {
+  if (!selectedFile) {
+    alert("파일을 선택해주세요.");
+    return; // 파일이 선택되지 않으면 함수 종료
   }
-  
-  let data = {
-              CMPR      : cmr,                   // 주식티커
-              TRNSCDATE : inputTrnscdate.value,  //거래일자
-              AMOUNT    : inputAmount,           // 거래 금액
-              FILENAME  : fileName,              // 파일명
-              DIVIDEND  : inputDiviend           // 배당금
+
+  const formData = new FormData();
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    const fileData = new Uint8Array(event.target.result);
+    formData.append("files", JSON.stringify(Array.from(fileData)));
+    formData.append("key", new Blob([JSON.stringify(data)], { type: "application/json" }));
+
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then(response => {
+        console.log(response.status);
+        if (response.status !== 200) {
+          throw new Error("오류 발생했습니다.");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Response Data: ", JSON.stringify(data));
+        if (data.retNo !== -1) {
+          alert(data.msg);
+          location.reload();
+        } else {
+          alert(data.msg);
+          location.reload();
+        }
+      })
+      .catch(error => {
+        alert("Error: " + error.message);
+      });
+  };
+
+  // selectedFile이 Blob 타입일 때만 readAsArrayBuffer를 호출
+  if (selectedFile instanceof Blob) {
+    reader.readAsArrayBuffer(selectedFile);
+  } else {
+    alert("유효한 파일을 선택해주세요.");
   }
-  //fetch API를 사용하여 POST 요청을 보냅니다
-  //postFetch('/allocation/allocationInsert.do', data, 'insert');
-  console.log("주식 티커, 거래일자, 배당금, 파일명 ", {cmr}, {inputTrnscdate}, {inputDiviend}, {fileName});
-  //imgFile(selectedFile, data, '/allocation/allocationInsert.do');
 }
-
-
-// 모달창 등록 이벤트
-function allocationInsert01(){
-  const imageFileInput = document.getElementById('I_FILE');             //파일 이미지 전송
-  var selectedFile = imageFileInput.files[0];  
-  var fileName;
-  const inputAmount = document.getElementById('u_amont').value;        //거래금액
-  const inputDiviend = document.getElementById('u_dividend').value;     //배당금
-  const inputTrnscdate = document.querySelector('input[type="date"]');  //거래일자
-  var cmr = (CMPR.options[CMPR.selectedIndex].value);    //주식티커
-  if(!isEmpty(imageFileInput.files[0])){
-    fileName = imageFileInput.files[0].name;
-  }
-  
-  let data = {
-              CMPR      : cmr,                   // 주식티커
-              TRNSCDATE : inputTrnscdate.value,  //거래일자
-              AMOUNT    : inputAmount,           // 거래 금액
-              FILENAME  : fileName,              // 파일명
-              DIVIDEND  : inputDiviend           // 배당금
-  }
-  //fetch API를 사용하여 POST 요청을 보냅니다
-  //postFetch('/allocation/allocationInsert.do', data, 'insert');
-  console.log("주식 티커, 거래일자, 배당금, 파일명 ", {cmr}, {inputTrnscdate}, {inputDiviend}, {fileName});
-  //imgFile(selectedFile, data, '/allocation/allocationInsert.do');
-}
-// 이미지 포함 전송
-function imgFile(selectedFile, data, url){
-    // 폼 데이터로 보내줘야 함
-    let formData = new FormData();
-    
-var reader = new FileReader();
-
-    reader.onload = function(event) {
-              var fileData = new Uint8Array(event.target.result);
-              formData.append("files", JSON.stringify(Array.from(fileData)));
-              formData.append(
-                "key",
-                new Blob([JSON.stringify(data)], { type: "application/json" })
-              );
-
-                fetch(url,
-                    {
-                        method : "post",
-                        body : formData,
-                    })
-                    .then((response) => {
-                        console.log(response.status);
-                        if(response.status != 200){
-                          alert("오류 발생했습니다.");
-                        }
-                        return response.json(); // 응답 데이터를 파싱하고 반환
-                    })
-                    .then(data => {
-                        console.log(">>>>>>>>>>>>>>>>>>>>>>>> "+JSON.stringify(data));
-                            if(-1 != data.retNo){
-                              alert(data.msg);
-                              location.reload();
-                            }else{
-                              alert(data.msg);
-                              location.reload();
-                            }
-                          })
-                    .catch((error) => {
-                        alert("error " + error)
-                    }); 
-                };
-
-    reader.readAsArrayBuffer(selectedFile);    
-    
-    
-}
-
 
 /*************************************
  * 팝업 띄우기
  *************************************/
 function fn_openPop(stockName,trnscdate, month){
-    //alert("stockName :::" + stockName + "\ntrnscdate ::: " + trnscdate+"\nmonth ::: " + month);
-    // 행 데이터를 저장할 JSON 객체 생성
-    var rowData = {};
-    rowData["stockName"]  = stockName;
-    rowData["trnscdate"]  = trnscdate + month + "01";
-    //rowData["month"]  = month;
-    //console.log("Row Data: ", JSON.stringify(rowData));
-    //fetch002();
-    //fetch API를 사용하여 POST 요청을 보냅니다
-    fetch003('/allocation/allocationDetail.do', "post", rowData, "allocationDetail001"); //url, method, body
+    if(!isEmpty(stockName)){
+        // 행 데이터를 저장할 JSON 객체 생성
+        var rowData = {};
+        rowData["stockName"]  = stockName;
+        rowData["trnscdate"]  = trnscdate + month + "01";
+        //fetch API를 사용하여 POST 요청을 보냅니다
+        fetch003('/allocation/allocationDetail.do', "post", rowData, "allocationDetail001"); //url, method, body   
+    }else{
+        getFetch('/com/stckInfoInq.do', "allocationDetailInput"); //url, method, body
+    }
 }
+
+
+// 모달창 등록 이벤트
+function allocationInsert01() {
+  const imageFileInput = document.getElementById('I_FILE'); // 파일 업로드 인풋
+  const inputAmount = document.getElementById('u_amont').value; // 거래금액
+  const inputDiviend = document.getElementById('u_dividend').value; // 배당금
+  const inputTrnscdate = document.getElementById('u_trnscdate').value; // 거래일자
+  const cmrElement = document.getElementById('u_stockName'); // 주식명 select 요소
+
+  if (!cmrElement) {
+    alert("주식명을 선택하세요.");
+    return;
+  }
+
+  var cmr = cmrElement.value; // 주식티커 값 가져오기
+  var fileName = '';
+
+  // 파일 선택 여부 확인 및 파일명 할당
+  if (imageFileInput.files.length > 0) {
+    fileName = imageFileInput.files[0].name;
+  }
+
+  let data = {
+    CMPR: cmr,            // 주식 티커
+    TRNSCDATE: inputTrnscdate,  // 거래일자
+    AMOUNT: inputAmount,  // 거래 금액
+    FILENAME: fileName,   // 파일명
+    DIVIDEND: inputDiviend // 배당금
+  };
+
+  console.log("주식 티커, 거래일자, 배당금, 파일명 ", cmr, inputTrnscdate, inputDiviend, fileName);
+
+  if (imageFileInput.files.length > 0) {
+    const selectedFile = imageFileInput.files[0];
+    imgFile(selectedFile, data, '/allocation/allocationInsert.do');
+  } else {
+    fetch('/allocation/allocationInsert.do', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(result => {
+      alert(result.msg);
+      if (result.retNo !== -1) location.reload();
+    })
+    .catch(error => {
+      alert("오류 발생: " + error.message);
+    });
+  }
+}
+
+
+/* 라팩토링 */
+// 이미지 포함 전송
+function imgFile(selectedFile, data, url) {
+  const formData = new FormData();
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    const fileData = new Uint8Array(event.target.result);
+    formData.append("files", JSON.stringify(Array.from(fileData)));
+    formData.append("key", new Blob([JSON.stringify(data)], { type: "application/json" }));
+
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then(response => {
+        console.log(response.status);
+        if (response.status !== 200) {
+          throw new Error("오류 발생했습니다.");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Response Data: ", JSON.stringify(data));
+        if (data.retNo !== -1) {
+          alert(data.msg);
+          location.reload();
+        } else {
+          alert(data.msg);
+          location.reload();
+        }
+      })
+      .catch(error => {
+        alert("Error: " + error.message);
+      });
+  };
+
+  reader.readAsArrayBuffer(selectedFile);
+}
+

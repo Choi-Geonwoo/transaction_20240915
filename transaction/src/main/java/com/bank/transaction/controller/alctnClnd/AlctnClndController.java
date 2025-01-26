@@ -47,7 +47,7 @@ public class AlctnClndController {
     @GetMapping("/alctnClnd/alctnClndView")
     //@ResponseBody
     public String alctnClndView(Model model) {
-    	//model.addAttribute("list", alctnClndService.alctnClndSelect(map));
+        //model.addAttribute("list", alctnClndService.alctnClndSelect(map));
         return "view/alctnClnd/alctnClndView";
     }
 
@@ -59,7 +59,7 @@ public class AlctnClndController {
     */
     @GetMapping("/alctnClnd/alctnClndSelect")
     public ResponseEntity<List<Map<String, Object>>> alctnClndSelect(Model model, @RequestParam Map<String, Object> params) {
-    	//model.addAttribute("list", alctnClndService.alctnClndSelect(map));
+        //model.addAttribute("list", alctnClndService.alctnClndSelect(map));
         return ResponseEntity.ok().header("Content-Type", "application/json").body(alctnClndService.alctnClndSelect(params));
     }
     
@@ -72,7 +72,7 @@ public class AlctnClndController {
     @GetMapping("/alctnClnd/stckClndView")
     //@ResponseBody
     public String stckClndView(Model model) {
-    	//model.addAttribute("list", alctnClndService.alctnClndSelect(map));
+        //model.addAttribute("list", alctnClndService.alctnClndSelect(map));
         return "view/alctnClnd/stckClndView";
     }
     
@@ -85,7 +85,7 @@ public class AlctnClndController {
     */
     @GetMapping("/alctnClnd/stckClndSelect")
     public ResponseEntity<List<Map<String, Object>>> stckClndSelect(Model model, @RequestParam Map<String, Object> params) {
-    	//model.addAttribute("list", alctnClndService.alctnClndSelect(map));
+        //model.addAttribute("list", alctnClndService.alctnClndSelect(map));
         return ResponseEntity.ok().header("Content-Type", "application/json").body(alctnClndService.stckClndSelect(params));
     }
 

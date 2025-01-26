@@ -36,42 +36,42 @@ public class AllocationController {
     @Autowired
     private AllocationService allocationService;
 
-	/**
-	* @methodName    : allocationView(주식거래화면 추가)
-	* @author        : Jihun Park
-	* @date          : 2024.09.15
-	* @return
-	*/
-	@GetMapping("/allocation/allocationView")
-	public String allocationView(Model model) {
-		Map<String, Object> data = new HashMap();
-		data.put("year", String.valueOf(Data.todayDateFormat("year")));
-		data.put("month", String.valueOf(Data.todayDateFormat("month")));
-		model.addAttribute("aSelect", allocationService.allocationSelect(data));
-	        model.addAttribute("parameter", data);
-		//return "index";
-		return "view/allocation/allocationView";
-	}
-
-	/**
-	* @methodName    : allocation(주식거래화면 검색 페이징 추가)
-	* @author        : Jihun Park
-	* @date          : 2024.09.15
-	* @return
-	*/
-	@GetMapping("/allocation/allocationSearch.do")
-	public String allocation(@RequestParam Map<String, Object> data, Model model) {
-        model.addAttribute("parameter", data);
-		model.addAttribute("aSelect", allocationService.allocationSelect(data));
-		//return "index";
-		return "view/allocation/allocationView";
-	}
-	
     /**
-	* @methodName    : allocationView(주식거래 상세 조회)
-	* @author        : Jihun Park
-	* @date          : 2024.09.15
-	* @return
+    * @methodName    : allocationView(주식거래화면 추가)
+    * @author        : Jihun Park
+    * @date          : 2024.09.15
+    * @return
+    */
+    @GetMapping("/allocation/allocationView")
+    public String allocationView(Model model) {
+        Map<String, Object> data = new HashMap();
+        data.put("year", String.valueOf(Data.todayDateFormat("year")));
+        data.put("month", String.valueOf(Data.todayDateFormat("month")));
+        model.addAttribute("aSelect", allocationService.allocationSelect(data));
+            model.addAttribute("parameter", data);
+        //return "index";
+        return "view/allocation/allocationView";
+    }
+
+    /**
+    * @methodName    : allocation(주식거래화면 검색 페이징 추가)
+    * @author        : Jihun Park
+    * @date          : 2024.09.15
+    * @return
+    */
+    @GetMapping("/allocation/allocationSearch.do")
+    public String allocation(@RequestParam Map<String, Object> data, Model model) {
+        model.addAttribute("parameter", data);
+        model.addAttribute("aSelect", allocationService.allocationSelect(data));
+        //return "index";
+        return "view/allocation/allocationView";
+    }
+    
+    /**
+    * @methodName    : allocationView(주식거래 상세 조회)
+    * @author        : Jihun Park
+    * @date          : 2024.09.15
+    * @return
     */
     @PostMapping("/allocation/allocationDetail.do" )
     public ResponseEntity<Map> allocationDetail(@RequestBody Map<String, Object> map, Model model){
@@ -87,7 +87,7 @@ public class AllocationController {
     */
     @PostMapping("/allocation/allocationInsert.do")
     public ResponseEntity<Object> stckInfoInsert(@RequestPart(value = "key") HashMap map
-    	    , @RequestPart(value = "files", required = false) String files) {
+            , @RequestPart(value = "files", required = false) String files) {
         try {
             // 서비스 호출 및 데이터 처리
             Map<String, Object> mapData = allocationService.allocationInsert(map, files);

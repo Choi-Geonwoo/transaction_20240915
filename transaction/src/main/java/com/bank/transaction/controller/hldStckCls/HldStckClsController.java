@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class HldStckClsController {
+    
     @Autowired
     private HldStckClsService hldStckClsService;
     /**
