@@ -11,7 +11,7 @@
 .div_container_main {
     overflow-x: auto; /* 가로 스크롤 가능 */
     white-space: nowrap; /* 내용이 한 줄로 나열되도록 설정 */
-    width: 1800px; /* 너비 설정 */
+    width: auto; /* 너비 설정 */
 }
 
 .div_content {

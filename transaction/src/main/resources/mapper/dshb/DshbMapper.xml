@@ -21,7 +21,7 @@
 </select>
 
 <select id="selectSum02" resultType="Map">
-       SELECT /*SQL_ID :  DETAILSMAPPER.SELECTSUM02 : 홈 투자종목, 월별 배당금(상위 5개) */
+       SELECT /*SQL_ID :  DshbMapper.SELECTSUM02 : 홈 투자종목, 월별 배당금(상위 5개) */
                  TB01.STOCK_NAME
                 ,TB02.STOCK_QUANTITY
                 ,TO_CHAR(SUM(TB01.AMOUNT), 'FM999,999,999,999.999')+0 AS EACH_MONEY
@@ -36,7 +36,7 @@
 
 
 <select id="selectSum04" resultType="Map">
-    SELECT /*SQL_ID :  DETAILSMAPPER.SELECTSUM04 : 배당금 추세*/
+    SELECT /*SQL_ID :  DshbMapper.SELECTSUM04 : 배당금 추세*/
         TO_CHAR(TRNSCDATE, 'YYYY')                                 AS TRNSCDATE
        ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '01' , AMOUNT, '0') ) AS JANUARY
        ,SUM(DECODE(TO_CHAR(TRNSCDATE, 'MM'), '02' , AMOUNT, '0') ) AS FEBRUARY

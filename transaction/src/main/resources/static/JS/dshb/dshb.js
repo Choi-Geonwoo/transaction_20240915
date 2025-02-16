@@ -15,7 +15,8 @@ function dshbChart(data) {
     chart02: [],
     chart03: [],
     chart04_1: [],  // 첫 번째 라인 데이터
-    chart04_2: []   // 두 번째 라인 데이터
+    chart04_2: [],   // 두 번째 라인 데이터
+    chart04_3: []   // 두 번째 라인 데이터
   };
   // SUM02 (주식 수량 데이터)
   processChartData(data[1]?.SUM02, labels.chart02, values.chart02, "STOCK_NAME", "STOCK_QUANTITY");
@@ -34,11 +35,16 @@ function dshbChart(data) {
       const stock02 = data[3].SUM04[1]; // 두 번째 객체
       values.chart04_2 = extractMonthlyValues(stock02);
     }
+    
+    if (data[3].SUM04.length > 2) {
+      const stock02 = data[3].SUM04[2]; // 두 번째 객체
+      values.chart04_3 = extractMonthlyValues(stock02);
+    }
   }
   // 차트 생성 함수 호출
   renderChart("chart02", "bar", "주식 수량", labels.chart02, values.chart02);
   renderChart("chart03", "line", "배당금 상위 5개", labels.chart03, values.chart03);
-  renderMultiLineChart("chart04", data[3].SUM04[0].TRNSCDATE, data[3].SUM04[1].TRNSCDATE, labels.chart04, values.chart04_1, values.chart04_2);
+  renderMultiLineChart("chart04", data[3].SUM04[0].TRNSCDATE, data[3].SUM04[1].TRNSCDATE, labels.chart04, values.chart04_1, values.chart04_2, values.chart04_3);
 }
 
 /**

@@ -53,12 +53,35 @@
                                             ,COUNT(*) OVER() AS totalPages /*페이징 처리용 총 건수*/
                                         FROM STCKDLNGINFO     A
                                            , STOCKINFORMATION B
-                                           , TRANSACTION      C
+                                           , 
+                                           (
+                                           SELECT
+                                                 MAX(TRNSCDATE) AS TRNSCDATE
+                                                ,DIVIDEND
+                                                ,TIKER
+                                            FROM
+                                                TRANSACTION
+                                            WHERE            1=1
+                                             <choose>
+                                                    <when test="(S_START_YMD != null) and (!''.equals(S_START_YMD)) and (S_END_YMD != null) and (!''.equals(S_END_YMD))"> 
+                                                        AND TRNSCDATE BETWEEN REGEXP_REPLACE(#{S_START_YMD}, '[[:punct:]]') AND REGEXP_REPLACE(#{S_END_YMD}, '[[:punct:]]')
+                                                    </when>
+                                                    <when test="(S_START_YMD != null) and (!''.equals(S_START_YMD))"> 
+                                                        AND TRNSCDATE  <![CDATA[ >= ]]> REGEXP_REPLACE(#{S_START_YMD}, '[[:punct:]]') 
+                                                    </when>
+                                                    <when test="(S_END_YMD != null) and (!''.equals(S_END_YMD))"> 
+                                                        AND TRNSCDATE  <![CDATA[ <= ]]> REGEXP_REPLACE(#{S_END_YMD}, '[[:punct:]]') 
+                                                    </when>
+                                            </choose>
+                                            GROUP BY 
+                                                 DIVIDEND
+                                                ,TIKER
+                                           )
+                                                 C
                                             WHERE B.TIKER      = A.TIKER
                                                 AND A.USEYN    ='Y'
                                                 AND A.DELYN    ='N'
                                                 AND A.TIKER    = C.TIKER(+)
-                                                AND A.DLNGYMD  =  C.TRNSCDATE(+)
                                               <if test="(S_CMPR!=null) and (!S_CMPR.equals('')) and (!S_CMPR.equals('null'))">
                                                 AND A.CMPR      = #{S_CMPR}    /*구분*/
                                              </if>
