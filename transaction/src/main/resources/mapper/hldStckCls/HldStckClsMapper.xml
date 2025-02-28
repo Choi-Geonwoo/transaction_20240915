@@ -63,7 +63,7 @@
                    , TRANSACTION B
                 WHERE 1=1
                   AND A.TIKER           = B.TIKER(+) 
-                  AND A.STOCK_QUANTITY  >  0
+                  /*AND A.STOCK_QUANTITY  >  0*/
                   AND A.STOCK_NAME      = #{stockName}
                 GROUP BY
                         A.STOCK_NAME ,

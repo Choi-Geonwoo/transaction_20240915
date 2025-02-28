@@ -38,9 +38,9 @@
                              <col style="width: 8%;">
                              
                              <col style="width: 6%;">
-                             <col style="width: 8%">
+                             <col style="width: 3px">
                              
-                             <col style="width: 25px;">
+                             <col style="width: 20px;">
                              <col style="width: 20px;">
                              <col style="width: 20px;">
                              <col style="width: 20px;">
@@ -104,8 +104,8 @@
                             <td >
                             <div role="group" >
                                 <button class="update-button" onclick="detailsUpdate(this)">수정</button>
-                                /
-                                <button class="delete-button" onclick="detailsDelete(this);">삭제</button>
+                               <!-- /
+                                <button class="delete-button" onclick="detailsDelete(this);">삭제</button>-->
                             </div>
                             </td>
                             <td class="border" th:classappend="${#strings.contains(slist.DIVIDEND_CYCLE,'01')} or ${#strings.contains(slist.DIVIDEND_CYCLE,'월')} ? 'bg-warning' : ''">
