@@ -289,6 +289,10 @@ function allocationInsert01() {
     alert("주식명을 선택하세요.");
     return;
   }
+  if(!inputTrnscdate){
+    alert("거래일자 입력 해주세요.");
+    return;
+  }
 
   var cmr = cmrElement.value; // 주식티커 값 가져오기
   var fileName = '';
@@ -306,7 +310,7 @@ function allocationInsert01() {
     DIVIDEND: inputDiviend // 배당금
   };
 
-  console.log("주식 티커, 거래일자, 배당금, 파일명 ", cmr, inputTrnscdate, inputDiviend, fileName);
+  console.log("주식 티커, 거래일자, 배당금, 파일명 ", cmr, inputTrnscdate, inputDiviend, fileName, imageFileInput.files.length);
 
   if (imageFileInput.files.length > 0) {
     const selectedFile = imageFileInput.files[0];

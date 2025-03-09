@@ -65,6 +65,7 @@
                   AND A.TIKER           = B.TIKER(+) 
                   /*AND A.STOCK_QUANTITY  >  0*/
                   AND A.STOCK_NAME      = #{stockName}
+                  AND A.DELYN = 'N'
                 GROUP BY
                         A.STOCK_NAME ,
                         A.STOCK_QUANTITY,

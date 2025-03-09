@@ -167,6 +167,7 @@
             <col style="width: 10%">
             <col style="width: 3%">
             <col style="width: 2%">
+            <col style="width: 2%">
             <col style="width: 3%">
             <col style="width: 5%">
             <col class="tdHdng" style="width: 4%">
@@ -179,6 +180,7 @@
                 <th name="S_BYNGYN">매수여부</th>
                 <th name="U_DLNGYMD">거래일자</th>
                 <th name="U_STCNM_SELECT_BOX">주식명</th>
+                <th name="U_TIKER">주식티커</th>
                 <th name="U_STCKCNT">수량</th>
                 <th name="U_DVDNCYC">배당주기</th>
                 <th name="U_DVDN"   >배당금</th>
@@ -225,7 +227,9 @@
                                 th:text="${stckList.STCNM}" th:selected="${stckList.STCNM} == ${stckDlng.STCNM}">
                         </th:block>
                     </select>
-                    </th>
+                </td>
+                <td class="disabled-td" th:text="${stckDlng.TIKER}"><!-- 주식 티커 -->
+                </td>
                 <td> <!-- 수량          -->
                     <input type="text" class="full-width-input" id="U_STCKCNT" name="U_STCKCNT"
                         th:value="${stckDlng.STCKCNT}" />
