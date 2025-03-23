@@ -1,75 +1,90 @@
-.div_body02{
+
+
+.container {
     display: flex;
+    justify-content: center;
+    gap: 50px;
 }
 
-.calendar-container{
-    width: 500px;
-    height: 530px;
-    margin: 30px;
+/* 기본 달력 스타일 */
+.calendar {
     border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 550px;
+    background-color: #f9f9f9;
 }
 
-.calendar-container01{
-    width: 500px;
-    height: 530px;
-    margin: 30px;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-}
-
-.calendar-header{
+.calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
 }
 
-.calendar-days01{
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    font-weight: bold;
-    padding-bottom: 5px;
+.calendar-header button {
+    border: none;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-.day01{
-    padding: 5px;
+.calendar-header h2 {
+    margin: 0;
+    font-size: 18px;
 }
-.calendar-dates{
-    height: 400px;
+
+/* 연도별 달력 (바둑판 3x4) */
+.grid-3x4 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 0.5px;
+    gap: 10px;
 }
 
-.calendar-dates01{
-    height: 400px;
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-gap: 0.5px;
-}
-
-.date{
+.month {
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    text-align: center;
     cursor: pointer;
+    height: 50px;
+}
+
+.month:hover {
+    background-color: #ccc;
+}
+
+/* 월별 달력 (요일 가로) */
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7개 컬럼 균등 분배 */
+    /*background-color: #007bff;*/
+    color: midnightblue;
     padding: 5px;
-    border: 1px solid #E4C1FFFF;
-    min-height: 50px;
+    border-radius: 5px;
+    gap: 5px;  /* 🔹 요일 간격 추가 */
 }
 
-.empty{
-    border: 0px;
+.calendar-body.grid-7 {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7개 컬럼 균등 분배 */
+    gap: 5px;  /* 🔹 숫자 간격 동일 적용 */
 }
 
-.date:hover {
-    background-color: aliceblue;
+/* 요일 & 날짜 공통 스타일 */
+.day, .date, .empty {
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
 }
 
-.font_red{
-    color: red;
+.date {
+    background-color: #fff;
 }
 
-.font_blue{
-    color: blue;
+.empty {
+    background-color: transparent;
 }

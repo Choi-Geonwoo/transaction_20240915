@@ -84,7 +84,7 @@
                                                 AND A.USEYN    ='Y'
                                                 AND A.DELYN    ='N'
                                                 AND A.TIKER    = C.TIKER(+)
-                                                AND TO_CHAR(TO_DATE(A.DLNGYMD), 'YYYYMM') = TO_CHAR(C.TRNSCDATE, 'YYYYMM')
+                                                AND TO_CHAR(TO_DATE(A.DLNGYMD), 'YYYYMM') = TO_CHAR(C.TRNSCDATE(+), 'YYYYMM')
                                               <if test="(S_CMPR!=null) and (!S_CMPR.equals('')) and (!S_CMPR.equals('null'))">
                                                 AND A.CMPR      = #{S_CMPR}    /*구분*/
                                              </if>

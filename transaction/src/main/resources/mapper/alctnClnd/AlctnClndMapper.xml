@@ -63,23 +63,19 @@
 
 
 <select id="stckClndSelect" resultType="Map" parameterType="Map">
-    SELECT 
-         TRNSCDATE
-        ,SUM(AMOUNT) AS AMOUNT /* 거래금액*/
-    FROM 
-    (
-        SELECT
+  SELECT
            /* SQL_ID : AlctnClndMapper.stckClndSelect */
-          TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE
-          ,RTRIM(AMOUNT)                  AS AMOUNT
-        FROM
+            STOCK_NAME                                    /*주식명*/
+           ,TIKER                                         /*주식티커*/
+           ,TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE /*베딩일*/
+           ,RTRIM(AMOUNT)                  AS AMOUNT      /*베딩금*/
+   FROM
             TRANSACTION
-        WHERE 1 = 1
-          AND TO_DATE(TRNSCDATE)  BETWEEN  TRUNC(TO_DATE(#{startDate}, 'YYYY-MM-DD'), 'MM') AND LAST_DAY(TO_DATE(#{endDate}, 'YYYY-MM-DD'))
-    )
-    WHERE 
-         1=1
-    GROUP BY TRNSCDATE
+   WHERE 1=1
+      <if test="(trnscdate!=null and !''.equals(trnscdate) and !'null'.equals(trnscdate))">
+        AND TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') = #{trnscdate}
+      </if>
+   
 </select>
 
 </mapper>

@@ -1,113 +1,135 @@
-const today = new Date();
-let currentMonth = today.getMonth();
-let currentYear = today.getFullYear();
-
-var firstDayOfMonth; 
-var daysInMonth    ; 
-var startDayOfWeek ; 
-var calendars = "";
-
-
 document.addEventListener("DOMContentLoaded", function () {
-     calendars = [
-    {
-        datesElement: document.getElementById("calendarDates"),
-        monthElement: document.getElementById("currentMonth")
-    },
-    {
-        datesElement01: document.getElementById("calendarDates01"),
-        monthElement01: document.getElementById("currentMonth01")
-    },
-];
-    
-    daysInMonth     = new Date(currentYear, currentMonth + 1, 0).getDate();   
-    //renderCalendar();
+    initCalendars();
+});
+
+let currentYear = new Date().getFullYear();
+let currentMonth = new Date().getMonth(); // 0 = January, 11 = December
+
+function initCalendars() {
+    renderYearCalendar();
+    renderMonthCalendar();
+}
+
+// Year calendar rendering (3x4 grid)
+function renderYearCalendar() {
+    document.getElementById("currentYear").textContent = `${currentYear}년`;
+    const yearCalendar = document.getElementById("yearCalendar");
+    yearCalendar.innerHTML = "";
+
+    for (let month = 1; month <= 12; month++) {
+        const monthDiv = document.createElement("div");
+        monthDiv.classList.add("month");
+        monthDiv.textContent = `${month}월`;
+        monthDiv.onclick = () => { 
+            currentMonth = month - 1; 
+            renderMonthCalendar(); 
+        };
+        yearCalendar.appendChild(monthDiv);
+    }
+}
+
+// Month calendar rendering (weekday in horizontal)
+function renderMonthCalendar() {
+    document.getElementById("currentMonth").textContent = `${currentYear}년 ${currentMonth + 1}월`;
+    const monthCalendar = document.getElementById("monthCalendar");
+    monthCalendar.innerHTML = "";
+
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    // Adding empty cells (to match the first weekday of the month)
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement("div");
+        emptyCell.classList.add("empty");
+        monthCalendar.appendChild(emptyCell);
+    }
+
+    // Adding the dates
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement("div");
+        dayCell.classList.add("date");
+        dayCell.textContent = day;
+
+        // Add click event to fetch data when a day is clicked
+        dayCell.onclick = () => {
+            fetchMonthData(currentYear, currentMonth, day);
+        };
+
+        monthCalendar.appendChild(dayCell);
+    }
+}
+
+// Fetch data for the selected month and day
+function fetchMonthData(s_year, s_month, s_day) {
+    //const url = `/getMonthData?year=${year}&month=${month + 1}&day=${day}`;
     // 행 데이터를 저장할 JSON 객체 생성
-    var rowData = { startDate: currentYear+"-"+Number(currentMonth+1)+"-01"
-                   ,endDate  : currentYear+"-"+Number(currentMonth+1)+"-"+daysInMonth};
+    var rowData = { trnscdate: s_year+"-"+String(s_month).padStart(2, "0") +"-"+String(s_day).padStart(2, "0")};
     
     // rowData를 URL 파라미터로 변환
     const queryParams = new URLSearchParams(rowData).toString();
-    getFetch(`/alctnClnd/stckClndSelect?${queryParams}`,  "stckClndSelect");
-});
+    
+    getFetch(`/alctnClnd/stckClndSelect?${queryParams}`, "alctnClndSelect");
+}
+
+// Year change button
+function changeYear(value) {
+    currentYear += value;
+    renderYearCalendar();
+    renderMonthCalendar();
+}
+
+// Month change button
+function changeMonth(value) {
+    currentMonth += value;
+    
+    // Adjust year if month goes out of bounds
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+    } else if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    
+    // Update both the year calendar and month calendar
+    renderYearCalendar();
+    renderMonthCalendar();
+}
+
+
+/*************************************
+ * 콜백 함수
+ *************************************/
 
 /**
  * 콜백함수
  * @param data     : 리턴값
  **/
 function fn_call(data) {
-    if ("stckClndSelect" == data.id) {
-        //calendarFun(data)
+    if ("alctnClndSelect" == data.id) {
         console.log(data);
-        renderCalendar(data);
+        add_menu(data);
     }
 
 }
 
 
-function renderCalendar(val) {
-    
-    firstDayOfMonth = new Date(currentYear, currentMonth, 1);                     
-    daysInMonth     = new Date(currentYear, currentMonth + 1, 0).getDate();       
-    startDayOfWeek  = firstDayOfMonth.getDay();   
-    
-    
-    calendars.forEach((calendar) => {
-        console.log("1.  . .. . .   currentYear " +  currentYear + " currentMonth " + currentMonth +"  daysInMonth  " + daysInMonth);
-        if(calendar.monthElement != null){
-        
-            calendar.monthElement.textContent = `${currentYear}년`;
-            calendar.datesElement.innerHTML = "";
-                
-            for (let day = 1; day <= 12; day++) {
-                const dateCell = document.createElement("div");
-                    dateCell.classList.add("date");
-                    dateCell.textContent = day;
-                    calendar.datesElement.appendChild(dateCell);
-            }
-        }else if(calendar.datesElement01 != null){
-        
-            calendar.monthElement01.textContent = `${currentYear}년 ${String(currentMonth + 1).padStart(2, "0")}월`;
-            calendar.datesElement01.innerHTML = "";
-            
-            for (let i = 0; i < startDayOfWeek; i++) {
-                    const emptyCell = document.createElement("div");
-                    emptyCell.classList.add("empty");
-                    calendar.datesElement01.appendChild(emptyCell);
-            }
-                
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dateCell = document.createElement("div");
-                const pCell = document.createElement("p");
-                dateCell.classList.add("date");
-                dateCell.textContent = day;
-                pCell.textContent = val;
-                calendar.datesElement01.appendChild(dateCell);
-            }
-        
+function add_menu(json){
+    const tbody = document.getElementById("tbody_00");
+    var row = "";
+   // 테이블의 기존 내용을 모두 지움
+        while(tbody.rows.length > 0){
+            tbody.deleteRow(0);
         }
-    });
-    
+      const parsedData = json;
+      for (let i = 0; i < parsedData.length; i++) {
+        const currentItem = parsedData[i];
+        row += '<tr>';
+        row += '<td>'+currentItem['STOCK_NAME']+'</td>';
+        row += '<td>'+currentItem['TIKER']+'</td>';
+        row += '<td>'+currentItem['AMOUNT']+'</td>';
+        row += '<td>'+currentItem['TRNSCDATE']+'</td>';
+        row += '<tr>';
+      }
+    tbody.innerHTML += row;
 }
-
-
-
-    function fn_prevBtn(val){
-        currentMonth--;
-        if(currentMonth < 0){
-            currentMonth = 11;
-            currentYear --;
-        }
-        console.log("currentMonth " + currentMonth + " currentYear " +  currentYear);
-        renderCalendar();
-    }
-    
-    function fn_nextBtn(val){
-        currentMonth++;
-        if(currentMonth > 11){
-            currentMonth = 0;
-            currentYear ++;
-        }
-        console.log("currentMonth " + currentMonth + " currentYear " +  currentYear);
-        renderCalendar();
-    }

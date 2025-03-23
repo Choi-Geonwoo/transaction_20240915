@@ -88,5 +88,6 @@ public class AlctnClndController {
         //model.addAttribute("list", alctnClndService.alctnClndSelect(map));
         return ResponseEntity.ok().header("Content-Type", "application/json").body(alctnClndService.stckClndSelect(params));
     }
+  
 
 }
