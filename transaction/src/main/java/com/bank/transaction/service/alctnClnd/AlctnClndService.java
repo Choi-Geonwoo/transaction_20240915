@@ -3,6 +3,8 @@ package com.bank.transaction.service.alctnClnd;
 import java.util.List;
 import java.util.Map;
 
+import com.bank.transaction.uitle.MultiDatasetResponse;
+
 /**
 * @packageName    : com.bank.transaction.service.alctnClnd(배당달력내역)
 * @fileName       : AlctnClndService.java(배당달력내역 조회)
@@ -39,6 +41,6 @@ public interface AlctnClndService {
     * -----------------------------------------------------------
     * 2024.09.17        Jihun Park       최초 생성
     **/
-    public List<Map<String, Object>> stckClndSelect(Map<String, Object> map);
+    public MultiDatasetResponse stckClndSelect(Map<String, Object> map);
  
 }

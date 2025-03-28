@@ -1,17 +1,16 @@
 package com.bank.transaction.service.alctnClnd;
 
-import java.util.HashMap;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bank.transaction.file.dto.FileDTO;
 import com.bank.transaction.mapper.alctnClnd.AlctnClndMapper;
-import com.bank.transaction.mapper.allocation.AllocationMapper;
-import com.bank.transaction.mapper.mnthAllocation.MnthAllocationMapper;
-import com.bank.transaction.service.file.FileService;
+import com.bank.transaction.uitle.DatasetResponse;
+import com.bank.transaction.uitle.MultiDatasetResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,8 +60,11 @@ public class AlctnClndServiceImpl implements AlctnClndService {
     * 2024.09.17        Jihun Park       최초 생성
     **/
     @Override
-    public List<Map<String, Object>> stckClndSelect(Map<String, Object> map) {
-        return alctnClndMapper.stckClndSelect(map);
+    public MultiDatasetResponse stckClndSelect(Map<String, Object> map) {
+    	//Map<String,List<Object>> mapList = new HashMap<>();
+    	//mapList.put("stckClndSelect", alctnClndMapper.stckClndSelect(map));
+    	DatasetResponse userDataset = new DatasetResponse("stckClndSelect", alctnClndMapper.stckClndSelect(map));
+        return new MultiDatasetResponse(Arrays.asList(userDataset));
     }
 
 }

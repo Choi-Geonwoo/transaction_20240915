@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bank.transaction.service.alctnClnd.AlctnClndService;
 import com.bank.transaction.service.allocation.AllocationService;
 import com.bank.transaction.uitle.Data;
+import com.bank.transaction.uitle.MultiDatasetResponse;
 
 /**
 * @packageName    : com.bank.transaction.controller.alctnClnd(배당달력)
@@ -84,7 +85,7 @@ public class AlctnClndController {
     * @return
     */
     @GetMapping("/alctnClnd/stckClndSelect")
-    public ResponseEntity<List<Map<String, Object>>> stckClndSelect(Model model, @RequestParam Map<String, Object> params) {
+    public ResponseEntity<MultiDatasetResponse> stckClndSelect(Model model, @RequestParam Map<String, Object> params) {
         //model.addAttribute("list", alctnClndService.alctnClndSelect(map));
         return ResponseEntity.ok().header("Content-Type", "application/json").body(alctnClndService.stckClndSelect(params));
     }

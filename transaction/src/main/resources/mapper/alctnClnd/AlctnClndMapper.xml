@@ -63,19 +63,51 @@
 
 
 <select id="stckClndSelect" resultType="Map" parameterType="Map">
-  SELECT
+    SELECT
            /* SQL_ID : AlctnClndMapper.stckClndSelect */
-            STOCK_NAME                                    /*주식명*/
-           ,TIKER                                         /*주식티커*/
+            ROW_NUMBER() OVER(ORDER BY TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') DESC) ROW_NUM
+           ,TO_CHAR(TRNSCDATE, 'YYYY') AS YEAR
+           ,TO_CHAR(TRNSCDATE, 'MM') AS MONTH
+           ,TO_CHAR(TRNSCDATE, 'DD') AS DAY
            ,TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE /*베딩일*/
+           ,STOCK_NAME                                    /*주식명*/
+           ,TIKER                                         /*주식티커*/
            ,RTRIM(AMOUNT)                  AS AMOUNT      /*베딩금*/
    FROM
             TRANSACTION
    WHERE 1=1
-      <if test="(trnscdate!=null and !''.equals(trnscdate) and !'null'.equals(trnscdate))">
-        AND TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') = #{trnscdate}
-      </if>
-   
+    <choose>
+          <when  test="(trnscdate!=null and !''.equals(trnscdate) and !'null'.equals(trnscdate))">
+            AND TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') = #{trnscdate}
+          </when>
+          <otherwise>
+            AND TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+          </otherwise>
+    </choose>
+
+</select>
+
+ <select id="stckClndYearSelect" resultType="Map" parameterType="Map">
+    SELECT /* SQL_ID : AlctnClndMapper.stckClndYearSelect */
+          TO_CHAR(TRNSCDATE, 'YYYY') AS S_YEAR
+        , TO_CHAR(TRNSCDATE, 'MM')   AS S_MONTH
+        , SUM(AMOUNT)                AS S_AMOUNT
+    FROM
+        TRANSACTION
+    WHERE 1=1
+    <choose>
+          <when test="(trnscdate!=null and !''.equals(trnscdate) and !'null'.equals(trnscdate))">
+            AND TO_CHAR(TRNSCDATE, 'YYYY') = #{yesr}
+          </when>
+          <otherwise>
+            AND TO_CHAR(TRNSCDATE, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+          </otherwise>
+      </choose>
+    GROUP BY
+        TO_CHAR(TRNSCDATE, 'YYYY')
+       ,TO_CHAR(TRNSCDATE, 'MM')
+    ORDER BY 
+        TO_CHAR(TRNSCDATE, 'YYYY') || TO_CHAR(TRNSCDATE, 'MM') DESC
 </select>
 
 </mapper>

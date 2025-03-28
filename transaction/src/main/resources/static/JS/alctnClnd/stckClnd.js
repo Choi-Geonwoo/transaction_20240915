@@ -63,7 +63,8 @@ function renderMonthCalendar() {
 function fetchMonthData(s_year, s_month, s_day) {
     //const url = `/getMonthData?year=${year}&month=${month + 1}&day=${day}`;
     // 행 데이터를 저장할 JSON 객체 생성
-    var rowData = { trnscdate: s_year+"-"+String(s_month).padStart(2, "0") +"-"+String(s_day).padStart(2, "0")};
+    var rowData = { trnscdate: s_year+"-"+String(s_month+1).padStart(2, "0") +"-"+String(s_day).padStart(2, "0")
+                   ,yesr : s_year};
     
     // rowData를 URL 파라미터로 변환
     const queryParams = new URLSearchParams(rowData).toString();
@@ -121,15 +122,23 @@ function add_menu(json){
         while(tbody.rows.length > 0){
             tbody.deleteRow(0);
         }
-      const parsedData = json;
-      for (let i = 0; i < parsedData.length; i++) {
-        const currentItem = parsedData[i];
-        row += '<tr>';
-        row += '<td>'+currentItem['STOCK_NAME']+'</td>';
-        row += '<td>'+currentItem['TIKER']+'</td>';
-        row += '<td>'+currentItem['AMOUNT']+'</td>';
-        row += '<td>'+currentItem['TRNSCDATE']+'</td>';
-        row += '<tr>';
-      }
-    tbody.innerHTML += row;
+    // `stckClndSelect` 데이터 찾기
+    const dataset = json.datasets.find(d => d.datasetName === "stckClndSelect");
+    
+    // `rows` 추출
+    const rows = dataset ? dataset.rows : [];
+
+    // HTML 테이블 데이터 생성
+    let tableRows = '';
+    for (let i = 0; i < rows.length; i++) {
+        const currentItem = rows[i];
+        tableRows += '<tr>';
+        tableRows += '<td>' + currentItem['TRNSCDATE'] + '</td>';
+        tableRows += '<td>' + currentItem['STOCK_NAME'] + '</td>';
+        tableRows += '<td>' + currentItem['TIKER'] + '</td>';
+        tableRows += '<td>' + currentItem['AMOUNT'] + '</td>';
+        tableRows += '</tr>'; // 마지막 태그 수정: <tr> → </tr>
+    }
+
+    tbody.innerHTML += tableRows;
 }
