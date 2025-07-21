@@ -72,9 +72,10 @@ public class AllocationServiceImpl implements AllocationService {
         
         try {
             // 중복 등록 확인
-            if (validateDuplicateEntry(map)) {
-                return createResponse("F", "중복 등록되었습니다.");
-            }
+			/*
+			 * if (validateDuplicateEntry(map)) { return createResponse("F", "중복 등록되었습니다.");
+			 * }
+			 */
 
             // 거래 번호(TNo) 조회 및 설정
             String tNo = allocationMapper.tNoSelect(map);

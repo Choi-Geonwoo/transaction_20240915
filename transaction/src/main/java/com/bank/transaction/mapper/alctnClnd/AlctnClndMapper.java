@@ -43,6 +43,19 @@ public interface AlctnClndMapper {
     * 2024.09.18        Jihun Park       최초 생성
     **/
     public List<Map<String, Object>> stckClndSelect(Map<String, Object> map);
+    
+    /**
+    * @packageName    : com.bank.transaction.service.stckClndMnthInfrSelect(배당달력내역)
+    * @fileName       : alctnClndSelect.java(배당내역 목록 조회)
+    * @author         : Jihun Park
+    * @date           : 2024.09.18
+    * @description    :
+    * ===========================================================
+    * DATE              AUTHOR             NOTE
+    * -----------------------------------------------------------
+    * 2024.09.18        Jihun Park       최초 생성
+    **/
+    public List<Map<String, Object>> stckClndMnthInfrSelect(Map<String, Object> map);
 
     /**
     * @packageName    : com.bank.transaction.service.stckClndYearSelect(배당달력내역-년도)

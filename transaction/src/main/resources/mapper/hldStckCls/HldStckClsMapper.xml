@@ -44,7 +44,7 @@
                               OR A.DVDNCYC = '월'
                             )
                     </if>
-    ORDER BY (CASE WHEN REGEXP_LIKE(A.TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), A.STCNM
+    ORDER BY DECODE(TO_NUMBER(REGEXP_REPLACE(B.STOCK_QUANTITY,'[[:punct:]]','')), 0, 999, 0), (CASE WHEN REGEXP_LIKE(A.TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), A.STCNM
 </select>
 
 
@@ -56,7 +56,7 @@
                         A.STOCK_NAME AS STOCK_NAME ,               /*주식명*/
                         A.STOCK_QUANTITY,                          /*주식보유수*/
                         A.PURCHASE_PRICE,                          /*매입금 */
-                        A.STOCK_QUANTITY * A.PURCHASE_PRICE AS PURCHASE_PRICE_SUM, /*매입금(합계)*/
+                        REGEXP_REPLACE(A.STOCK_QUANTITY,'[[:punct:]]','') * A.PURCHASE_PRICE AS PURCHASE_PRICE_SUM, /*매입금(합계)*/
                         SUM(NVL(B.AMOUNT, 0)) AS AMOUNT                            /*배당금(누적)*/
                 FROM
                      STC_RGST_DTLS  A

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     initCalendars();
+    fetchMonthData();
 });
 
 let currentYear = new Date().getFullYear();
@@ -62,10 +63,29 @@ function renderMonthCalendar() {
 // Fetch data for the selected month and day
 function fetchMonthData(s_year, s_month, s_day) {
     //const url = `/getMonthData?year=${year}&month=${month + 1}&day=${day}`;
-    // 행 데이터를 저장할 JSON 객체 생성
-    var rowData = { trnscdate: s_year+"-"+String(s_month+1).padStart(2, "0") +"-"+String(s_day).padStart(2, "0")
-                   ,yesr : s_year};
-    
+   
+    var rowData = "";
+    var trnscdateValue = "";
+    var typeValue = "";
+    //trnscdate: s_year+"-"+String(s_month+1).padStart(2, "0") +"-"+String(s_day).padStart(2, "0")
+    console.log(">>> " + s_year + " - " + s_month + " - " + s_day);
+    if(!isEmpty(s_year)){
+        trnscdateValue += s_year;
+        typeValue += "YYYY";
+    }
+    if(!isEmpty(s_month)){
+        trnscdateValue += "-"+String(s_month+1).padStart(2, "0");
+        typeValue += "MM";
+    }
+    if(!isEmpty(s_day)){
+        trnscdateValue += "-"+String(s_day).padStart(2, "0");
+        typeValue += "DD";
+    }
+        // 행 데이터를 저장할 JSON 객체 생성
+        rowData = { trnscdate : trnscdateValue
+                   ,type :typeValue
+                   ,yesr : s_year};   
+   //console.log(">>> " + JSON.stringify(rowData)+"=");
     // rowData를 URL 파라미터로 변환
     const queryParams = new URLSearchParams(rowData).toString();
     
@@ -91,7 +111,7 @@ function changeMonth(value) {
         currentMonth = 0;
         currentYear++;
     }
-    
+    fetchMonthData(currentYear,currentMonth,null );
     // Update both the year calendar and month calendar
     renderYearCalendar();
     renderMonthCalendar();

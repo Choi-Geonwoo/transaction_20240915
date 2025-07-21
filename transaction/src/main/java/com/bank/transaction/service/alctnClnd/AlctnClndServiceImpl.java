@@ -63,7 +63,9 @@ public class AlctnClndServiceImpl implements AlctnClndService {
     public MultiDatasetResponse stckClndSelect(Map<String, Object> map) {
     	//Map<String,List<Object>> mapList = new HashMap<>();
     	//mapList.put("stckClndSelect", alctnClndMapper.stckClndSelect(map));
+    	///log.info(">>> " + map.toString());
     	DatasetResponse userDataset = new DatasetResponse("stckClndSelect", alctnClndMapper.stckClndSelect(map));
+    	//DatasetResponse stckClndMnthInfrSelect = new DatasetResponse("stckClndMnthInfrSelect", alctnClndMapper.stckClndMnthInfrSelect(map));
         return new MultiDatasetResponse(Arrays.asList(userDataset));
     }
 

@@ -77,14 +77,44 @@
             TRANSACTION
    WHERE 1=1
     <choose>
-          <when  test="(trnscdate!=null and !''.equals(trnscdate) and !'null'.equals(trnscdate))">
+          <when  test='(type.equals("YYYY"))'>
+            AND TO_CHAR(TRNSCDATE, 'YYYY') = #{trnscdate}
+          </when>
+          <when  test='(type.equals("YYYYMM"))'>
+            AND TO_CHAR(TRNSCDATE, 'YYYY-MM') = #{trnscdate}
+          </when>
+          <when  test='(type.equals("YYYYMMDD"))'>
             AND TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') = #{trnscdate}
           </when>
           <otherwise>
-            AND TO_CHAR(TRNSCDATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+            AND TO_CHAR(TRNSCDATE, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')
           </otherwise>
     </choose>
+</select>
 
+<select id="stckClndMnthInfrSelect" resultType="Map" parameterType="Map">
+        SELECT /* SQL_ID : AlctnClndMapper.stckClndMnthInfrSelect */
+             TO_CHAR(A.TRNSCDATE, 'YYYY')  AS YEAR       /*년도*/
+            ,TO_CHAR(A.TRNSCDATE, 'MM')    AS MONTH      /*월*/
+            ,TO_CHAR(A.TRNSCDATE, 'DD')    AS DAY        /*일*/
+            ,RTRIM(SUM(AMOUNT))            AS AMOUNT     /*베딩금*/
+        FROM
+            TRANSACTION A
+        LEFT JOIN STOCKINFORMATION B ON
+            ( A.TIKER = B.TIKER
+                AND B.USEYN = 'Y'
+                AND B.DELYN = 'N')
+        WHERE
+            1 = 1
+            AND TO_CHAR(A.TRNSCDATE, 'YYYY') = '2025'
+        GROUP BY
+            TO_CHAR(A.TRNSCDATE, 'YYYY')
+           ,TO_CHAR(A.TRNSCDATE, 'MM')
+           ,TO_CHAR(A.TRNSCDATE, 'DD')
+        ORDER BY 
+            TO_CHAR(A.TRNSCDATE, 'YYYY')
+           ,TO_CHAR(A.TRNSCDATE, 'MM')
+           ,TO_CHAR(A.TRNSCDATE, 'DD')
 </select>
 
  <select id="stckClndYearSelect" resultType="Map" parameterType="Map">
