@@ -132,7 +132,7 @@
                 <option value="1" th:selected="'1' == ${parameter?.S_CMPR}">연금저축</option>
                 <option value="2" th:selected="'2' == ${parameter?.S_CMPR}">퇴직연금</option>
                 <option value="3" th:selected="'3' == ${parameter?.S_CMPR}">일반계좌</option>
-            </select>
+            </select> 
             
             <label for="일자">일자 :</label>
             <input type="date" id="S_START_YMD" name="S_START_YMD" class="full-width-input01_data" th:value="${not #strings.isEmpty(parameter?.S_START_YMD)} ? ${parameter?.S_START_YMD} : ${#temporals.format(#temporals.createNow().minusDays(6), 'yyyy-MM-dd')}">
