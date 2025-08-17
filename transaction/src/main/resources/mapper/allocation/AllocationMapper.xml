@@ -4,39 +4,53 @@
 <!-- com.bank.transaction.mapper.stckInfo(주식정보) -->
 <mapper namespace="com.bank.transaction.mapper.allocation.AllocationMapper">
   <select id = "allocationSelect"  resultType="Map" parameterType="Map">
-          SELECT /* SQL_ID : AllocationMapper.allocationMapperSelect */
-               NVL(B.STCNM,A.STOCK_NAME) AS STOCK_NAME,
-               to_char(A.TRNSCDATE, 'YYYY') AS TRNSCDATE,
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '01' , AMOUNT, '0') ) AS january,
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '02' , AMOUNT, '0') ) AS february,
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '03' , AMOUNT, '0') ) AS march,
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '04' , AMOUNT, '0') ) AS april,
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '05' , AMOUNT, '0') ) AS may,  
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '06' , AMOUNT, '0') ) AS june, 
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '07' , AMOUNT, '0') ) AS july, 
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '08' , AMOUNT, '0') ) AS august,
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '09' , AMOUNT, '0') ) AS september,
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '10' , AMOUNT, '0') ) AS october,
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '11' , AMOUNT, '0') ) AS november,
-               sum(DECODE(to_char(A.TRNSCDATE, 'MM'), '12' , AMOUNT, '0') ) AS december
-           FROM
-               TRANSACTION A
-                   LEFT JOIN STOCKINFORMATION B ON ( A.TIKER = B.TIKER AND B.USEYN = 'Y' AND B.DELYN = 'N')       
-           WHERE 1=1
-              <if test="(stockName!=null and !''.equals(stockName))">
-                 AND NVL(B.STCNM,A.STOCK_NAME) LIKE '%' || #{stockName} || '%'
-              </if>
-              <if test="(year!=null and !''.equals(year) and !'null'.equals(year))">
-                 AND to_char(A.TRNSCDATE, 'YYYY') = #{year}
-              </if>
-              <if test="(month!=null and !''.equals(month) and !'null'.equals(month))">
-                 AND to_char(A.TRNSCDATE, 'MM') = LPAD(#{month}, 2, '0')
-                 
-              </if>
-           GROUP BY
-               NVL(B.STCNM,A.STOCK_NAME),
-               to_char(A.TRNSCDATE, 'YYYY')
-           ORDER BY TRNSCDATE, NVL(B.STCNM,A.STOCK_NAME)
+            SELECT /* SQL_ID : AllocationMapper.allocationMapperSelect */
+                STOCK_NAME
+               ,TIKER
+               ,TRNSCDATE
+               ,NVL(JANUARY, 0 ) AS JANUARY
+               ,NVL(FEBRUARY, 0 ) AS FEBRUARY
+               ,NVL(MARCH, 0 ) AS MARCH
+               ,NVL(APRIL, 0 ) AS APRIL
+               ,NVL(MAY, 0 ) AS MAY
+               ,NVL(JUNE, 0 ) AS JUNE
+               ,NVL(JULY, 0 ) AS JULY
+               ,NVL(AUGUST, 0 ) AS AUGUST
+               ,NVL(SEPTEMBER, 0 ) AS SEPTEMBER
+               ,NVL(OCTOBER, 0 ) AS OCTOBER
+               ,NVL(NOVEMBER, 0 ) AS NOVEMBER
+               ,NVL(DECEMBER, 0 ) AS DECEMBER
+            FROM
+                (
+                    SELECT
+                        CASE
+                            WHEN REGEXP_INSTR(A.TIKER, '[^0-9]') = 0 THEN NVL(B.STCNM, A.STOCK_NAME)
+                            ELSE A.TIKER
+                        END AS STOCK_NAME,
+                        TO_CHAR(A.TRNSCDATE, 'YYYY') AS TRNSCDATE,
+                        TO_CHAR(A.TRNSCDATE, 'MM') AS TRNSCMONTH,
+                        A.AMOUNT,
+                        B.TIKER
+                    FROM
+                        TRANSACTION A
+                        LEFT JOIN STOCKINFORMATION B ON (A.TIKER = B.TIKER AND B.USEYN = 'Y' AND B.DELYN = 'N')
+                    WHERE 1=1
+                          <if test="(stockName!=null and !''.equals(stockName))">
+                             AND NVL(B.STCNM,A.STOCK_NAME) LIKE '%' || #{stockName} || '%'
+                          </if>
+                          <if test="(year!=null and !''.equals(year) and !'null'.equals(year))">
+                             AND to_char(A.TRNSCDATE, 'YYYY') = #{year}
+                          </if>
+                          <if test="(month!=null and !''.equals(month) and !'null'.equals(month))">
+                             AND to_char(A.TRNSCDATE, 'MM') = LPAD(#{month}, 2, '0')
+                          </if>
+                )
+            PIVOT (
+                SUM(AMOUNT)
+                FOR TRNSCMONTH IN ('01' AS january, '02' AS february, '03' AS march, '04' AS april, '05' AS may, '06' AS june, '07' AS july, '08' AS august, '09' AS september, '10' AS october, '11' AS november, '12' AS december)
+            )
+            ORDER BY
+                TRNSCDATE, STOCK_NAME
    </select>
    
    <select id = "allocationDetail"  resultType="Map" parameterType="Map">
@@ -44,6 +58,10 @@
     	/* SQL_ID : AllocationMapper.allocationDetail */
     	A.NO
     	,NVL(B.STCNM, A.STOCK_NAME) AS STOCK_NAME
+    	,CASE
+                WHEN REGEXP_INSTR(A.TIKER, '[^0-9]') = 0 THEN NVL(B.STCNM, A.STOCK_NAME)
+                ELSE A.TIKER
+            END AS STOCK_NAME_N
     	,TO_CHAR(A.TRNSCDATE, 'YYYY-MM-DD') AS TRNSCDATE
     	,A.AMOUNT
     	,A.DIVIDEND
@@ -54,8 +72,8 @@
     		AND B.USEYN = 'Y'
     		AND B.DELYN = 'N')
     WHERE
-    	(A.STOCK_NAME = #{stockName}
-    		OR B.STCNM = #{stockName})
+    	(A.TIKER = #{tiker}
+    		OR B.TIKER = #{tiker})
     	AND A.TRNSCDATE BETWEEN TO_DATE(#{trnscdate}, 'yyyy-MM-dd') AND 
                                 LAST_DAY(TO_DATE(#{trnscdate}, 'yyyy-MM-dd'))
    </select>

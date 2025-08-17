@@ -21,17 +21,33 @@
 </select>
 
 <select id="selectSum02" resultType="Map">
-       SELECT /*SQL_ID :  DshbMapper.SELECTSUM02 : 홈 투자종목, 월별 배당금(상위 5개) */
-                 TB01.STOCK_NAME
-                ,TB02.STOCK_QUANTITY
-                ,TO_CHAR(SUM(TB01.AMOUNT), 'FM999,999,999,999.999')+0 AS EACH_MONEY
-        FROM TRANSACTION    TB01
-           , STOCKPORTFOLIO TB02
-        WHERE TB01.STOCK_NAME = TB02.STOCK_NAME
-            AND TB02.CLSCD  = 'Y'
-        GROUP BY TB01.STOCK_NAME 
-                ,TB02.STOCK_QUANTITY
-        ORDER BY TO_CHAR(SUM(TB01.AMOUNT), 'FM999,999,999,999.999')+0 DESC
+        SELECT  /*SQL_ID :  DshbMapper.SELECTSUM02 : 홈 투자종목, 월별 배당금(상위 5개) */
+            TB01.STOCK_NAME,
+            TB02.STOCK_QUANTITY,
+            SUM(
+                CASE 
+                    WHEN REGEXP_LIKE(REGEXP_REPLACE(AMOUNT, '[^0-9\.]', ''), '^\d+(\.\d+)?$')
+                    THEN TO_NUMBER(REGEXP_REPLACE(AMOUNT, '[^0-9\.]', ''))
+                    ELSE 0
+                END
+            ) AS EACH_MONEY_NUM,
+            TO_CHAR(
+                SUM(
+                    CASE 
+                        WHEN REGEXP_LIKE(REGEXP_REPLACE(AMOUNT, '[^0-9\.]', ''), '^\d+(\.\d+)?$')
+                        THEN TO_NUMBER(REGEXP_REPLACE(AMOUNT, '[^0-9\.]', ''))
+                        ELSE 0
+                    END
+                ), 
+                'FM999,999,999,999.999'
+            ) AS EACH_MONEY
+        FROM TRANSACTION TB01
+        JOIN STOCKPORTFOLIO TB02
+          ON TB01.STOCK_NAME = TB02.STOCK_NAME
+        WHERE TB02.CLSCD = 'Y'
+        --  AND TB01.STOCK_NAME IN ('리얼티인컴(O)')
+        GROUP BY TB01.STOCK_NAME, TB02.STOCK_QUANTITY
+        ORDER BY EACH_MONEY_NUM DESC
 </select>
 
 

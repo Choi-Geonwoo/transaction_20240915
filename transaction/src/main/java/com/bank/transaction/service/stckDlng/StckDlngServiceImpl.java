@@ -63,15 +63,15 @@ public class StckDlngServiceImpl implements StckDlngService {
      **/
     @Override
     public Map stckDlngInsert(Map<String, Object> mapData) {
-        if(mapData.containsKey("BYNGYN")) {
-            mapData.put("BYNGYN", ("on".equals(mapData.get("BYNGYN")) ? "Y" : "N"));
-        }else {
-            mapData.put("BYNGYN", "N");
-        }
+		/*
+		 * if(mapData.containsKey("BYNGYN")) { mapData.put("BYNGYN",
+		 * ("on".equals(mapData.get("BYNGYN")) ? "Y" : "N")); }else {
+		 * mapData.put("BYNGYN", "N"); }
+		 */
         int cnt = 0;
         cnt = stckDlngMapper.stckDlngInsert(mapData);
-        log.info("===> stckDlngInsert");
-        log.info("===> value : : : " + mapData.toString());
+        //log.info("===> stckDlngInsert");
+        //log.info("===> value : : : " + mapData.toString());
         Map<String, Object> retMap = new HashMap<String, Object>();
         if(cnt != 0 ) {
             retMap.put("msg", "성공했습니다");

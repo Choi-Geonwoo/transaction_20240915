@@ -144,42 +144,42 @@
                                </tr>
                                <tr>
                                    <td  th:text="${aSelect.STOCK_NAME}">종목</td>
+                               </tr>                               
+                               <tr>
+                                 <td th:text="${aSelect.JANUARY}"   th:classappend="${aSelect.JANUARY   eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'01')">01</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.JANUARY}"   th:classappend="${aSelect.JANUARY   eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '01')">01</td>
+                                 <td th:text="${aSelect.FEBRUARY}"  th:classappend="${aSelect.FEBRUARY  eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'02')">02</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.FEBRUARY}"  th:classappend="${aSelect.FEBRUARY  eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '02')">02</td>
+                                 <td th:text="${aSelect.MARCH}"     th:classappend="${aSelect.MARCH     eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'03')">03</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.MARCH}"     th:classappend="${aSelect.MARCH     eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '03')">03</td>
+                                 <td th:text="${aSelect.APRIL}"     th:classappend="${aSelect.APRIL     eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'04')">04</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.APRIL}"     th:classappend="${aSelect.APRIL     eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '04')">04</td>
+                                 <td th:text="${aSelect.MAY}"       th:classappend="${aSelect.MAY       eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'05')">05</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.MAY}"       th:classappend="${aSelect.MAY       eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '05')">05</td>
+                                 <td th:text="${aSelect.JUNE}"      th:classappend="${aSelect.JUNE      eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'06')">06</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.JUNE}"      th:classappend="${aSelect.JUNE      eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '06')">06</td>
+                                 <td th:text="${aSelect.JULY}"      th:classappend="${aSelect.JULY      eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'07')">07</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.JULY}"      th:classappend="${aSelect.JULY      eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '07')">07</td>
+                                 <td th:text="${aSelect.AUGUST}"    th:classappend="${aSelect.AUGUST    eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'08')">08</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.AUGUST}"    th:classappend="${aSelect.AUGUST    eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '08')">08</td>
+                                 <td th:text="${aSelect.SEPTEMBER}" th:classappend="${aSelect.SEPTEMBER eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'09')">09</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.SEPTEMBER}" th:classappend="${aSelect.SEPTEMBER eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '09')">09</td>
+                                 <td th:text="${aSelect.OCTOBER}"   th:classappend="${aSelect.OCTOBER   eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'10')">10</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.OCTOBER}"   th:classappend="${aSelect.OCTOBER   eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '10')">10</td>
+                                 <td th:text="${aSelect.NOVEMBER}"  th:classappend="${aSelect.NOVEMBER  eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'11')">11</td>
                                </tr>
                                <tr>
-                                  <td th:text="${aSelect.NOVEMBER}"  th:classappend="${aSelect.NOVEMBER  eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '11')">11</td>
-                               </tr>
-                               <tr>
-                                  <td th:text="${aSelect.DECEMBER}"  th:classappend="${aSelect.DECEMBER  eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect.STOCK_NAME}]],  [[${aSelect.TRNSCDATE}]], '12')">12</td>
+                                 <td th:text="${aSelect.DECEMBER}"  th:classappend="${aSelect.DECEMBER  eq 0} ? container-disable : container-able" th:onclick="fn_openPop( [[${aSelect}]],'12')">12</td>
                                </tr>
                             </table>
 <!--                            <div th:text="${aSelect.TRNSCDATE}"    ></div>
@@ -223,10 +223,10 @@
                <main class="main001">
                    <table>
                            <tr>
-                               <td>주식 명</td>
+                               <td class="w80">주식 명</td>
                                <td id="s_stockName">
                                  <!--<input name="u_stockName" id="u_stockName" type="text" class="full-width-input02 w100_" value="">-->
-                                 <select name="u_stockName" id="u_stockName" class="full-width-input">
+                                 <select name="u_stockName" id="u_stockName" class="full-width-input w100_">
                                  </select>
                                </td>
                            </tr>
@@ -251,7 +251,18 @@
                            <tr>
                               <td>파일명</td>
                               <td id="s_fileName">
-                                  <input type="file" class="form-control" id="I_FILE" name="I_FILE"  accept="image/*" onchange="readURL(this, 'I_IMG');"  >
+                                    <!-- 숨긴 실제 input -->
+                                    <input type="file" id="I_FILE" name="I_FILE" accept="image/*"
+                                           onchange="readURL(this, 'I_IMG');"
+                                           style="display: none;" />
+                                    
+                                    <!-- 사용자용 버튼 -->
+                                    <button type="button" onclick="document.getElementById('I_FILE').click();">
+                                      파일 선택
+                                    </button>
+                                    
+                                    <!-- 파일명 표시용 -->
+                                    <span id="I_FILENAME_TEXT">선택된 파일 없음</span>
                               </td>
                            </tr>                          
                           <tr>
@@ -267,7 +278,8 @@
              <footer class="footer001">
              <!--팝업 버튼 영역-->
              <div class="popup_btn001" >
-                 <input type="button" class="update-button001" onclick="allocationInsert01();" value="저장"/>
+                 <input id="btn_insert" type="button" class="update-button001" onclick="allocationInsert01();" value="저장"/>                
+                 <input id="btn_update" type="button"  class="update-button001" onclick="allocationInsert01();" value="수정"/>
                  <input type="button" class="close-button001"  onclick="fn_closePop()" value="닫기"/>
              </div>
              </footer>

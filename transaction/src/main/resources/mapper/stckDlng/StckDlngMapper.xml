@@ -183,8 +183,8 @@
     FROM
         STOCKINFORMATION
     WHERE 1=1
-        /*AND USEYN = 'Y'*/
-        /*AND DELYN = 'N'*/
+        AND USEYN = 'Y'
+        AND DELYN = 'N'
         ORDER BY USEYN DESC, DELYN,  (CASE WHEN REGEXP_LIKE(TIKER, '^[0-9]+$') THEN 2 ELSE 1 END), STCNM
 </select>
 

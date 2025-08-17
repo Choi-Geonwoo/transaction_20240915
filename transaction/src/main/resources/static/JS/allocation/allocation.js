@@ -1,18 +1,27 @@
-// 위의 옵션 추가 코드
+/**
+ * select 박스에 옵션을 추가하고, 특정 값을 선택 상태로 만듭니다.
+ * @param {HTMLElement} selectBox - 옵션을 추가할 select 박스 요소.
+ * @param {Array} options - 옵션 데이터를 담고 있는 배열.
+ * @param {string} STOCK_NAME - 기본 선택될 주식 이름.
+ */
 function fn_selectBox(selectBox, options, STOCK_NAME){
+    // 1. 기존 옵션들을 모두 제거 (문제 해결의 핵심)
+    selectBox.innerHTML = '';
+    
+    // 2. 새로운 옵션들 추가
     options.forEach(item => {
-        if (item.USEYN === "Y") { // USEYN 값이 'Y'인 경우에만 추가
+        // USEYN 값이 'Y'인 경우에만 옵션 추가
+        if (item.USEYN === "Y") {
             const option = document.createElement('option');
-            option.value = item.TIKER; // 값 설정
-            option.textContent = item.STCNM; // 텍스트 설정
+            option.value = item.TIKER;
+            option.textContent = item.STCNM;
             
-            // 옵션을 select 박스에 추가
-            selectBox.appendChild(option);
-            
-            // 기본 선택 조건 확인
+            // 기본 선택 조건 확인 및 설정
             if (item.STCNM === STOCK_NAME) {
-                option.selected = true; // 조건에 맞는 경우 selected 추가
+                option.selected = true;
             }
+            
+            selectBox.appendChild(option);
         }
     });
 }
@@ -33,57 +42,73 @@ function fn_inputModalCall(){
  * 콜백 함수
  *************************************/
 /**
- * 콜백함수
- * @param data     : 리턴값
+ * 공통 콜백 함수
+ * @param data : 리턴값
  **/
-function fn_call(data){
-    if("stckInfoInq" == data.id){
+function fn_call(data) {
+    if (data.id === "stckInfoInq") {
         fn_insertModal(data);
-    }else if("allocationDetail001" == data.id){
-        //console.log("Row Data: ", JSON.stringify(data));
-        // select 박스 참조 (동적으로 생성했거나 이미 존재하는 경우)
+    } else if (data.id === "allocationDetail001") {
+        // 수정 팝업
         const selectBox = document.getElementById('u_stockName');
-        const options = data.selectBox; 
+        const options = data.selectBox;
         fn_selectBox(selectBox, options, data.STOCK_NAME);
-        //document.getElementById("u_stockName").value = data.STOCK_NAME;
-        document.getElementById("u_trnscdate").value   = data.TRNSCDATE;
-        document.getElementById("u_dividend").value    = data.DIVIDEND;
-        document.getElementById("u_amont").value       = data.AMOUNT;
-        document.getElementById("t_stockName").innerText = "상세 보기 : "+data.STOCK_NAME; // 종목명
-        
-        var jsonData = JSON.stringify(data);
-        //# JSON 데이터 파싱
-        var parsedData = JSON.parse(jsonData);
-        var fileName = "";
-        if(!isEmpty(parsedData.fileList)){
-            fileName = parsedData.fileList.fname;
+
+        document.getElementById("u_trnscdate").value = data.TRNSCDATE;
+        document.getElementById("u_dividend").value = data.DIVIDEND;
+        document.getElementById("u_amont").value = data.AMOUNT;
+        document.getElementById("t_stockName").innerText = "상세 보기 : " + data.STOCK_NAME_N;
+
+        const parsedData = JSON.parse(JSON.stringify(data));
+        let fileName = "";
+
+        if (!isEmpty(parsedData.fileList)) {
+            const file = Array.isArray(parsedData.fileList) ? parsedData.fileList[0] : parsedData.fileList;
+
+            if (file.fname) {
+                fileName = file.fname;
+                document.getElementById("I_FILENAME_TEXT").innerText = fileName;
+            }
+
+            if (file.reContents) {
+                fu_img(file.reContents); // 이미지 출력
+                document.getElementById("I_IMG").style.display = "block";
+            }
+        } else {
+            document.getElementById("I_FILENAME_TEXT").innerText = "선택된 파일 없음";
+            document.getElementById("I_IMG").style.display = "none";
         }
-        
-        if(!isEmpty(parsedData.fileList)){
-            // 이미지 출력
-            fu_img(parsedData.fileList.reContents);
-        }
-        
-        document.getElementById("I_FILE").innerText = fileName;
-        
+
         document.getElementById("popup_layer").style.display = "block";
-    }else if("allocationDetailInput" == data.id){
-        //console.log("Row Data: ", JSON.stringify(data));
-        // select 박스 참조 (동적으로 생성했거나 이미 존재하는 경우)
+        document.getElementById('btn_insert').style.display = 'none';
+        document.getElementById('btn_update').style.display = 'inline-block';
+    } else if (data.id === "allocationDetailInput") {
+        // 등록 팝업
         const selectBox = document.getElementById('u_stockName');
-        const options = data; 
+        const options = data;
         fn_selectBox(selectBox, options, data.STOCK_NAME);
-        //document.getElementById("u_stockName").value = data.STOCK_NAME;
-        document.getElementById("u_trnscdate").value   = null;
-        document.getElementById("u_dividend").value    = null;
-        document.getElementById("u_amont").value       = null;
-        document.getElementById("t_stockName").innerText = "신규 등록"; // 종목명
-        document.getElementById("I_FILE").innerText = null;
-        document.getElementById("I_IMG").value = null;
-        
+
+        // 인덱스 1 고정 선택
+        if (selectBox.options.length > 1) {
+            selectBox.selectedIndex = 0;
+        }
+
+        // 입력값 초기화
+        document.getElementById("u_trnscdate").value = null;
+        document.getElementById("u_dividend").value = null;
+        document.getElementById("u_amont").value = null;
+        document.getElementById("t_stockName").innerText = "신규 등록";
+
+        // 파일/이미지 초기화
+        document.getElementById("I_FILENAME_TEXT").innerText = "선택된 파일 없음";
+        document.getElementById("I_FILE").value = null;
+        document.getElementById("I_IMG").src = "";
+        document.getElementById("I_IMG").style.display = "none";
+
         document.getElementById("popup_layer").style.display = "block";
+        document.getElementById('btn_insert').style.display = 'inline-block';
+        document.getElementById('btn_update').style.display = 'none';
     }
-    
 }
 
 /*************************************
@@ -174,41 +199,30 @@ function allocationBarChart(value, p_month){
      });
 }
 
-/*************************************
- * 모달 함수
- *************************************/
-// 파일업로드 사용시 이미지 미리보기용
-function readURL(input, img) {
-  if (input.files && input.files.length > 0) {
-    var file = input.files[0];
-    
-    // 파일 확장자 체크 (예: 이미지 파일만 허용)
-    var validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-    if (!validImageTypes.includes(file.type)) {
-      alert("이미지 파일만 업로드 가능합니다.");
-      input.value = "";  // 잘못된 파일 리셋
-      return;
+/**
+ * 파일 선택 시 이미지 미리보기 및 파일명 표시
+ * @param input
+ * @param imgId
+ */
+function readURL(input, imgId) {
+    const file = input.files[0];
+    const fileNameText = document.getElementById("I_FILENAME_TEXT");
+    const img = document.getElementById(imgId);
+
+    if (file) {
+        fileNameText.innerText = file.name;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            img.src = e.target.result;
+            img.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    } else {
+        fileNameText.innerText = "선택된 파일 없음";
+        img.src = "";
+        img.style.display = "none";
     }
-
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      var imgElement = document.getElementById(img);
-      if (imgElement) {
-        imgElement.src = e.target.result;
-      } else {
-        console.error("이미지 요소를 찾을 수 없습니다: " + img);
-      }
-    };
-
-    reader.onerror = function () {
-      console.error("파일을 읽는 도중 오류가 발생했습니다.");
-    };
-
-    reader.readAsDataURL(file);
-  } else {
-    console.warn("파일이 선택되지 않았거나 잘못된 입력입니다.");
-  }
 }
 
 
@@ -263,12 +277,15 @@ function imgFile(selectedFile, data, url) {
 /*************************************
  * 팝업 띄우기
  *************************************/
-function fn_openPop(stockName,trnscdate, month){
+function fn_openPop(data, month){
+    const stockName = data.STOCK_NAME;
+    const trnscdate = data.TRNSCDATE;
     if(!isEmpty(stockName)){
         // 행 데이터를 저장할 JSON 객체 생성
         var rowData = {};
         rowData["stockName"]  = stockName;
         rowData["trnscdate"]  = trnscdate + month + "01";
+        rowData["tiker"]  = data.TIKER;
         //fetch API를 사용하여 POST 요청을 보냅니다
         fetch003('/allocation/allocationDetail.do', "post", rowData, "allocationDetail001"); //url, method, body   
     }else{
@@ -314,8 +331,10 @@ function allocationInsert01() {
 
   if (imageFileInput.files.length > 0) {
     const selectedFile = imageFileInput.files[0];
+    // 이미지 포함 전송
     imgFile(selectedFile, data, '/allocation/allocationInsert.do');
   } else {
+    //  데이터만 전송
     fetch('/allocation/allocationInsert.do', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -372,4 +391,5 @@ function imgFile(selectedFile, data, url) {
 
   reader.readAsArrayBuffer(selectedFile);
 }
+
 

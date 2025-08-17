@@ -22,7 +22,7 @@ function dshbChart(data) {
   processChartData(data[1]?.SUM02, labels.chart02, values.chart02, "STOCK_NAME", "STOCK_QUANTITY");
 
   // SUM03 (배당금 상위 5개 데이터)
-  processChartData(data[2]?.SUM03, labels.chart03, values.chart03, "STOCK_NAME", "EACH_MONEY");
+  processChartData(data[2]?.SUM03, labels.chart03, values.chart03, "STOCK_NAME", "EACH_MONEY_NUM");
 
   // SUM04 (배당금 추세 데이터 - 두 개의 라인 처리)
   if (data[3]?.SUM04) {
@@ -73,6 +73,8 @@ function processChartData(dataArray, labelArray, valueArray, labelKey, valueKey)
     labelArray.push(item[labelKey]);
     valueArray.push(parseInt(item[valueKey], 10)); // 문자열을 숫자로 변환
   });
+  
+    console.log(dataArray);
 }
 
 /**

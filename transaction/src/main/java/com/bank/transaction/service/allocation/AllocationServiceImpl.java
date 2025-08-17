@@ -48,8 +48,9 @@ public class AllocationServiceImpl implements AllocationService {
     @Override
     public Map<String, Object> allocationDetail(Map<String, Object> map) {
         Map<String, Object> retMap = allocationMapper.allocationDetail(map);
-        if (retMap == null) {
+        if (retMap.size() == 0) {
             retMap = new HashMap<>();
+            return retMap;
         }
         retMap.put("msg", "");
         retMap.put("selectBox", comMapper.stckInfoInq());

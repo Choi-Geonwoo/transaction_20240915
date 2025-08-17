@@ -631,3 +631,10 @@ th {
   pointer-events: none;  /* 클릭 및 포커스 비활성화 */
   opacity: 0.5;          /* 시각적으로 비활성화 표시 */
 }
+
+
+.dshb_summary { display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 20px; }
+
+.dshb_card { background-color: #e9f5ff; border-radius: 8px; padding: 20px; text-align: center; flex: 1; min-width: 200px; margin: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); }
+.dshb_card h2 { color: #0056b3; margin-top: 0; font-size: 1.2em; }
+.dshb_card p { font-size: 1.8em; font-weight: bold; color: #007bff; margin: 5px 0 0; }

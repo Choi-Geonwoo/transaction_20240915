@@ -253,10 +253,44 @@ const excelHandler = {
   }
 };
 
-
-
-
 //팝업 닫기
 function fn_closePop() {
     document.getElementById("popup_layer").style.display = "none";
 }
+
+// 테이블 정렬
+    function sortTable(th, columnIndex) {
+      const table = th.closest("table");
+      const tbody = table.querySelector("tbody");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      const ths = table.querySelectorAll("th");
+
+      const currentDirection = th.getAttribute("data-sort");
+      const isAsc = currentDirection !== "asc";
+
+      rows.sort((a, b) => {
+        const valA = getCellValue(a, columnIndex);
+        const valB = getCellValue(b, columnIndex);
+        return valA.localeCompare(valB, undefined, { numeric: true, sensitivity: 'base' }) * (isAsc ? 1 : -1);
+      });
+
+      rows.forEach(row => tbody.appendChild(row));
+
+      ths.forEach(header => {
+        const baseText = header.textContent.replace(/[\u25B2\u25BC]/g, '').trim();
+        header.textContent = baseText;
+        header.setAttribute("data-sort", "");
+      });
+
+      const icon = isAsc ? "▲" : "▼";
+      th.textContent = th.textContent.trim();
+      th.innerHTML = `${th.textContent} <span class="sort-indicator">${icon}</span>`;
+      th.setAttribute("data-sort", isAsc ? "asc" : "desc");
+    }
+
+    function getCellValue(row, index) {
+      const td = row.children[index];
+      const input = td.querySelector("input");
+      console.log("input   " + JSON.stringify(input));
+      return input ? input.value.trim() : td.textContent.trim();
+    }
