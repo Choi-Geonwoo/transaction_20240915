@@ -106,6 +106,26 @@
         )
 </insert>
 
+<update id="allocationUpdate" parameterType="Map">
+    UPDATE  /* SQL_ID : AllocationMapper.allocationUpdate*/
+           TRANSACTION
+       SET TRNSCDATE           = #{TRNSCDATE}
+         , STOCK_NAME=(
+                         SELECT 
+                                STCNM 
+                            FROM  STOCKINFORMATION
+                            WHERE 1=1 
+                                AND TIKER  = #{CMPR}
+                                AND USEYN  = 'Y'
+                                AND DELYN  = 'N'
+                      )
+         , AMOUNT             = #{AMOUNT}
+         , RGSTDATE           = SYSDATE
+         , DIVIDEND           = #{DIVIDEND}
+         , TIKER              = #{CMPR}
+    WHERE NO=#{tNo}
+</update>
+
 <select id="tNoSelect" parameterType="Map" resultType="String">
     select /* SQL_ID : AllocationMapper.tNoSelect*/ TRANSACTION_SEQ.NEXTVAL from dual
 </select>

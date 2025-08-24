@@ -4,7 +4,7 @@
 <mapper namespace="com.bank.transaction.mapper.file.FileMapper">
 
 <insert id="fileInsert" parameterType="com.bank.transaction.file.dto.FileDTO" >
-        INSERT INTO TB_FILE
+        INSERT INTO TB_FILE /* SQL_ID : com.bank.transaction.mapper.file.FileMapper.fileInsert*/
         (
             F_NO, 
             F_NAME, 
@@ -20,7 +20,7 @@
 </insert>
 
 <update id="fileUpdate" parameterType="com.bank.transaction.file.dto.FileDTO">
-        UPDATE TB_FILE
+        UPDATE TB_FILE /* SQL_ID : com.bank.transaction.mapper.file.FileMapper.fileUpdate*/
         SET  F_NAME   = #{fName}
             ,CONTENTS = #{contents}
         WHERE F_NO    = #{fNo}
@@ -29,7 +29,7 @@
 
 <!-- 이미지 상세보기-->
 <select id = "fileSelect"  resultType="com.bank.transaction.file.dto.FileDTO" parameterType="String" >
-        SELECT  
+        SELECT   /* SQL_ID : com.bank.transaction.mapper.file.FileMapper.fileSelect*/
                 F_NO, 
                 F_NAME, 
                 T_NO, 
@@ -37,6 +37,7 @@
         FROM    TB_FILE
         WHERE   T_NO = #{tNo}
                 AND ROWNUM = 1
+                AND CLSCD = 'Y'
         ORDER BY F_NO DESC
 </select>
 

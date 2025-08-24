@@ -64,19 +64,26 @@ public class AllocationServiceImpl implements AllocationService {
         return retMap;
     }
 
+
     /**
-     * 배당내역 상세 등록
+     * 설명 : 배당내역 상세 등록
+     *
+     * @packageName    : com.bank.transaction.service.allocation (배당내역)
+     * @fileName       : allocationInsert(배당내역 상세 등록)
+     * @param  map     : 배당 정보
+     * @param  files   : 파일 정보
+     * @return return  : 결과 메시지 
+     * @throws 
      */
     @Override
     public Map<String, Object> allocationInsert(Map<String, Object> map, String files) {
-        Map<String, Object> retMap = new HashMap<>();
+        //Map<String, Object> retMap = new HashMap<>();
         
         try {
             // 중복 등록 확인
-			/*
-			 * if (validateDuplicateEntry(map)) { return createResponse("F", "중복 등록되었습니다.");
-			 * }
-			 */
+	    if (validateDuplicateEntry(map)) {
+		return createResponse("F", "중복 등록되었습니다.");
+	    }
 
             // 거래 번호(TNo) 조회 및 설정
             String tNo = allocationMapper.tNoSelect(map);
@@ -97,14 +104,66 @@ public class AllocationServiceImpl implements AllocationService {
     }
 
     /**
-     * 중복 등록 여부 확인
+     * 설명 : 배당내역 상세 수정
+     * @packageName    : com.bank.transaction.service.allocation (배당내역)
+     * @fileName       : allocationUpdate(배당내역 상세 수정)
+     * @param  map   : 배당 정보
+     * @param  files : 파일 정보
+     * @return return : 결과 메시지 
+     * @throws 
+     */
+    @Override
+    public Map<String, Object> allocationUpdate(Map<String, Object> map, String files) {
+        //Map<String, Object> retMap = new HashMap<>();
+        
+        try {
+            // 중복 등록 확인
+	/*
+	* if (validateDuplicateEntry(map)) { return createResponse("F", "중복 등록되었습니다.");
+	* }
+	*/
+
+            // 거래 번호(TNo) 조회 및 설정
+            //String tNo = allocationMapper.tNoSelect(map);
+            String tNo = String.valueOf(map.get("tNo"));
+            map.put("no", tNo);
+
+            // 배당 내역 등록
+            allocationMapper.allocationUpdate(map);
+            
+            if(!"".equals(String.valueOf(map.get("FILENAME")))) {
+               // 파일 DTO 생성 및 저장
+                FileDTO fDto = createFileDTO(tNo, map, files);
+                fileService.fileInsert(fDto);
+            }
+            return createResponse("S", "성공했습니다.");
+        } catch (Exception e) {
+            log.error("allocationInsert 오류 발생: {}", e.getMessage(), e);
+            return createResponse("F", "오류가 발생하였습니다.");
+        }
+    }
+
+    /**
+     * 설명 : 중복 등록 여부 확인
+     * @packageName    : com.bank.transaction.service.allocation (배당내역)
+     * @fileName       : validateDuplicateEntry(중복 등록 여부 확인)
+     * @param  map     : 배당 정보
+     * @return return  : 배당정보 카운트 
+     * @throws 
      */
     private boolean validateDuplicateEntry(Map<String, Object> map) {
         return allocationMapper.allocationListcnt(map) > 0;
     }
 
     /**
-     * 파일 DTO 생성
+     * 설명 : 파일 DTO 생성
+     * @packageName    : com.bank.transaction.service.allocation (배당내역)
+     * @fileName       : createFileDTO(파일 DTO 생성)
+     * @param  tNo     : 배당 순번
+     * @param  map     : 파일명
+     * @param  files   : 파일내용(byte)
+     * @return return  : 파일 DTO
+     * @throws 
      */
     private FileDTO createFileDTO(String tNo, Map<String, Object> map, String files) {
         FileDTO fDto = new FileDTO();
@@ -122,6 +181,8 @@ public class AllocationServiceImpl implements AllocationService {
         if (fDto != null) {
             String base64ToString = new String(fDto.getContents());
             fDto.setReContents(base64ToString);
+        }else {
+            fDto = null;
         }
         return fDto;
     }

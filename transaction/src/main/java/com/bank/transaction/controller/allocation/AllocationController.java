@@ -48,7 +48,7 @@ public class AllocationController {
         data.put("year", String.valueOf(Data.todayDateFormat("year")));
         data.put("month", String.valueOf(Data.todayDateFormat("month")));
         model.addAttribute("aSelect", allocationService.allocationSelect(data));
-            model.addAttribute("parameter", data);
+        model.addAttribute("parameter", data);
         //return "index";
         return "view/allocation/allocationView";
     }
@@ -110,4 +110,35 @@ public class AllocationController {
         }
     }
 
+    
+    /**
+     * @methodName    : stckInfoInsert(주식거래 상세 수정)
+     * @author        : Jihun Park
+     * @date          : 2024.09.15
+     * @return
+    */
+    @PostMapping("/allocation/allocationUpdate.do")
+    public ResponseEntity<Object> allocationUpdate(@RequestPart(value = "key") HashMap map
+            , @RequestPart(value = "files", required = false) String files) {
+        try {
+            // 서비스 호출 및 데이터 처리
+            Map<String, Object> mapData = allocationService.allocationUpdate(map, files);
+            
+            // JSON 객체 생성
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("list", mapData);
+            jsonObject.put("msg", mapData.get("msg"));
+
+            // 성공 응답 반환
+            return ResponseEntity.ok(jsonObject.toString());
+        } catch (Exception e) {
+            // 예외 처리
+            JSONObject errorResponse = new JSONObject();
+            errorResponse.put("error", "데이터를 처리하는 중 오류가 발생했습니다.");
+            errorResponse.put("msg", e.getMessage());
+
+            // 에러 응답 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse.toString());
+        }
+    }
 }

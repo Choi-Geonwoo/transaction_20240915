@@ -57,6 +57,7 @@ function fn_call(data) {
         document.getElementById("u_trnscdate").value = data.TRNSCDATE;
         document.getElementById("u_dividend").value = data.DIVIDEND;
         document.getElementById("u_amont").value = data.AMOUNT;
+        document.getElementById("tNo").value = data.NO;
         document.getElementById("t_stockName").innerText = "상세 보기 : " + data.STOCK_NAME_N;
 
         const parsedData = JSON.parse(JSON.stringify(data));
@@ -278,9 +279,9 @@ function imgFile(selectedFile, data, url) {
  * 팝업 띄우기
  *************************************/
 function fn_openPop(data, month){
-    const stockName = data.STOCK_NAME;
-    const trnscdate = data.TRNSCDATE;
-    if(!isEmpty(stockName)){
+    if(!isEmpty(data)){
+        const stockName = data.STOCK_NAME;
+        const trnscdate = data.TRNSCDATE;
         // 행 데이터를 저장할 JSON 객체 생성
         var rowData = {};
         rowData["stockName"]  = stockName;
@@ -350,6 +351,65 @@ function allocationInsert01() {
     });
   }
 }
+
+
+// 모달창 수정 이벤트
+function allocationUpdate01() {
+  const imageFileInput = document.getElementById('I_FILE'); // 파일 업로드 인풋
+  const inputAmount = document.getElementById('u_amont').value; // 거래금액
+  const inputDiviend = document.getElementById('u_dividend').value; // 배당금
+  const inputTrnscdate = document.getElementById('u_trnscdate').value; // 거래일자
+  const cmrElement = document.getElementById('u_stockName'); // 주식명 select 요소
+
+  if (!cmrElement) {
+    alert("주식명을 선택하세요.");
+    return;
+  }
+  if(!inputTrnscdate){
+    alert("거래일자 입력 해주세요.");
+    return;
+  }
+
+  var cmr = cmrElement.value; // 주식티커 값 가져오기
+  var fileName = '';
+
+  // 파일 선택 여부 확인 및 파일명 할당
+  if (imageFileInput.files.length > 0) {
+    fileName = imageFileInput.files[0].name;
+  }
+
+  let data = {
+    CMPR: cmr,            // 주식 티커
+    TRNSCDATE: inputTrnscdate,  // 거래일자
+    AMOUNT: inputAmount,  // 거래 금액
+    FILENAME: fileName,   // 파일명
+    DIVIDEND: inputDiviend // 배당금
+  };
+
+  console.log("주식 티커, 거래일자, 배당금, 파일명 ", cmr, inputTrnscdate, inputDiviend, fileName, imageFileInput.files.length);
+
+  if (imageFileInput.files.length > 0) {
+    const selectedFile = imageFileInput.files[0];
+    // 이미지 포함 전송
+    imgFile(selectedFile, data, '/allocation/allocationUpdate.do');
+  } else {
+    //  데이터만 전송
+    fetch('/allocation/allocationUpdate.do', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(result => {
+      alert(result.msg);
+      if (result.retNo !== -1) location.reload();
+    })
+    .catch(error => {
+      alert("오류 발생: " + error.message);
+    });
+  }
+}
+
 
 
 /* 라팩토링 */

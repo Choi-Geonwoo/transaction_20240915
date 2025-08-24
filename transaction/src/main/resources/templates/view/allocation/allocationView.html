@@ -217,7 +217,7 @@
              <!--팝업 컨텐츠 영역-->
              <div class="popup_cont001">
                <header class="header002 h40">
-                 <h1 id="t_stockName"></h1>                    
+                 <h1 id="t_stockName" style="font-size: 10px;;"></h1>                    
                  <span class="close001" onclick="fn_closePop()">&times;</span>
                </header>
                <main class="main001">
@@ -227,7 +227,8 @@
                                <td id="s_stockName">
                                  <!--<input name="u_stockName" id="u_stockName" type="text" class="full-width-input02 w100_" value="">-->
                                  <select name="u_stockName" id="u_stockName" class="full-width-input w100_">
-                                 </select>
+                                 </select>                                
+                                 <input type="hidden" id="tNo" >
                                </td>
                            </tr>
                            <tr>
@@ -279,7 +280,7 @@
              <!--팝업 버튼 영역-->
              <div class="popup_btn001" >
                  <input id="btn_insert" type="button" class="update-button001" onclick="allocationInsert01();" value="저장"/>                
-                 <input id="btn_update" type="button"  class="update-button001" onclick="allocationInsert01();" value="수정"/>
+                 <input id="btn_update" type="button"  class="update-button001" onclick="allocationUpdate01();" value="수정"/>
                  <input type="button" class="close-button001"  onclick="fn_closePop()" value="닫기"/>
              </div>
              </footer>
