@@ -9,4 +9,5 @@ public class FileDTO {
     private String tNo;         //배당테이블 순번
     private byte[] contents;    //내용
     private String reContents;  //내용
+    private String clscd;       //사용여부
 }

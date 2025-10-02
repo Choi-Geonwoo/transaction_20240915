@@ -383,7 +383,8 @@ function allocationUpdate01() {
     TRNSCDATE: inputTrnscdate,  // 거래일자
     AMOUNT: inputAmount,  // 거래 금액
     FILENAME: fileName,   // 파일명
-    DIVIDEND: inputDiviend // 배당금
+    DIVIDEND: inputDiviend, // 배당금
+    tNo : document.getElementById("tNo").value // 순번
   };
 
   console.log("주식 티커, 거래일자, 배당금, 파일명 ", cmr, inputTrnscdate, inputDiviend, fileName, imageFileInput.files.length);
@@ -453,3 +454,50 @@ function imgFile(selectedFile, data, url) {
 }
 
 
+
+
+// 등록/수정 버튼 이벤트 핸들러
+function allocationInsert02() { handleAllocation("allocationInsert"); }
+function allocationUpdate02() { handleAllocation("allocationUpdate"); }
+
+/**
+ * 등록/수정 공통 처리
+ */
+function handleAllocation(action) {
+    const imageFileInput = document.getElementById('I_FILE');
+    const stockSelect = document.getElementById('u_stockName');
+
+    const data = {
+        CMPR: stockSelect?.value,
+        TRNSCDATE: document.getElementById('u_trnscdate').value,
+        AMOUNT: document.getElementById('u_amont').value,
+        DIVIDEND: document.getElementById('u_dividend').value,
+        FILENAME: imageFileInput.files[0]?.name || '',
+        tNo: document.getElementById("tNo")?.value || null
+    };
+
+    // 필수 체크
+    if (!data.CMPR) return alert("주식명을 선택하세요.");
+    if (!data.TRNSCDATE) return alert("거래일자 입력 해주세요.");
+
+    const formData = new FormData();
+    formData.append("key", new Blob([JSON.stringify(data)], { type: "application/json" }));
+
+    // 파일 없으면 빈 문자열로 append
+    if (imageFileInput.files.length > 0) {
+        formData.append("files", JSON.stringify(Array.from(new Uint8Array(imageFileInput.files[0]))));
+    } else {
+        formData.append("files", "");
+    }
+
+    fetch(`/allocation/${action}.do`, {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(resData => {
+        alert(resData.msg);
+        if (resData.retNo !== -1) location.reload();
+    })
+    .catch(err => alert("오류 발생: " + err.message));
+}

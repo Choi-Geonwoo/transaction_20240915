@@ -35,7 +35,7 @@
 /* 모달 내용 */
 .modal-content02 {
   background: white;
-  width: 800px;
+  width: 850px;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -122,8 +122,8 @@
     position: relative;
     top: 50%;
     left: 50%;
-    overflow: auto;
-    height: 500px;  
+    /*overflow: auto;*/
+    height: auto;  
     width: 680px;
     transform: translate(-50%, -50%);
     z-index: 1002;

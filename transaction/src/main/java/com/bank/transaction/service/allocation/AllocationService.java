@@ -3,6 +3,8 @@ package com.bank.transaction.service.allocation;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
 * @packageName    : com.bank.transaction.service.allocation(배당내역)
 * @fileName       : AllocationService(배당내역 조회)

@@ -166,3 +166,156 @@
     border-color: #0056b3; /* 포커스 시 테두리 색 */
 }
 
+
+/* 레이아웃 */
+#app-container {
+  width: 100%;
+  max-width: 100%;
+  background: #fff;
+  border: 3px solid #555;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: auto;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+}
+
+/* 상단 바 */
+#title-bar {
+  background: #ddd;
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-block;
+}
+#btn-red { background: #e74c3c; }
+#btn-yellow { background: #f1c40f; }
+#btn-green { background: #2ecc71; }
+
+/* 내용 */
+#content-area {
+  padding: 15px;
+}
+
+/* 테이블 */
+#stock-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* 헤더 */
+#stock-table thead th {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-weight: bold;
+}
+
+/* 바디 */
+#stock-table tbody td {
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+}
+
+/* 강조 컬럼 */
+.col-turn, .col-action, .col-modified {
+  background-color: #fafafa;
+  font-weight: 600;
+}
+
+/* input/select */
+.input-text, .input-select {
+  width: 95%;
+  padding: 4px 6px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.disabled-td {
+  background-color: #f9f9f9;
+  color: #555;
+}
+
+/* 버튼 */
+.btn-action {
+  border: none;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 2px;
+}
+
+.update-button {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.delete-button {
+  background-color: #E74C3C;
+  color: #fff;
+}
+
+.update-button:hover {
+  background-color: #43a047;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+/* 레이아웃 */
+
+.none01 {
+  display: none !important;
+}
+
+.block01 {
+  display: table-cell !important; /* td 요소를 원래처럼 보이게 */
+}
+
+
+.browser-window {
+  /*width: 500px;*/
+  border: 2px solid #888;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.browser-header {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background-color: #e0e0e0;
+  border-bottom: 1px solid #ccc;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.button_ {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.close_ { background-color: #f56c6c; }
+.minimize { background-color: #f6e27c; }
+.maximize { background-color: #8bc34a; }
+
+.browser-content {
+  padding: 16px;
+  min-height: 200px;
+}

@@ -39,7 +39,8 @@
 					<th>배당일  </th>
 					<th>주식명  </th>
 					<th>배당금  </th>
-					<th>금액   </th>					
+					<th>금액   </th>
+					<th>누적금액 </th>
 					<th>등록일  </th>
 				</tr>
 			</thead>
@@ -50,6 +51,7 @@
 					<td th:text="${byWeekList.STOCK_NAME}"> </td>  <!-- 주식명  -->
 					<td th:text="${byWeekList.DIVIDEND}">   </td>  <!-- 배당금  -->
 					<td th:text="${byWeekList.AMOUNT}">     </td>  <!-- 금액   -->
+					<td th:text="${byWeekList.CUMULATIVE_AMOUNT}">     </td>  <!-- 금액   -->
 					<td th:text="${byWeekList.RGSTDATE}">   </td>  <!-- 등록일  -->
 				</tr>
 			</tbody>

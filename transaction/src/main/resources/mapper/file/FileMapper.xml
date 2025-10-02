@@ -21,9 +21,25 @@
 
 <update id="fileUpdate" parameterType="com.bank.transaction.file.dto.FileDTO">
         UPDATE TB_FILE /* SQL_ID : com.bank.transaction.mapper.file.FileMapper.fileUpdate*/
-        SET  F_NAME   = #{fName}
-            ,CONTENTS = #{contents}
-        WHERE F_NO    = #{fNo}
+        SET 
+        <choose>
+            <when test = 'clscd.equals("N")'>
+                CLSCD = #{clscd}
+            </when>
+            <otherwise>
+                 F_NAME   = #{fName}
+                ,CONTENTS = #{contents}
+            </otherwise>
+        </choose> 
+        WHERE 1=1 
+        <choose>
+            <when test="tNo != null and tNo != ''">
+                AND T_NO    = #{tNo}
+            </when>
+            <otherwise>
+                AND F_NO    = #{fNo}
+            </otherwise>
+        </choose> 
 </update>
 
 

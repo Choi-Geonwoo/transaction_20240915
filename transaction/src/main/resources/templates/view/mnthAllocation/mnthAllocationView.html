@@ -71,22 +71,23 @@
 			    </tr>
 			  </tbody>
 			</table>
+            
+            <!-- 바차트 시작-->
+            <br>
+            <div  th:if="${!#lists.isEmpty( mSelect)}" class="container padding_30">
+             <canvas id="bar_chart"></canvas>
+            </div>
+            <!-- 바차트 종료-->
 		</div>
 	</div>
 	<br>
 	
-	<!-- 바차트 시작-->
-	<br>
-	<div  th:if="${!#lists.isEmpty(	mSelect)}" class="container padding_30">
-	  <canvas id="bar_chart"></canvas>
-	</div>
-	<!-- 바차트 종료-->
     
     
   <!-- 레이이어 팝업 시작-->
   <div class="popup_layer" id="popup_layer" style="display: none;">
     <div class="popup_box01 modal-content02">
-        <div class="container01 w95_"> 
+        <div class="container01 w100_"> 
             <div class="div_title01" id="div_title01"></div>       
             <div class="div_body01">
                 <table>
@@ -98,7 +99,7 @@
                             <th >거래금액</th>
                         </tr>
                     </thead>
-                    <tbody class="text-center" style="height: 200px;" id="tody01">
+                    <tbody class="text-center h200"  id="tody01">
                         
                     </tbody>
                 </table>

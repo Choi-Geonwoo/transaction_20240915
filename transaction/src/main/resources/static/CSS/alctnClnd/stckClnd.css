@@ -49,7 +49,7 @@
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
-    height: 50px;
+    height: 80px;
 }
 
 .month:hover {
@@ -87,4 +87,25 @@
 
 .empty {
     background-color: transparent;
+}
+
+
+/* hover 효과 */
+.date:hover {
+  background-color: #e0f0ff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* info 표시 */
+.date .info {
+  font-size: 12px;
+  font-weight: normal;
+  color: #007bff;
+  margin-top: 4px;
+}
+
+/* info가 있을 때 작은 배지 형태 */
+.date .info:empty {
+  display: none;
 }

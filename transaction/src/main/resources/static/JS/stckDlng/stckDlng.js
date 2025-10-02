@@ -355,6 +355,7 @@ function callback(msg){
     
 }
 
+// 숨기기 체크 여부
 function fn_formCheck(){
     var checkBox = document.getElementById("formCheck");
     const cells = document.querySelectorAll('.tdHdng'); // 클래스가 col2인 모든 td 선택
