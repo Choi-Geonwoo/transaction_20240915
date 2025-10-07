@@ -14,7 +14,7 @@
 	
 	<div class="container01"> 
 	<div class="div_title01">검색영역</div>  
-	   <form class="form02"  th:action="@{/weeklyAllocation/WeeklyAllocationSelectPage.do}" method="get">      
+	   <form class="form02"  th:action="@{/weeklyAllocation/WeeklyAllocationSelectPage.do}" method="get" >      
 			<label for="기준일자">기준일자 :</label>
 			<input type="date" id="S_START_YMD" name="S_START_YMD" class="full-width-input02" th:value="${not #strings.isEmpty(parameter?.S_START_YMD)} ? ${parameter?.S_START_YMD} : ${#temporals.format(#temporals.createNow().minusDays(6), 'yyyy-MM-dd')}">
 				<span>~</span>

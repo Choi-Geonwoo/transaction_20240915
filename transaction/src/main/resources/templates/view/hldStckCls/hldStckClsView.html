@@ -83,7 +83,7 @@
                         <tr th:each="slist : ${list}">
                             <td style="display: none;" ><input type="text" th:value="${slist.NO}" ></td><!--순번-->
                             <td >
-                                <input class="btn-button" type="button" th:value="${slist.STOCK_NAME}" th:data-sNo="${slist.NO}" th:data-stockname="${slist.STOCK_NAME}" onclick="fn_openPop(this);">
+                                <input class="btn-button" type="button" th:value="${slist.STOCK_NAME_N}" th:data-sNo="${slist.NO}" th:data-stockname="${slist.STOCK_NAME}" onclick="fn_openPop(this);">
                             </td><!--주식명-->
                             <td >
                                 <input class="full-width-input" type="text" th:value="${slist.STOCK_QUANTITY}">

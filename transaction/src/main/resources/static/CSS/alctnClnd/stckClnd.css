@@ -49,7 +49,7 @@
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
-    height: 80px;
+    height: 100px;
 }
 
 .month:hover {
@@ -79,7 +79,9 @@
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
+    min-height: 40px;
 }
+
 
 .date {
     background-color: #fff;
@@ -98,6 +100,13 @@
 }
 
 /* info 표시 */
+.month .info {
+  font-size: 15px;
+  font-weight: normal;
+  color: rgb(255, 0, 0);
+  margin-top: 10px;
+}
+
 .date .info {
   font-size: 12px;
   font-weight: normal;

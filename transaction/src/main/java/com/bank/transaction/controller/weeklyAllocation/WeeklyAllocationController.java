@@ -8,6 +8,7 @@ import com.bank.transaction.service.file.FileService;
 import com.bank.transaction.service.weeklyAllocation.WeeklyAllocationService;
 import com.bank.transaction.uitle.Data;
 import com.bank.transaction.uitle.Encode;
+import com.bank.transaction.uitle.ExcelDownloadUtil;
 
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,8 @@ public class WeeklyAllocationController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private ExcelDownloadUtil excelDownloadUtil;
     
     /**
     * @methodName    : stckInfoView(주식정보화면)
@@ -129,10 +132,22 @@ public class WeeklyAllocationController {
         return "view/weeklyAllocation/weeklyAllocationView";
     }
     
-    
-    
+
     @GetMapping("/weeklyAllocation/WeeklyAllocationDownloadExcel")
     public ResponseEntity<byte[]> weeklyAllocationDownloadExcel(@RequestParam Map<String, Object> params) {
+        // ✅ 1. Controller에서 데이터 생성
+        List<Map<String, Object>> data = weeklyAllocationService.weeklyAllocationDownloadExcel(params);
+
+        // ✅ 2. 엑셀 헤더 지정
+        String[] headers = {"NO_", "TRNSCDATE", "STOCK_NAME", "AMOUNT", "DIVIDEND"};
+        String fileName = "주간거래내역"; 
+
+        // ✅ 3. 공통 유틸 호출
+        return excelDownloadUtil.createExcelResponse(fileName, headers, data);
+    }
+    
+    @GetMapping("/weeklyAllocation/WeeklyAllocationDownloadExcel_old")
+    public ResponseEntity<byte[]> weeklyAllocationDownloadExcel_old(@RequestParam Map<String, Object> params) {
         try {
             // 1. 데이터 생성
             List<Map<String, Object>> transactionData = weeklyAllocationService.weeklyAllocationDownloadExcel(params);

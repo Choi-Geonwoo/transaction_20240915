@@ -14,6 +14,10 @@
        ,NVL(C.DIVIDEND, A.DVDN)    AS DIVIDEND_AMOUNT /*배당금*/
        ,B.REGYMD                   AS RGSTDATE        /*등록일자*/
        ,B.MDFCNYMD                                    /*수정일자*/
+       ,CASE
+            WHEN REGEXP_INSTR(A.TIKER, '[^0-9]') = 0 THEN NVL(A.STCNM, B.STOCK_NAME)
+            ELSE A.TIKER
+        END AS STOCK_NAME_N
     FROM
         STOCKINFORMATION       A /*주식정보*/
     LEFT JOIN STC_RGST_DTLS    B /*주식 등록 내역*/

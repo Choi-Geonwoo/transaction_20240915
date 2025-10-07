@@ -462,8 +462,9 @@ function allocationUpdate02() { handleAllocation("allocationUpdate"); }
 
 /**
  * 등록/수정 공통 처리
+ * @param {string} action - 'allocationInsert' 또는 'allocationUpdate'
  */
-function handleAllocation(action) {
+async function handleAllocation(action) {
     const imageFileInput = document.getElementById('I_FILE');
     const stockSelect = document.getElementById('u_stockName');
 
@@ -472,6 +473,7 @@ function handleAllocation(action) {
         TRNSCDATE: document.getElementById('u_trnscdate').value,
         AMOUNT: document.getElementById('u_amont').value,
         DIVIDEND: document.getElementById('u_dividend').value,
+        // 파일 전송 시 파일명은 서버에서 처리하므로, 여기서는 파일 유무만 체크
         FILENAME: imageFileInput.files[0]?.name || '',
         tNo: document.getElementById("tNo")?.value || null
     };
@@ -481,23 +483,216 @@ function handleAllocation(action) {
     if (!data.TRNSCDATE) return alert("거래일자 입력 해주세요.");
 
     const formData = new FormData();
+
+    // 1. JSON 데이터를 Blob으로 만들어 'key' 필드에 추가 (서버에서 JSON 파싱을 위함)
     formData.append("key", new Blob([JSON.stringify(data)], { type: "application/json" }));
 
-    // 파일 없으면 빈 문자열로 append
+    // 2. 파일 데이터를 'files' 필드에 File 객체 자체로 추가 (가장 표준적인 파일 전송 방식)
     if (imageFileInput.files.length > 0) {
-        formData.append("files", JSON.stringify(Array.from(new Uint8Array(imageFileInput.files[0]))));
-    } else {
-        formData.append("files", "");
+        // files[0]이 File 객체입니다. FormData는 File 객체를 자동으로 처리합니다.
+        formData.append("files", imageFileInput.files[0], imageFileInput.files[0].name);
     }
+    // 파일이 없으면 'files' 필드를 추가하지 않거나 서버 요구에 따라 빈 Blob을 보낼 수 있습니다.
+    // 여기서는 가장 표준적인 방식으로, 파일이 없으면 아예 append를 생략합니다.
+    // 서버에서 'files'가 null 또는 빈 리스트로 처리될 것입니다.
 
-    fetch(`/allocation/${action}.do`, {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.json())
-    .then(resData => {
-        alert(resData.msg);
-        if (resData.retNo !== -1) location.reload();
-    })
-    .catch(err => alert("오류 발생: " + err.message));
+    const url = `/allocation/${action}.do`;
+// ----------------------------------------------------
+// 💡 디버깅 코드 추가: formData에 담긴 내용을 확인합니다.
+/*console.log("--- FormData Contents ---");
+for (const [key, value] of formData.entries()) {
+    if (value instanceof Blob) {
+        // Blob 또는 File 객체인 경우 (key, files)
+        console.log(`Field: ${key}, Type: ${value.type}, Size: ${value.size} bytes`);
+        
+        // key(JSON 데이터)의 경우 내용을 읽어 확인할 수 있습니다 (비동기)
+        if (key === 'key' && value.type === 'application/json') {
+            value.text().then(text => console.log(`  -> JSON Data: ${text}`));
+        }
+        
+    } else {
+        // 일반 문자열 값인 경우
+        console.log(`Field: ${key}, Value: ${value}`);
+    }
 }
+console.log("-------------------------");*/
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            body: formData
+        });
+
+        // HTTP 상태 코드 확인
+        if (!response.ok) {
+             // 200 OK가 아니면 에러를 throw
+            throw new Error(`HTTP 오류 발생: ${response.status}`);
+        }
+
+        const resData = await response.json();
+
+        alert(resData.msg);
+        if (resData.retNo !== -1) {
+            location.reload();
+        }
+
+    } catch (error) {
+        alert("오류 발생: " + error.message);
+        console.error(error); // 디버깅을 위해 콘솔에 에러 출력
+    }
+}
+
+/*===============================================================================*/
+/**
+ * 필수 필드 유효성 검사를 수행합니다.
+ * @param {HTMLSelectElement | null} cmrElement 주식명 select 요소
+ * @param {string} inputTrnscdate 거래일자 값
+ * @returns {boolean} 유효성 검사 통과 여부
+ */
+function validateInputs(cmrElement, inputTrnscdate) {
+  if (!cmrElement || !cmrElement.value) {
+    alert("주식명을 선택하세요.");
+    return false;
+  }
+  if (!inputTrnscdate) {
+    alert("거래일자를 입력해주세요.");
+    return false;
+  }
+  return true;
+}
+
+/**
+ * 전송할 데이터 객체를 준비합니다.
+ * @param {HTMLInputElement} imageFileInput 파일 업로드 인풋 요소
+ * @param {string} inputAmount 거래 금액
+ * @param {string} inputDiviend 배당금
+ * @param {string} inputTrnscdate 거래일자
+ * @param {string} cmr 주식 티커
+ * @param {string | null} tNo 순번 (수정 시에만 사용)
+ * @returns {Object} 서버로 전송할 데이터 객체
+ */
+function prepareData(imageFileInput, inputAmount, inputDiviend, inputTrnscdate, cmr, tNo = null) {
+  let fileName = '';
+  if (imageFileInput.files.length > 0) {
+    fileName = imageFileInput.files[0].name;
+  }
+
+  let data = {
+    CMPR: cmr,          // 주식 티커
+    TRNSCDATE: inputTrnscdate, // 거래일자
+    AMOUNT: inputAmount, // 거래 금액
+    FILENAME: fileName,  // 파일명
+    DIVIDEND: inputDiviend // 배당금
+  };
+
+  if (tNo) {
+    data.tNo = tNo; // 순번 (수정 시 추가)
+  }
+
+  console.log("주식 티커, 거래일자, 배당금, 파일명 ", cmr, inputTrnscdate, inputDiviend, fileName, imageFileInput.files.length);
+  return data;
+}
+
+/**
+ * 파일이 없을 경우 데이터를 JSON 형태로 서버에 전송합니다.
+ * @param {Object} data 전송할 데이터 객체
+ * @param {string} url 전송할 API URL
+ */
+function sendDataOnly(data, url) {
+  fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(result => {
+      alert(result.msg);
+      if (result.retNo !== -1) location.reload();
+    })
+    .catch(error => {
+      alert("오류 발생: " + error.message);
+    });
+}
+
+/**
+ * 등록 및 수정 로직의 공통 처리 함수입니다.
+ * @param {string} url 전송할 API URL
+ * @param {boolean} isUpdate 수정 작업 여부 (true: 수정, false: 등록)
+ */
+function handleAllocationOperation(url, isUpdate) {
+  const imageFileInput = document.getElementById('I_FILE');
+  const inputAmount = document.getElementById('u_amont').value;
+  const inputDiviend = document.getElementById('u_dividend').value;
+  const inputTrnscdate = document.getElementById('u_trnscdate').value;
+  const cmrElement = document.getElementById('u_stockName');
+
+  // 1. 유효성 검사
+  if (!validateInputs(cmrElement, inputTrnscdate)) {
+    return;
+  }
+
+  const cmr = cmrElement.value;
+  const tNo = isUpdate ? document.getElementById("tNo").value : null;
+
+  // 2. 데이터 준비
+  const data = prepareData(imageFileInput, inputAmount, inputDiviend, inputTrnscdate, cmr, tNo);
+
+  // 3. 파일 유무에 따른 전송 분기
+  if (imageFileInput.files.length > 0) {
+    const selectedFile = imageFileInput.files[0];
+    // 이미지 포함 전송 (기존 imgFile 함수 사용)
+    imgFile_001(selectedFile, data, url);
+  } else {
+    // 데이터만 전송
+    sendDataOnly(data, url);
+  }
+}
+
+// ✨ 모달창 등록 이벤트 (간결화)
+function allocationInsert03() {
+  handleAllocationOperation('/allocation/allocationInsert.do', false);
+}
+
+// ✨ 모달창 수정 이벤트 (간결화)
+function allocationUpdate03() {
+  handleAllocationOperation('/allocation/allocationUpdate.do', true);
+}
+
+// ---
+// /* 기존 imgFile 함수는 그대로 유지 */
+// 이미지 포함 전송
+function imgFile_001(selectedFile, data, url) {
+  const formData = new FormData();
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    const fileData = new Uint8Array(event.target.result);
+    // Note: 파일 데이터를 JSON.stringify 후 배열로 보내는 방식은 비표준적이므로 서버 측에서 확인 필요
+    formData.append("files", JSON.stringify(Array.from(fileData)));
+    formData.append("key", new Blob([JSON.stringify(data)], { type: "application/json" }));
+
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then(response => {
+        console.log(response.status);
+        if (response.status !== 200) {
+          throw new Error("오류 발생했습니다.");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Response Data: ", JSON.stringify(data));
+        alert(data.msg);
+        if (data.retNo !== -1) {
+          location.reload();
+        }
+      })
+      .catch(error => {
+        alert("Error: " + error.message);
+      });
+  };
+
+  reader.readAsArrayBuffer(selectedFile);
+}
+/*===============================================================================*/

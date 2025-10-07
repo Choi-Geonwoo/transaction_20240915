@@ -135,6 +135,11 @@ public class AllocationServiceImpl implements AllocationService {
                // 파일 DTO 생성 및 저장
                 FileDTO fDto = createFileDTO(tNo, map, files);
                 fDto.setClscd("N");
+		/*
+		 * log.info("################################################");
+		 * log.info("fDto " + fDto.toString());
+		 * log.info("################################################");
+		 */
                 //fDto.setTNo(tNo);
                 // 이미지 교체로 인해 그전에 등로된 데이터는 미사용으로 변경
                 fileService.fileUpdate(fDto);

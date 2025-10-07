@@ -30,7 +30,7 @@
                         TO_CHAR(A.TRNSCDATE, 'YYYY') AS TRNSCDATE,
                         TO_CHAR(A.TRNSCDATE, 'MM') AS TRNSCMONTH,
                         A.AMOUNT,
-                        B.TIKER
+                        NVL(B.TIKER, A.TIKER) AS TIKER
                     FROM
                         TRANSACTION A
                         LEFT JOIN STOCKINFORMATION B ON (A.TIKER = B.TIKER AND B.USEYN = 'Y' AND B.DELYN = 'N')
